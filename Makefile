@@ -10,13 +10,15 @@ INCLUDES = -I libft/includes -I/usr/include -L/usr/local/lib -I/usr/local/includ
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	make -s -C libft
-	$(CC) $(CFLAGS) $(LIBFT) $(INCLUDES) -o $(NAME) $(OBJ)
+	@cd libft && make all
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) $(INCLUDES)
 
 clean:
+	@cd libft && make clean
 	@-rm -f $(OBJ)
 
 fclean: clean
+	@cd libft && make fclean
 	@-rm -f $(NAME)
 
 re: fclean all
