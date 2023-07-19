@@ -1,30 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/19 10:54:26 by ycardona         ###   ########.fr       */
+/*   Created: 2022/12/08 17:49:39 by ycardona          #+#    #+#             */
+/*   Updated: 2022/12/08 18:35:56 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(void)
+static int	ft_isspace(int c)
 {
-	char *input;
-	char **tokens;
+	if ((9 <= c && c <= 13) || c == ' ')
+		return (1);
+	else
+		return (0);
+}
+
+int	ft_atoi(const char *str)
+{
 	int	i;
-	
-	input = readline(NULL);
-	tokens = ft_split(input, ' ');
+	int	r;
+	int	sign;
+
+	sign = 1;
 	i = 0;
-	while (tokens[i])
+	r = 0;
+	while (ft_isspace(str[i]) == 1)
+		i++;
+	if ((str[i] == '-' || str[i] == '+') && ft_isdigit(str[i +1]) == 1)
 	{
-		printf("%s\n", tokens[i]);
+		if (str[i] == '-')
+			sign = -1;
 		i++;
 	}
-	execve(ft_strjoin("/bin/", tokens[0]), tokens, NULL);
+	while (ft_isdigit(str[i]) == 1)
+	{
+		r = 10 * r + str[i] - 48;
+		i++;
+	}
+	return (sign * r);
 }

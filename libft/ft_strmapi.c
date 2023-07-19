@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/19 10:54:26 by ycardona         ###   ########.fr       */
+/*   Created: 2022/12/10 11:37:35 by ycardona          #+#    #+#             */
+/*   Updated: 2022/12/10 11:49:15 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(void)
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	char *input;
-	char **tokens;
-	int	i;
-	
-	input = readline(NULL);
-	tokens = ft_split(input, ' ');
+	char			*s_f;
+	unsigned int	i;
+
+	s_f = ft_calloc(ft_strlen(s) + 1, 1);
+	if (s_f == NULL)
+		return (NULL);
 	i = 0;
-	while (tokens[i])
+	while (s[i])
 	{
-		printf("%s\n", tokens[i]);
+		s_f[i] = (*f)(i, s[i]);
 		i++;
 	}
-	execve(ft_strjoin("/bin/", tokens[0]), tokens, NULL);
+	return (s_f);
 }

@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/19 10:54:26 by ycardona         ###   ########.fr       */
+/*   Created: 2022/12/03 18:36:52 by ycardona          #+#    #+#             */
+/*   Updated: 2022/12/05 16:09:47 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(void)
+size_t	ft_strlcpy(char *dst, const char *src,
+size_t size)
 {
-	char *input;
-	char **tokens;
-	int	i;
-	
-	input = readline(NULL);
-	tokens = ft_split(input, ' ');
+	size_t	l;
+	size_t	i;
+
+	l = ft_strlen(src);
+	if (size == 0)
+		return (l);
 	i = 0;
-	while (tokens[i])
+	while (i < size - 1 && src[i])
 	{
-		printf("%s\n", tokens[i]);
+		dst[i] = src[i];
 		i++;
 	}
-	execve(ft_strjoin("/bin/", tokens[0]), tokens, NULL);
+	dst[i] = '\0';
+	return (l);
 }

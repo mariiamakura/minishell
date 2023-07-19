@@ -1,30 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/19 10:54:26 by ycardona         ###   ########.fr       */
+/*   Created: 2022/12/03 15:19:16 by ycardona          #+#    #+#             */
+/*   Updated: 2022/12/03 15:29:22 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(void)
+int	ft_isalnum(int c)
 {
-	char *input;
-	char **tokens;
-	int	i;
-	
-	input = readline(NULL);
-	tokens = ft_split(input, ' ');
-	i = 0;
-	while (tokens[i])
-	{
-		printf("%s\n", tokens[i]);
-		i++;
-	}
-	execve(ft_strjoin("/bin/", tokens[0]), tokens, NULL);
+	if (0 < ft_isalpha(c) || 0 < ft_isdigit(c))
+		return (1);
+	else
+		return (0);
 }

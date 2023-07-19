@@ -1,30 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/19 10:54:26 by ycardona         ###   ########.fr       */
+/*   Created: 2022/12/14 13:56:29 by ycardona          #+#    #+#             */
+/*   Updated: 2023/06/19 15:21:18 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(void)
+int	ft_printf(const char *str, ...)
 {
-	char *input;
-	char **tokens;
-	int	i;
-	
-	input = readline(NULL);
-	tokens = ft_split(input, ' ');
+	va_list		ap;
+	int			i;
+	int			count;
+
+	if (str == NULL)
+		return (-1);
+	va_start(ap, str);
 	i = 0;
-	while (tokens[i])
+	count = 0;
+	while (str[i])
 	{
-		printf("%s\n", tokens[i]);
-		i++;
+		while (str[i] != '%' && str[i])
+		{
+			count = ft_printchar(str[i], 1, count);
+			i++;
+		}
+		if (str[i] == '%')
+			count = ft_printi(ap, str[i + 1], count, &i);
 	}
-	execve(ft_strjoin("/bin/", tokens[0]), tokens, NULL);
+	va_end(ap);
+	return (count);
 }

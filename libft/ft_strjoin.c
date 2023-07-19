@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/19 10:54:26 by ycardona         ###   ########.fr       */
+/*   Created: 2022/12/09 15:39:36 by ycardona          #+#    #+#             */
+/*   Updated: 2022/12/09 16:33:10 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(void)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char *input;
-	char **tokens;
-	int	i;
-	
-	input = readline(NULL);
-	tokens = ft_split(input, ' ');
-	i = 0;
-	while (tokens[i])
-	{
-		printf("%s\n", tokens[i]);
-		i++;
-	}
-	execve(ft_strjoin("/bin/", tokens[0]), tokens, NULL);
+	size_t	size;
+	char	*join;
+
+	size = ft_strlen(s1) + ft_strlen(s2);
+	join = malloc(size + 1);
+	if (join == NULL)
+		return (NULL);
+	ft_memcpy(join, s1, ft_strlen(s1));
+	ft_memcpy(join + ft_strlen(s1), s2, ft_strlen(s2));
+	join[size] = '\0';
+	return (join);
 }

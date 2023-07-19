@@ -1,30 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/19 10:54:26 by ycardona         ###   ########.fr       */
+/*   Created: 2022/12/07 14:29:47 by ycardona          #+#    #+#             */
+/*   Updated: 2022/12/13 13:59:58 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(void)
+char	*ft_strrchr(const char *s, int c)
 {
-	char *input;
-	char **tokens;
-	int	i;
-	
-	input = readline(NULL);
-	tokens = ft_split(input, ' ');
+	int		i;
+	int		r;
+
+	r = -1;
 	i = 0;
-	while (tokens[i])
+	while (s[i])
 	{
-		printf("%s\n", tokens[i]);
+		if (s[i] == (char) c)
+			r = i;
 		i++;
 	}
-	execve(ft_strjoin("/bin/", tokens[0]), tokens, NULL);
+	if ((char) c == '\0')
+		return ((char *) &(s[i]));
+	if (0 <= r && s[r] == (char) c)
+		return ((char *) &(s[r]));
+	return (NULL);
 }
+
+/* int main(void)
+{
+	char s[] = "teste";
+	printf("%p   |  %p\n", ft_strrchr(s, 'e'), strrchr(s, 'e'));
+} */

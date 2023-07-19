@@ -1,30 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/19 10:54:26 by ycardona         ###   ########.fr       */
+/*   Created: 2022/12/08 15:57:24 by ycardona          #+#    #+#             */
+/*   Updated: 2022/12/13 14:00:26 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(void)
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	char *input;
-	char **tokens;
-	int	i;
-	
-	input = readline(NULL);
-	tokens = ft_split(input, ' ');
+	const char	*c_s;
+	size_t		i;
+
+	c_s = (const char *) s;
 	i = 0;
-	while (tokens[i])
+	while (i < n)
 	{
-		printf("%s\n", tokens[i]);
+		if (c_s[i] == (char) c)
+			return ((void *) &c_s[i]);
 		i++;
 	}
-	execve(ft_strjoin("/bin/", tokens[0]), tokens, NULL);
+	return (NULL);
 }
+
+/* int main(void)
+{	
+	char s[] = {0, 1, 2 ,3 ,4 ,5};
+	printf("%p\n", memchr(s, 3 + 256, 9));
+	printf("%p\n", s + 3);
+	return (0);
+} */

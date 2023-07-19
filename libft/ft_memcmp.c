@@ -1,30 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/19 10:54:26 by ycardona         ###   ########.fr       */
+/*   Created: 2022/12/08 16:44:39 by ycardona          #+#    #+#             */
+/*   Updated: 2022/12/08 16:50:53 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(void)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	char *input;
-	char **tokens;
-	int	i;
-	
-	input = readline(NULL);
-	tokens = ft_split(input, ' ');
+	size_t			i;
+	unsigned char	*u_s1;
+	unsigned char	*u_s2;
+
+	u_s1 = (unsigned char *) s1;
+	u_s2 = (unsigned char *) s2;
+	if (n == 0)
+		return (0);
 	i = 0;
-	while (tokens[i])
+	while (i < n)
 	{
-		printf("%s\n", tokens[i]);
+		if (u_s1[i] != u_s2[i])
+			return (u_s1[i] - u_s2[i]);
 		i++;
 	}
-	execve(ft_strjoin("/bin/", tokens[0]), tokens, NULL);
+	return (0);
 }
