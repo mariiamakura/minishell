@@ -6,11 +6,11 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/07/20 14:04:38 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/07/20 14:37:09 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 t_data *create_tokens(t_data *data)
 {
@@ -39,6 +39,8 @@ void start_pipes(t_data *data)
 	data = create_tokens(data);
 	printf("%s\n", data->tokens[0]->content);
 	printf("%s\n", data->tokens[1]->content);
+
+	execve(ft_strjoin("/bin/", data->tokens[0]->content), &data->tokens[0]->content, NULL);
 
 	free_all(data);
 }

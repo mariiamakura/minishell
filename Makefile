@@ -17,7 +17,7 @@ all: $(NAME)
 
 $(NAME): libft $(OBJ_FILES)
 	@echo "Building $(NAME) application"
-	@$(CC) $(CFLAGS) $(HEADER) -o $(NAME) $(OBJ_FILES)
+	@$(CC) $(CFLAGS) $(HEADER) -o $(NAME) $(OBJ_FILES) 
 	@echo "$(COLOUR_GREEN)BUILD SUCCESSFUL$(COLOUR_END)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c ./include/minishell.h | $(OBJ_DIR)

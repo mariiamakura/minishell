@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/20 13:59:23 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/07/20 14:06:09 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
-#define FUNCTION 555
+# define TRUE 1
+# define FALSE 0
+# define FUNCTION 555
 
 typedef struct s_token
 {
