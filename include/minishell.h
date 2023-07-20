@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/19 15:24:25 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/07/20 13:59:23 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "libft/libft.h"
+# include "../libft/libft.h"
 #define FUNCTION 555
 
 typedef struct s_token
@@ -32,5 +32,8 @@ typedef struct s_data
 	int pipe_num;
 	int fd[2]; //fd[pipe_num][2] - guillaume advise. do we need it though? research
 } t_data;
+
+//pipes.c
+void start_pipes(t_data *data);
 
 #endif
