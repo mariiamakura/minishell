@@ -6,65 +6,221 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/19 17:28:07 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/20 20:14:58 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		ft_count_pipes(char *split[])
+int		ft_count_pipes(char *input) //counts number of pipes
 {
 	int	i;
-	int	j;
+	int j;
 	int	count;
 
 	count = 0;
 	i = 0;
-	while (split[i])
+	while (input[i])
 	{
-		j = 0;
-		while (split[i][j])
+		if (input[i] == '"') //skipp the pipes in " "
 		{
-			if (split[i][j] == '|')
-				count++;
-			j++; 
+			i++;
+			j = 0;
+			while (input[i + j])
+			{
+				if (input[i + j] == '"')
+				{
+					i += j;
+					break;
+				}
+				j++;
+			}
+		}
+		if (input[i] == 39) //skipp the pipes in ' '
+		{
+			i++;
+			j = 0;
+			while (input[i + j])
+			{
+				if (input[i + j] == 39)
+				{
+					i += j;
+					break;
+				}
+				j++;
+			}
+		}
+		if (input[i] == '|')
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+static int	ft_count_args(char const *s) //counts number of arguments
+{
+	int		i;
+	int		j;
+	int		count;
+
+	i = 0;
+	count = 0;
+	while (s[i])
+	{
+		if (s[i] == 34) //skipp the pipes in " "
+		{
+			j = 1;
+			while (s[i + j])
+			{
+				if (s[i + j] == 34)
+				{
+					i += j + 1;
+					count++;
+					break;
+				}
+				j++;
+			}
+		}
+		if (s[i] == 39) //skipp the pipes in ' '
+		{
+			j = 1;
+			while (s[i + j])
+			{
+				if (s[i + j] == 39)
+				{
+					i += j + 1;
+					count++;
+					break;
+				}
+				j++;
+			}
+		}
+		if (s[i] != ' ' && s[i])
+		{
+			j = 0;
+			while (s[i + j] != ' ' && s[i + j])
+				j++;
+			count++;
+			i = i + j - 1;
 		}
 		i++;
 	}
 	return (count);
 }
 
-void	ft_parse(char *input, t_data *data)
+char	*ft_substr_pipe(char *str, unsigned long *start) //returns the substring before the pipe as string 
 {
-	char **split_input;
+	char	*sub;
+	int		i;
+	
+	if (ft_strlen(str) < *start)
+		return (NULL);
+	i = 0;
+	while (str[*start + i] && str[*start + i] != '|')
+		i++;
+	sub = (char *) malloc(i + 1);
+	if (sub == NULL)
+		return (NULL);
+	ft_strlcpy(sub, str + *start, i + 1);
+	*start += i + 1;
+	return (sub);
+}
+
+int	ft_split_sub(char *sub_str, char *tokens[])
+{
 	int i;
-	int j;
-	int k;
-	int	start;
+	int	j;
+	int	argc;
+
+	i = 0;
+	argc = 0;
+	while(sub_str[i])
+	{
+		if (sub_str[i] == 34)
+		{
+			j = 1;
+			while (sub_str[i + j])
+			{
+				if (sub_str[i + j] == 34)
+				{
+					tokens[argc] = malloc(sizeof(char) * (j));
+					if (tokens[argc] == NULL)
+						exit (1);
+					tokens[argc] = ft_memmove(tokens[argc], sub_str + i + 1, j - 1);
+					tokens[argc][j - 1] = '\0';
+					argc++;
+					i += j + 1;
+					break ;
+				}
+				j++;
+			}
+		}
+		if (sub_str[i] == 39)
+		{
+			j = 1;
+			while (sub_str[i + j])
+			{
+				if (sub_str[i + j] == 39)
+				{
+					tokens[argc] = malloc(sizeof(char) * (j));
+					if (tokens[argc] == NULL)
+						exit (1);
+					tokens[argc] = ft_memmove(tokens[argc], sub_str + i + 1, j - 1);
+					tokens[argc][j - 1] = '\0';
+					//check here for $!! 
+					argc++;
+					i += j + 1;
+					break ;
+				}
+				j++;
+			}
+		}
+		if (sub_str[i] != ' ')
+		{
+			j = 0;
+			while (sub_str[i + j] != ' ' && sub_str[i + j])
+				j++;
+			tokens[argc] = malloc(sizeof(char) * (j + 1));
+			if (tokens[argc] == NULL)
+				exit (1);
+			tokens[argc] = ft_memmove(tokens[argc], sub_str + i, j);
+			tokens[argc][j] = '\0';
+			argc++;
+			i += j - 1;
+		}
+		i++;
+	}
+	return (0);
+}
 
 
-	split_input = ft_split(input, ' ');
-	data->pipe_num = ft_count_pipes(split_input);
-	data->tokens = malloc(sizeof(t_token) * (data->pipe_num + 1));
+int	ft_parse(t_data *data)
+{
+	char	*input;
+	int		i;
+	unsigned long start;
+	char	*sub_str;
+	int		argc;
+
+	input = readline(NULL); //add_history?
+	data->pipe_num = ft_count_pipes(input);
+	data->tokens = malloc(sizeof(char) * (data->pipe_num + 1)); //no NULL termination because we know pipe_num
 	if (data->tokens == NULL)
 		exit (1);
 	i = 0;
 	start = 0;
-	while (split_input[start])
+	while (i <= data->pipe_num)
 	{
-		j = 0;
-		while (split_input[i][0] != '|' && split_input[i])
-			i++;
-		data->tokens[j] = malloc(sizeof(t_token) * i); //NULL termination required ???
-		k = 0;
-		while (k < start + i)
-		{
-			ft_memmove(data->tokens[j][k].content, split_input[start + k], ft_strlen(split_input[start + k]));
-			k++;
-		}
-		j++;
+		sub_str = ft_substr_pipe(input, &start); //get substring untill pipe
+		argc = ft_count_args(sub_str); //count arguments in substring
+		data->tokens[i] = malloc(sizeof(char) * (argc + 1));
+		if (data->tokens[i] == NULL)
+			exit (1);
+		data->tokens[i][argc] = NULL; //NULL-termination required for execve, doesnt work  for printf on mac...
+		ft_split_sub(sub_str, data->tokens[i]); //split and write the substring into tokens
 		i++;
-		start = i;
 	}
-	return ;
+	free(sub_str); //free in the loop gives me errors (---> maybe leaks here / maybe a problem with mac)
+	free(input);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/19 16:51:29 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/20 13:53:37 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,13 @@ typedef struct s_token
 
 typedef struct s_data
 {
-	t_token **tokens; //tokens[0] - points to the 0 group
+	char ***tokens; //tokens[0] - points to the 0 group (*tokens[]); makes more sense to store them as chars since char *argv[] goes into the execve function
+					//tokens[0][0] - points to the first token 
+					//token[0][0][0] - points to the first character of the first token 
 	int pipe_num;
 	int fd[2]; //fd[pipe_num][2] - guillaume advise. do we need it though? research
 } t_data;
+
+int	ft_parse(t_data *data);
 
 #endif
