@@ -3,29 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/21 09:37:51 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/21 17:12:52 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+#include "../libft/libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "libft/libft.h"
 # include <string.h>
-#define FUNCTION 555
+#include <sys/types.h>
+#include <sys/wait.h>
 
-/* typedef struct s_token
-{
-	int type; //redirection, file, Function/Identifier, argument, pipe
-	char *content; //argv[1]
-	char *path;
-}	t_token; */
+# define TRUE 1
+# define FALSE 0
 
 typedef struct s_data
 {
@@ -36,6 +33,11 @@ typedef struct s_data
 	int fd[2]; //fd[pipe_num][2] - guillaume advise. do we need it though? research
 } t_data;
 
+//pipes.c
+void start_pipes(t_data *data);
 int	ft_parse(t_data *data);
 
+
+//utils.c just udeful for now
+void print_tokens(t_data *data);
 #endif

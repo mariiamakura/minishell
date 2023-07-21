@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/21 15:26:06 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/21 17:14:05 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 int		ft_count_pipes(char *input) //counts number of pipes
 {
@@ -221,7 +221,7 @@ int	ft_parse(t_data *data)
 	{
 		sub_str = ft_substr_pipe(input, &start); //get substring untill pipe
 		argc = ft_count_args(sub_str); //count arguments in substring
-		printf("\n%d: %d\n", i, argc);
+		//printf("\n%d: %d\n", i, argc);
 
 		data->tokens[i] = malloc(sizeof(char) * (argc + 1));
 		if (data->tokens[i] == NULL)
