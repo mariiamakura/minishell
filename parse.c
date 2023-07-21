@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/21 10:48:16 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/21 15:26:06 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ static int	ft_count_args(char const *s) //counts number of arguments
 				if (s[i + j] == 34)
 				{
 					i += j + 1;
-					count++;
+					if (s[i] == ' ')
+						count++;
 					break;
 				}
 				j++;
@@ -89,7 +90,8 @@ static int	ft_count_args(char const *s) //counts number of arguments
 				if (s[i + j] == 39)
 				{
 					i += j + 1;
-					count++;
+					if (s[i] == ' ')
+						count++;
 					break;
 				}
 				j++;
@@ -219,15 +221,17 @@ int	ft_parse(t_data *data)
 	{
 		sub_str = ft_substr_pipe(input, &start); //get substring untill pipe
 		argc = ft_count_args(sub_str); //count arguments in substring
+		printf("\n%d: %d\n", i, argc);
+
 		data->tokens[i] = malloc(sizeof(char) * (argc + 1));
 		if (data->tokens[i] == NULL)
 			exit (1);
 		ft_split_sub(sub_str, data->tokens[i]); //split and write the substring into tokens
 		ft_add_path(data->tokens[i][0], i, data);
-		data->tokens[i][argc] = NULL; //NULL-termination required for execve, doesnt work  for printf on mac..
-		//free(sub_str); --> problems with free and pointers?!?!
+		data->tokens[i][argc] = NULL; //NULL-termination required for execve, works on linux! doesnt work  for printf on mac..
+		free(sub_str); // --> problems with free and pointers on mac not on Linux!
 		i++;
 	}
-	//free(input);
+	free(input);
 	return (0);
 }
