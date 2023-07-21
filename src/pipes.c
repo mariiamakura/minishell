@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/07/21 17:38:36 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/07/21 17:45:55 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,3 +50,5 @@ void start_pipes(t_data *data)
 	}
 	return ;
 }
+
+//test : ls | echo hello | cat foo | grep l
