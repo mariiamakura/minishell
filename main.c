@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/20 20:15:23 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/21 10:59:21 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,22 @@ int	main(void)
 	data = malloc(sizeof(t_data));
 	if (data == NULL)
 		return (1);
-	ft_parse(data);
+	while (1)
+	{
+		ft_parse(data);
+		
+	}	
+}
+
 	/* int i = 0;
 	int j;
 	while (i <= data->pipe_num)
 	{
 		j = 0;
-		while (j < 2)
+		while (1)
 		{
+			if (data->tokens[i][j] == NULL)
+				break ;
 			printf("%sEND\n", data->tokens[i][j]);
 			j++;
 		}
@@ -34,5 +42,5 @@ int	main(void)
 		i++;
 	} */
 	//printf("num pipes: %i", data->pipe_num);
-	//execve(ft_strjoin("/bin/", tokens[0]), tokens, NULL);
-}
+	//data->tokens[0][2] = NULL;
+	//printf("%d\n", execve(data->tokens[0][0], data->tokens[0], NULL));

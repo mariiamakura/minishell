@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/20 20:14:58 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/21 10:48:16 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ int	ft_split_sub(char *sub_str, char *tokens[])
 	argc = 0;
 	while(sub_str[i])
 	{
-		if (sub_str[i] == 34)
+		if (sub_str[i] == 34) //handling " "
 		{
 			j = 1;
 			while (sub_str[i + j])
@@ -155,12 +155,12 @@ int	ft_split_sub(char *sub_str, char *tokens[])
 				j++;
 			}
 		}
-		if (sub_str[i] == 39)
+		if (sub_str[i] == 39) //handling ' '
 		{
 			j = 1;
 			while (sub_str[i + j])
 			{
-				if (sub_str[i + j] == 39)
+				if (sub_str[i + j] == 39) 
 				{
 					tokens[argc] = malloc(sizeof(char) * (j));
 					if (tokens[argc] == NULL)
@@ -193,6 +193,12 @@ int	ft_split_sub(char *sub_str, char *tokens[])
 	return (0);
 }
 
+int	ft_add_path(char *funct_name, int i, t_data *data)
+{
+	data->tokens[i][0] = ft_strjoin("/bin/", funct_name);
+	free(funct_name);
+	return (0);
+}
 
 int	ft_parse(t_data *data)
 {
@@ -216,11 +222,12 @@ int	ft_parse(t_data *data)
 		data->tokens[i] = malloc(sizeof(char) * (argc + 1));
 		if (data->tokens[i] == NULL)
 			exit (1);
-		data->tokens[i][argc] = NULL; //NULL-termination required for execve, doesnt work  for printf on mac...
 		ft_split_sub(sub_str, data->tokens[i]); //split and write the substring into tokens
+		ft_add_path(data->tokens[i][0], i, data);
+		data->tokens[i][argc] = NULL; //NULL-termination required for execve, doesnt work  for printf on mac..
+		//free(sub_str); --> problems with free and pointers?!?!
 		i++;
 	}
-	free(sub_str); //free in the loop gives me errors (---> maybe leaks here / maybe a problem with mac)
-	free(input);
+	//free(input);
 	return (0);
 }

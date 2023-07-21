@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/20 13:53:37 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/21 09:37:51 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@
 # include <string.h>
 #define FUNCTION 555
 
-typedef struct s_token
+/* typedef struct s_token
 {
 	int type; //redirection, file, Function/Identifier, argument, pipe
 	char *content; //argv[1]
 	char *path;
-}	t_token;
+}	t_token; */
 
 typedef struct s_data
 {
