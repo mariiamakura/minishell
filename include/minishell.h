@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/21 17:30:49 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/07/24 13:50:42 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,12 @@ typedef struct s_data
 					//token[0][0][0] - points to the first character of the first token 
 	int pipe_num;
 	int *child_pid;
+	int **pipes;
 	//int fd[2]; //fd[pipe_num][2] - guillaume advise. do we need it though? research
 } t_data;
 
 //pipes.c
-void start_pipes(t_data *data);
+int start_pipes(t_data *data);
 int	ft_parse(t_data *data);
 
 
