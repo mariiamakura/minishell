@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/24 13:50:42 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/07/24 17:27:07 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 
 # define TRUE 1
 # define FALSE 0
+# define FINISHED 1
+# define NOT_FINISHED 0
 
 typedef struct s_data
 {
@@ -32,14 +34,21 @@ typedef struct s_data
 	int pipe_num;
 	int *child_pid;
 	int **pipes;
-	//int fd[2]; //fd[pipe_num][2] - guillaume advise. do we need it though? research
 } t_data;
+
+//parse.c
+int	ft_parse(t_data *data);
 
 //pipes.c
 int start_pipes(t_data *data);
-int	ft_parse(t_data *data);
+t_data *init_pipes(t_data * data);
 
+//pipes_utils.c
+void free_wflags(t_data *data, int i, int flag);
+void close_fd(t_data *data);
+void wait_children(t_data *data, int i);
 
 //utils.c just udeful for now
 void print_tokens(t_data *data);
+
 #endif
