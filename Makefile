@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Werror -Wextra -Wall
+CFLAGS = -Werror -Wextra -Wall -g
 THREADS = -fsanitize=thread -pthread
 
 SRC_DIR = src

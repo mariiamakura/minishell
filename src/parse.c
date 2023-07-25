@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/24 23:41:51 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/25 15:49:32 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,11 @@ char	*ft_substr_pipe(char *str, unsigned long *start) //returns the substring be
 	return (sub);
 }
 
-int	ft_quotations_count(char *str, int j, int quot)
+int	ft_quotations_count(char *str, int quot)
 {
-	int start_j;
+	int j;
 	
-	start_j = j;
+	j = 0;
 	if (str[j] == quot) //handling " "
 	{
 		j++;
@@ -112,10 +112,10 @@ int	ft_quotations_count(char *str, int j, int quot)
 				return (j);
 			j++;
 			if(str[j] == '\0')
-				return (start_j);
+				return (0);
 		}
 	}
-	return (j);
+	return (0);
 }
 
 int	ft_split_sub(char *sub_str, int block, t_data *data)
@@ -133,15 +133,17 @@ int	ft_split_sub(char *sub_str, int block, t_data *data)
 			j = 0;
 			while (sub_str[i + j] != ' ' && sub_str[i + j])
 			{
-				j = ft_quotations_count(&sub_str[i + j], j, 34); // skipp " "
-				j = ft_quotations_count(&sub_str[i + j], j, 39); // skipp ' '
+				j += ft_quotations_count(&sub_str[i + j], 34); // skipp " "
+				j += ft_quotations_count(&sub_str[i + j], 39); // skipp ' '
 				j++;
 			}
+			printf("size of malloc: %d | ", j + 1);
 			data->tokens[block][arg] = ft_calloc(sizeof(char), j + 1);
 			if (data->tokens[block][arg] == NULL)
 				exit (1);
 			data->tokens[block][arg] = ft_memmove(data->tokens[block][arg], sub_str + i, j + 1);
 			data->tokens[block][arg][j] = '\0';
+			printf("token %d %d: %s\n", block, arg, data->tokens[block][arg]);
 			arg++;
 			i += j - 1;
 		}
@@ -151,7 +153,7 @@ int	ft_split_sub(char *sub_str, int block, t_data *data)
 
 }
 
-int	ft_add_path(int i, t_data *data)
+/* int	ft_add_path(int i, t_data *data)
 {
 	char *temp;
 	char *path;
@@ -162,9 +164,9 @@ int	ft_add_path(int i, t_data *data)
 	data->tokens[i][0] = malloc(sizeof(char) * (ft_strlen(data->tokens[i][0]) + ft_strlen(path) + 1));
 	ft_memmove(data->tokens[i][0], path, ft_strlen(path));
 	ft_memmove(data->tokens[i][0] + ft_strlen(path), temp, ft_strlen(data->tokens[i][0]) +  1);
-	free(temp);
+	//free(temp);
 	return (0);
-}
+} */
 
 int	ft_parse(t_data *data)
 {
@@ -185,12 +187,16 @@ int	ft_parse(t_data *data)
 	{
 		sub_str = ft_substr_pipe(input, &start); //get substring untill pipe
 		argc = ft_count_args(sub_str); //count arguments in substring
+		printf("arguments: %i\n", argc);
 		data->tokens[i] = ft_calloc(sizeof(char), argc + 1);
 		if (data->tokens[i] == NULL)
 			exit (1);
 		ft_split_sub(sub_str, i, data); //split and write the substring into tokens
-		ft_add_path(i, data);
-		data->tokens[i][argc] = NULL; //NULL-termination required for execve, works on linux! doesnt work  for printf on mac..
+		printf("first %s\n", data->tokens[0][0]);
+		//ft_add_path(i, data);
+		data->tokens[i][argc] = ft_calloc(sizeof(char), 1);
+		data->tokens[i][argc][0] = '\0';//NULL-termination required for execve, works on linux! doesnt work  for printf on mac..
+		printf("first %s\n", data->tokens[0][0]);
 		//free(sub_str); // --> problems with free and pointers on mac not on Linux!
 		i++;
 	}
