@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/25 17:09:38 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/25 16:53:46 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,11 @@ int	ft_parse(t_data *data)
 	int		argc;
 
 	input = readline(NULL); //add_history?
+	if (input == NULL) //handles ctrl+d
+	{
+		write(1, "exit\n", 6);
+		exit(0);
+	}
 	data->pipe_num = ft_count_pipes(input);
 	data->tokens = ft_calloc(sizeof(char **), (data->pipe_num + 1)); //no NULL termination because we know pipe_num
 	if (data->tokens == NULL)
