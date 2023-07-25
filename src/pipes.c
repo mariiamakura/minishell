@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/07/25 15:04:13 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:09:39 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,22 @@ t_data *init_pipes(t_data * data)
 	return (data);
 }
 
+int one_cmd(t_data *data, int i)
+{
+	data->child_pid[i] = fork();
+	if (data->child_pid[i] == 0)
+	{
+		if (execve(data->tokens[i][0], data->tokens[i], NULL) == -1)
+		{
+			perror("execve failed");
+			term_processes(data, i);
+			free_wflags(data, i, FINISHED);
+			return (-1);
+		}
+		close_fd(data);
+	}
+	return (0);
+}
 
 int start_pipes(t_data *data)
 {
@@ -42,7 +58,12 @@ int start_pipes(t_data *data)
 	if (data == NULL)
 		return (-1); //maybe return data?
 	i = 0;
-	while (i <= data->pipe_num)
+	if (data->pipe_num == 0)
+	{
+		if (one_cmd(data, i) == -1)
+			return (-1);
+	}
+	while (i <= data->pipe_num && data->pipe_num > 0)
 	{
 		data->child_pid[i] = fork();
 		if (data->child_pid[i] == 0)
@@ -75,7 +96,7 @@ int start_pipes(t_data *data)
 	}
 	close_fd(data);
 	wait_children(data);
-	free_wflags(data, i, FINISHED);
+	free_wflags(data, i, FINISHED); //mb do it in the end if data is still needed after pipes
 	return (0);
 }
 
