@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/25 16:51:53 by mparasku         ###   ########.fr       */
+/*   Created: 2023/07/25 15:01:16 by mparasku          #+#    #+#             */
+/*   Updated: 2023/07/25 16:46:16 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	main(void)
+void	sig_handler(int signum)
 {
-	//char *input;
-	//signal(SIGQUIT, sig_handler);
-	t_data	*data;
-
-	data = malloc(sizeof(t_data *));
-	if (data == NULL)
-		return (-1);
-	while (1)
+	if (signum == SIGQUIT)
 	{
-		ft_parse(data);
-		start_pipes(data);
+		write(1, "exit", 4);
+		exit(0);
 	}
 }
