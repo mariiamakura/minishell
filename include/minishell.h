@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/25 14:30:42 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/07/25 15:05:58 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,13 @@ t_data *init_pipes(t_data * data);
 //pipes_utils.c
 void free_wflags(t_data *data, int i, int flag);
 void close_fd(t_data *data);
-void wait_children(t_data *data, int i);
+void wait_children(t_data *data);
 void term_processes(t_data * data, int i);
 
-//utils.c just udeful for now
+//signals.c
+void	sig_handler(int signum);
+
+//utils.c just useful for now
 void print_tokens(t_data *data);
 
 #endif

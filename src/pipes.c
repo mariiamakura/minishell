@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/07/25 14:31:49 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/07/25 15:04:13 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int start_pipes(t_data *data)
 		i++;
 	}
 	close_fd(data);
-	wait_children(data, i);
+	wait_children(data);
 	free_wflags(data, i, FINISHED);
 	return (0);
 }
