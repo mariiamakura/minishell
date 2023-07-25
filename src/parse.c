@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/25 16:53:46 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:33:14 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int		ft_count_pipes(char *input) //counts number of pipes
 
 	count = 0;
 	i = 0;
-	if (input[0] == pipe)
+	if (input[0] == '|')
 		exit (-1); //add the correct error message
 	while (input[i])
 	{
@@ -152,7 +152,7 @@ int	ft_split_sub(char *sub_str, int block, t_data *data)
 
 }
 
-/* int	ft_add_path(int i, t_data *data)
+int	ft_add_path(int i, t_data *data)
 {
 	char *temp;
 	char *path;
@@ -165,7 +165,7 @@ int	ft_split_sub(char *sub_str, int block, t_data *data)
 	ft_memmove(data->tokens[i][0] + ft_strlen(path), temp, ft_strlen(data->tokens[i][0]) +  1);
 	free(temp);
 	return (0);
-} */
+}
 
 int	ft_parse(t_data *data)
 {
@@ -196,7 +196,7 @@ int	ft_parse(t_data *data)
 			exit (1);
 		ft_split_sub(sub_str, i, data); //split and write the substring into tokens
 		data->tokens[i][argc] = NULL;//NULL-termination required for execve
-		//ft_add_path(i, data);
+		ft_add_path(i, data);
 		free(sub_str);
 		i++;
 	}
