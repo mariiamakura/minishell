@@ -6,11 +6,31 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/25 15:39:26 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:01:50 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+void	ft_free_tokens(t_data *data)
+{
+	int i;
+	int	j;
+
+	i = 0;
+	while (i < data->pipe_num + 1)
+	{
+		j = 0;
+		while (data->tokens[i][j])
+		{
+			free(data->tokens[i][j]);
+			j++;
+		}
+		free(data->tokens[i]);
+		i++;
+	}
+	free(data->tokens);
+}
 
 int	main(void)
 {
@@ -34,7 +54,8 @@ int	main(void)
 		printf("null: %s\n", data->tokens[i][j]);
 		i++;
 	}
-	
+	ft_free_tokens(data);
+	free(data);
 	//print_tokens(data);
 	//printf("%d\n", execve(data->tokens[0][0], data->tokens[0], NULL));
 	//start_pipes(data);

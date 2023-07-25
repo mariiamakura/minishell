@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/25 16:18:59 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:09:38 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int		ft_count_pipes(char *input) //counts number of pipes
 
 	count = 0;
 	i = 0;
-	//exit if input[0] == pipe
+	if (input[0] == pipe)
+		exit (-1); //add the correct error message
 	while (input[i])
 	{
 		ft_quotation(input, &i, 34); //skipps " "
@@ -137,13 +138,11 @@ int	ft_split_sub(char *sub_str, int block, t_data *data)
 				j += ft_quotations_count(&sub_str[i + j], 39); // skipp ' '
 				j++;
 			}
-			printf("size of malloc: %d | ", j + 1);
 			data->tokens[block][arg] = ft_calloc(sizeof(char), j + 1);
 			if (data->tokens[block][arg] == NULL)
 				exit (1);
 			data->tokens[block][arg] = ft_memmove(data->tokens[block][arg], sub_str + i, j + 1);
 			data->tokens[block][arg][j] = '\0';
-			printf("token %d %d: %s\n", block, arg, data->tokens[block][arg]);
 			arg++;
 			i += j - 1;
 		}
@@ -178,7 +177,7 @@ int	ft_parse(t_data *data)
 
 	input = readline(NULL); //add_history?
 	data->pipe_num = ft_count_pipes(input);
-	data->tokens = ft_calloc(sizeof(char), (data->pipe_num + 1)); //no NULL termination because we know pipe_num
+	data->tokens = ft_calloc(sizeof(char **), (data->pipe_num + 1)); //no NULL termination because we know pipe_num
 	if (data->tokens == NULL)
 		exit (1);
  	i = 0;
@@ -187,19 +186,15 @@ int	ft_parse(t_data *data)
 	{
 		sub_str = ft_substr_pipe(input, &start); //get substring untill pipe
 		argc = ft_count_args(sub_str); //count arguments in substring
-		printf("arguments: %i\n", argc);
-		data->tokens[i] = ft_calloc(sizeof(char), argc + 1);
+		data->tokens[i] = ft_calloc(sizeof(char *), argc + 1);
 		if (data->tokens[i] == NULL)
 			exit (1);
 		ft_split_sub(sub_str, i, data); //split and write the substring into tokens
-		printf("first %s\n", data->tokens[0][0]);
+		data->tokens[i][argc] = NULL;//NULL-termination required for execve
 		//ft_add_path(i, data);
-		data->tokens[i][argc] = ft_calloc(sizeof(char), 1);
-		//data->tokens[i][argc][0] = '\0';//NULL-termination required for execve, works on linux! doesnt work  for printf on mac..
-		printf("first %s\n", data->tokens[0][0]);
-		//free(sub_str); // --> problems with free and pointers on mac not on Linux!
+		free(sub_str);
 		i++;
 	}
-	//free(input);
+	free(input);
 	return (0);
 }
