@@ -68,6 +68,7 @@ static int	ft_count_args(char *s) //counts number of arguments
 				i++;
 			}
 			count++;
+			i--;
 		}
 		i++;
 	}
@@ -79,9 +80,9 @@ char	*ft_substr_pipe(char *str, unsigned long *start) //returns the substring be
 	char	*sub;
 	int		i;
 	
-	if (str + *start == NULL)
-		return (NULL);
 	i = *start;
+	/* if (!(str + i))
+		return (NULL); */
 	while (str[i] && str[i] != '|')
 	{
 		ft_quotation(str, &i, 34); //skipps " "
@@ -91,10 +92,8 @@ char	*ft_substr_pipe(char *str, unsigned long *start) //returns the substring be
 	sub = (char *) malloc(i - *start + 1);
 	if (sub == NULL)
 		return (NULL);
-	printf("malloc size %lu\n", i - *start + 1);
 	ft_memmove(sub, str + *start, i - *start + 1);
 	sub[i - *start] = '\0';
-	//ft_strlcpy(sub, str + *start, i + 1);
 	*start = i + 1;
 	return (sub);
 }
@@ -138,22 +137,21 @@ int	ft_split_sub(char *sub_str, int block, t_data *data)
 				j = ft_quotations_count(&sub_str[i + j], j, 39); // skipp ' '
 				j++;
 			}
-			printf("size of malloc tokens: %d\n", j + 1);
-			data->tokens[block][arg] = ft_calloc(sizeof(char), (j + 1));
+			data->tokens[block][arg] = ft_calloc(sizeof(char), j + 1);
 			if (data->tokens[block][arg] == NULL)
 				exit (1);
 			data->tokens[block][arg] = ft_memmove(data->tokens[block][arg], sub_str + i, j + 1);
 			data->tokens[block][arg][j] = '\0';
-			printf("token: %sEND\n", data->tokens[block][arg]);
 			arg++;
 			i += j - 1;
 		}
 		i++;
 	}
 	return (0);
+
 }
 
-/* int	ft_add_path(int i, t_data *data)
+int	ft_add_path(int i, t_data *data)
 {
 	char *temp;
 	char *path;
@@ -167,7 +165,7 @@ int	ft_split_sub(char *sub_str, int block, t_data *data)
 	free(temp);
 	return (0);
 }
- */
+
 int	ft_parse(t_data *data)
 {
 	char	*input;
@@ -187,11 +185,12 @@ int	ft_parse(t_data *data)
 	{
 		sub_str = ft_substr_pipe(input, &start); //get substring untill pipe
 		argc = ft_count_args(sub_str); //count arguments in substring
-		data->tokens[i] = ft_calloc(sizeof(char), argc);
+		data->tokens[i] = ft_calloc(sizeof(char), argc + 1);
 		if (data->tokens[i] == NULL)
 			exit (1);
 		ft_split_sub(sub_str, i, data); //split and write the substring into tokens
-		//data->tokens[i][argc] = NULL; //NULL-termination required for execve, works on linux! doesnt work  for printf on mac..
+		ft_add_path(i, data);
+		data->tokens[i][argc] = NULL; //NULL-termination required for execve, works on linux! doesnt work  for printf on mac..
 		//free(sub_str); // --> problems with free and pointers on mac not on Linux!
 		i++;
 	}

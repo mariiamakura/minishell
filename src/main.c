@@ -20,21 +20,21 @@ int	main(void)
 	if (data == NULL)
 		return (1);
 	ft_parse(data);
-	
+	int j;
 	int i = 0;
-	int j = 0;
 	while (i < data->pipe_num + 1)
 	{
+		 j = 0;
+
 		while (data->tokens[i][j])
 		{
-
-			printf("%s\n", data->tokens[i][j]);
+			printf("%s-", data->tokens[i][j]);
 			j++;
 		}
-		//printf("null: %s\n", data->tokens[i][j]);
+		printf("null: %s\n", data->tokens[i][j]);
 		i++;
 	}
-	printf("%s\n", data->tokens[0][0]);
+	
 	//print_tokens(data);
 	//printf("%d\n", execve(data->tokens[0][0], data->tokens[0], NULL));
 	//start_pipes(data);
