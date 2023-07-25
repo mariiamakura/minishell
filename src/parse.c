@@ -3,53 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/21 17:14:05 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/07/24 23:41:51 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+void	ft_quotation(char *str, int *i, int quot)
+{
+	int j;
+
+	if (str[*i] == quot) //skipp the pipes in " "
+	{
+		j = 1;
+		while (str[*i + j])
+		{
+			if (str[*i + j] == quot)
+			{
+				*i += j;
+				break;
+			}
+			j++;
+		}
+	}
+}
+
 int		ft_count_pipes(char *input) //counts number of pipes
 {
 	int	i;
-	int j;
 	int	count;
 
 	count = 0;
 	i = 0;
+	//exit if input[0] == pipe
 	while (input[i])
 	{
-		if (input[i] == '"') //skipp the pipes in " "
-		{
-			i++;
-			j = 0;
-			while (input[i + j])
-			{
-				if (input[i + j] == '"')
-				{
-					i += j;
-					break;
-				}
-				j++;
-			}
-		}
-		if (input[i] == 39) //skipp the pipes in ' '
-		{
-			i++;
-			j = 0;
-			while (input[i + j])
-			{
-				if (input[i + j] == 39)
-				{
-					i += j;
-					break;
-				}
-				j++;
-			}
-		}
+		ft_quotation(input, &i, 34); //skipps " "
+		ft_quotation(input, &i, 39); //skipps ' '
 		if (input[i] == '|')
 			count++;
 		i++;
@@ -57,53 +50,25 @@ int		ft_count_pipes(char *input) //counts number of pipes
 	return (count);
 }
 
-static int	ft_count_args(char const *s) //counts number of arguments
+static int	ft_count_args(char *s) //counts number of arguments
 {
 	int		i;
-	int		j;
 	int		count;
 
 	i = 0;
 	count = 0;
 	while (s[i])
 	{
-		if (s[i] == 34) //skipp the pipes in " "
-		{
-			j = 1;
-			while (s[i + j])
-			{
-				if (s[i + j] == 34)
-				{
-					i += j + 1;
-					if (s[i] == ' ')
-						count++;
-					break;
-				}
-				j++;
-			}
-		}
-		if (s[i] == 39) //skipp the pipes in ' '
-		{
-			j = 1;
-			while (s[i + j])
-			{
-				if (s[i + j] == 39)
-				{
-					i += j + 1;
-					if (s[i] == ' ')
-						count++;
-					break;
-				}
-				j++;
-			}
-		}
 		if (s[i] != ' ' && s[i])
 		{
-			j = 0;
-			while (s[i + j] != ' ' && s[i + j])
-				j++;
+			while (s[i] != ' ' && s[i])
+			{
+				ft_quotation(s, &i, 34); //skipps " "
+				ft_quotation(s, &i, 39); //skipps ' '
+				i++;
+			}
 			count++;
-			i = i + j - 1;
+			i--;
 		}
 		i++;
 	}
@@ -115,90 +80,89 @@ char	*ft_substr_pipe(char *str, unsigned long *start) //returns the substring be
 	char	*sub;
 	int		i;
 	
-	if (ft_strlen(str) < *start)
-		return (NULL);
-	i = 0;
-	while (str[*start + i] && str[*start + i] != '|')
+	i = *start;
+	/* if (!(str + i))
+		return (NULL); */
+	while (str[i] && str[i] != '|')
+	{
+		ft_quotation(str, &i, 34); //skipps " "
+		ft_quotation(str, &i, 39); //skipps ' '
 		i++;
-	sub = (char *) malloc(i + 1);
+	}
+	sub = (char *) malloc(i - *start + 1);
 	if (sub == NULL)
 		return (NULL);
-	ft_strlcpy(sub, str + *start, i + 1);
-	*start += i + 1;
+	ft_memmove(sub, str + *start, i - *start + 1);
+	sub[i - *start] = '\0';
+	*start = i + 1;
 	return (sub);
 }
 
-int	ft_split_sub(char *sub_str, char *tokens[])
+int	ft_quotations_count(char *str, int j, int quot)
+{
+	int start_j;
+	
+	start_j = j;
+	if (str[j] == quot) //handling " "
+	{
+		j++;
+		while (str[j])
+		{
+			if (str[j] == quot)
+				return (j);
+			j++;
+			if(str[j] == '\0')
+				return (start_j);
+		}
+	}
+	return (j);
+}
+
+int	ft_split_sub(char *sub_str, int block, t_data *data)
 {
 	int i;
 	int	j;
-	int	argc;
+	int	arg;
 
 	i = 0;
-	argc = 0;
+	arg = 0;
 	while(sub_str[i])
 	{
-		if (sub_str[i] == 34) //handling " "
-		{
-			j = 1;
-			while (sub_str[i + j])
-			{
-				if (sub_str[i + j] == 34)
-				{
-					tokens[argc] = malloc(sizeof(char) * (j));
-					if (tokens[argc] == NULL)
-						exit (1);
-					tokens[argc] = ft_memmove(tokens[argc], sub_str + i + 1, j - 1);
-					tokens[argc][j - 1] = '\0';
-					argc++;
-					i += j + 1;
-					break ;
-				}
-				j++;
-			}
-		}
-		if (sub_str[i] == 39) //handling ' '
-		{
-			j = 1;
-			while (sub_str[i + j])
-			{
-				if (sub_str[i + j] == 39) 
-				{
-					tokens[argc] = malloc(sizeof(char) * (j));
-					if (tokens[argc] == NULL)
-						exit (1);
-					tokens[argc] = ft_memmove(tokens[argc], sub_str + i + 1, j - 1);
-					tokens[argc][j - 1] = '\0';
-					//check here for $!! 
-					argc++;
-					i += j + 1;
-					break ;
-				}
-				j++;
-			}
-		}
 		if (sub_str[i] != ' ')
 		{
 			j = 0;
 			while (sub_str[i + j] != ' ' && sub_str[i + j])
+			{
+				j = ft_quotations_count(&sub_str[i + j], j, 34); // skipp " "
+				j = ft_quotations_count(&sub_str[i + j], j, 39); // skipp ' '
 				j++;
-			tokens[argc] = malloc(sizeof(char) * (j + 1));
-			if (tokens[argc] == NULL)
+			}
+			data->tokens[block][arg] = ft_calloc(sizeof(char), j + 1);
+			if (data->tokens[block][arg] == NULL)
 				exit (1);
-			tokens[argc] = ft_memmove(tokens[argc], sub_str + i, j);
-			tokens[argc][j] = '\0';
-			argc++;
+			data->tokens[block][arg] = ft_memmove(data->tokens[block][arg], sub_str + i, j + 1);
+			data->tokens[block][arg][j] = '\0';
+			arg++;
 			i += j - 1;
 		}
 		i++;
 	}
 	return (0);
+
 }
 
-int	ft_add_path(char *funct_name, int i, t_data *data)
+int	ft_add_path(int i, t_data *data)
 {
-	data->tokens[i][0] = ft_strjoin("/bin/", funct_name);
-	free(funct_name);
+	char *temp;
+	char *path;
+
+	path = "/bin/";
+
+	temp = data->tokens[i][0];
+	data->tokens[i][0] = malloc(sizeof(char) * (ft_strlen(data->tokens[i][0]) + ft_strlen(path) + 1));
+	ft_memmove(data->tokens[i][0], path, ft_strlen(path));
+	ft_memmove(data->tokens[i][0] + ft_strlen(path), temp, ft_strlen(data->tokens[i][0]) +  1);
+	free(temp);
 	return (0);
 }
 
@@ -212,26 +176,24 @@ int	ft_parse(t_data *data)
 
 	input = readline(NULL); //add_history?
 	data->pipe_num = ft_count_pipes(input);
-	data->tokens = malloc(sizeof(char) * (data->pipe_num + 1)); //no NULL termination because we know pipe_num
+	data->tokens = ft_calloc(sizeof(char), (data->pipe_num + 1)); //no NULL termination because we know pipe_num
 	if (data->tokens == NULL)
 		exit (1);
-	i = 0;
+ 	i = 0;
 	start = 0;
 	while (i <= data->pipe_num)
 	{
 		sub_str = ft_substr_pipe(input, &start); //get substring untill pipe
 		argc = ft_count_args(sub_str); //count arguments in substring
-		//printf("\n%d: %d\n", i, argc);
-
-		data->tokens[i] = malloc(sizeof(char) * (argc + 1));
+		data->tokens[i] = ft_calloc(sizeof(char), argc + 1);
 		if (data->tokens[i] == NULL)
 			exit (1);
-		ft_split_sub(sub_str, data->tokens[i]); //split and write the substring into tokens
-		ft_add_path(data->tokens[i][0], i, data);
+		ft_split_sub(sub_str, i, data); //split and write the substring into tokens
+		ft_add_path(i, data);
 		data->tokens[i][argc] = NULL; //NULL-termination required for execve, works on linux! doesnt work  for printf on mac..
-		free(sub_str); // --> problems with free and pointers on mac not on Linux!
+		//free(sub_str); // --> problems with free and pointers on mac not on Linux!
 		i++;
 	}
-	free(input);
+	//free(input);
 	return (0);
 }

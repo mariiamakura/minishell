@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:11:45 by mparasku          #+#    #+#             */
-/*   Updated: 2023/07/24 18:18:59 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:36:27 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,18 @@ void close_fd(t_data *data)
 	}
 }
 
+void term_processes(t_data * data, int i)
+{
+	int	j;
+
+	j = 0;
+	while (j <= i)
+	{
+		kill(data->child_pid[j], SIGTERM);
+		j++;
+	}
+}
+
 
 void wait_children(t_data *data, int i)
 {
@@ -60,16 +72,16 @@ void wait_children(t_data *data, int i)
     k = 0;
     while (k < i)
     {
-        waitpid(data->child_pid[k], &status, 0);
-        // if (WIFEXITED(status))
-        // {
-        //     int exit_status = WEXITSTATUS(status);
-        //     printf("Child process %d exited with status: %d\n", k, exit_status);
-        // }
-        // else
-        // {
-        //     printf("Child process %d terminated abnormally\n", k);
-        // }
+        waitpid(-1, &status, 0);
+        if (WIFEXITED(status))
+        {
+            int exit_status = WEXITSTATUS(status);
+            printf("Child process %d exited with status: %d\n", data->child_pid[k], exit_status);
+        }
+        else
+        {
+            printf("Child process %d terminated abnormally\n", data->child_pid[k]);
+        }
         k++;
     }
 }

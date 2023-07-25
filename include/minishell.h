@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/24 17:27:07 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:30:42 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <signal.h>
+
 
 # define TRUE 1
 # define FALSE 0
@@ -47,6 +49,7 @@ t_data *init_pipes(t_data * data);
 void free_wflags(t_data *data, int i, int flag);
 void close_fd(t_data *data);
 void wait_children(t_data *data, int i);
+void term_processes(t_data * data, int i);
 
 //utils.c just udeful for now
 void print_tokens(t_data *data);

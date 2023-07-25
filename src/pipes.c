@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/07/24 18:35:26 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:31:49 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int start_pipes(t_data *data)
 			{
 				dup2(data->pipes[i][1], STDOUT_FILENO); //1st cmd write to write end of pipe 0 and read from stdin
 				close_fd(data);
-
 			}
 			else if (i == data->pipe_num) //the last cmd
 			{
@@ -67,7 +66,7 @@ int start_pipes(t_data *data)
 			if (execve(data->tokens[i][0], data->tokens[i], NULL) == -1)
 			{
 				perror("execve failed");
-				wait_children(data, i);
+				term_processes(data, i);
 				free_wflags(data, i, FINISHED);
 				return (-1);
 			}
