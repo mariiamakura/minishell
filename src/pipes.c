@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/07/25 17:09:39 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:39:06 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int start_pipes(t_data *data)
 		i++;
 	}
 	close_fd(data);
-	wait_children(data);
+	wait_children(data); //return the last child process exit status
 	free_wflags(data, i, FINISHED); //mb do it in the end if data is still needed after pipes
 	return (0);
 }
