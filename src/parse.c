@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/25 15:49:32 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/25 16:18:59 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ int	ft_split_sub(char *sub_str, int block, t_data *data)
 	data->tokens[i][0] = malloc(sizeof(char) * (ft_strlen(data->tokens[i][0]) + ft_strlen(path) + 1));
 	ft_memmove(data->tokens[i][0], path, ft_strlen(path));
 	ft_memmove(data->tokens[i][0] + ft_strlen(path), temp, ft_strlen(data->tokens[i][0]) +  1);
-	//free(temp);
+	free(temp);
 	return (0);
 } */
 
@@ -195,7 +195,7 @@ int	ft_parse(t_data *data)
 		printf("first %s\n", data->tokens[0][0]);
 		//ft_add_path(i, data);
 		data->tokens[i][argc] = ft_calloc(sizeof(char), 1);
-		data->tokens[i][argc][0] = '\0';//NULL-termination required for execve, works on linux! doesnt work  for printf on mac..
+		//data->tokens[i][argc][0] = '\0';//NULL-termination required for execve, works on linux! doesnt work  for printf on mac..
 		printf("first %s\n", data->tokens[0][0]);
 		//free(sub_str); // --> problems with free and pointers on mac not on Linux!
 		i++;
