@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/26 18:26:06 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/26 22:27:24 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,6 @@ void print_tokens(t_data *data);
 
 //redirection.c
 void	ft_parse_redir(t_data *data);
+void	ft_remove_arg(t_data *data, int block, int arg);
 
 #endif
