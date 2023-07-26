@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/07/26 23:07:21 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/26 23:57:59 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ t_data *init_pipes(t_data * data)
 			return (NULL);
 		} 
 		i++;
-	}	
+	}
+	ft_parse_redir(data);
 	return (data);
 }
 

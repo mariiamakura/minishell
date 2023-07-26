@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:05:44 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/26 23:02:25 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/26 23:59:30 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,23 @@ int	ft_add_path(int i, t_data *data)
 {
 	char *temp;
 	char *path;
+	char *test1;
+	char *test2;
 
-	path = "/bin/";
-
+	path = "";
 	temp = data->tokens[i][0];
+	test1 = ft_strjoin("/bin/", temp);
+	test2 = ft_strjoin("/usr/bin/", temp);
+	if (access(test1, F_OK) == 0)
+		path = "/bin/";
+	if (access(test2, F_OK) == 0)
+		path = "/usr/bin/";
 	data->tokens[i][0] = malloc(sizeof(char) * (ft_strlen(data->tokens[i][0]) + ft_strlen(path) + 1));
 	ft_memmove(data->tokens[i][0], path, ft_strlen(path));
 	ft_memmove(data->tokens[i][0] + ft_strlen(path), temp, ft_strlen(data->tokens[i][0]) +  1);
 	free(temp);
+	free(test1);
+	free(test2);
 	return (0);
 }
 
