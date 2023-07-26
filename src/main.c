@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/25 17:44:49 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/07/26 18:34:38 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,15 @@ int	main(void)
 	if (data == NULL)
 		return (1);
 	while (1) {
-		ft_parse(data);
-		start_pipes(data);
-		ft_free_tokens(data);
+	ft_parse(data);
+/* 	int i = 0;
+	while (data->tokens[0][i])
+	{
+		printf("%s\n", data->tokens[0][i]);
+		i++;
+	} */
+	start_pipes(data);
+	ft_free_tokens(data);
 	}
 	free(data);
 	//print_tokens(data);

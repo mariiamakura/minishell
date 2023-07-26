@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/25 17:33:14 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/07/26 18:17:59 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,23 @@ int		ft_count_pipes(char *input) //counts number of pipes
 	return (count);
 }
 
+void	ft_skipp_redir(char *str, int *i, int *count)
+{
+	if (str[*i] == '>')
+	{
+		if (0 < *i && str[*i - 1] != ' ')
+			*count += 1;
+		if (str[*i + 1] == ' ')
+		{
+			*i += 1;
+			while (str[*i] == ' ')
+				*i += 1;
+			if (!str[*i])
+				*i -= 1;
+		}
+	}
+}
+
 static int	ft_count_args(char *s) //counts number of arguments
 {
 	int		i;
@@ -66,6 +83,7 @@ static int	ft_count_args(char *s) //counts number of arguments
 			{
 				ft_quotation(s, &i, 34); //skipps " "
 				ft_quotation(s, &i, 39); //skipps ' '
+				ft_skipp_redir(s, &i, &count);
 				i++;
 			}
 			count++;
@@ -134,14 +152,24 @@ int	ft_split_sub(char *sub_str, int block, t_data *data)
 			j = 0;
 			while (sub_str[i + j] != ' ' && sub_str[i + j])
 			{
+				if (sub_str[i + j] == '>')
+				{
+					j++;
+					if (sub_str[i + j] == '>')
+						j++;
+					while (sub_str[i + j] == ' ')
+						j++;
+				}
 				j += ft_quotations_count(&sub_str[i + j], 34); // skipp " "
 				j += ft_quotations_count(&sub_str[i + j], 39); // skipp ' '
 				j++;
+				if (sub_str[i + j] == '>')
+					break ;
 			}
 			data->tokens[block][arg] = ft_calloc(sizeof(char), j + 1);
 			if (data->tokens[block][arg] == NULL)
 				exit (1);
-			data->tokens[block][arg] = ft_memmove(data->tokens[block][arg], sub_str + i, j + 1);
+			ft_memmove(data->tokens[block][arg], sub_str + i, j + 1);
 			data->tokens[block][arg][j] = '\0';
 			arg++;
 			i += j - 1;
@@ -150,21 +178,6 @@ int	ft_split_sub(char *sub_str, int block, t_data *data)
 	}
 	return (0);
 
-}
-
-int	ft_add_path(int i, t_data *data)
-{
-	char *temp;
-	char *path;
-
-	path = "/bin/";
-
-	temp = data->tokens[i][0];
-	data->tokens[i][0] = malloc(sizeof(char) * (ft_strlen(data->tokens[i][0]) + ft_strlen(path) + 1));
-	ft_memmove(data->tokens[i][0], path, ft_strlen(path));
-	ft_memmove(data->tokens[i][0] + ft_strlen(path), temp, ft_strlen(data->tokens[i][0]) +  1);
-	free(temp);
-	return (0);
 }
 
 int	ft_parse(t_data *data)
@@ -191,12 +204,12 @@ int	ft_parse(t_data *data)
 	{
 		sub_str = ft_substr_pipe(input, &start); //get substring untill pipe
 		argc = ft_count_args(sub_str); //count arguments in substring
+		printf("argc %d\n", argc);
 		data->tokens[i] = ft_calloc(sizeof(char *), argc + 1);
 		if (data->tokens[i] == NULL)
 			exit (1);
 		ft_split_sub(sub_str, i, data); //split and write the substring into tokens
 		data->tokens[i][argc] = NULL;//NULL-termination required for execve
-		ft_add_path(i, data);
 		free(sub_str);
 		i++;
 	}
