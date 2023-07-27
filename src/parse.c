@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/27 01:06:49 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/27 15:11:23 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,11 +188,17 @@ int	ft_parse(t_data *data)
 	char	*sub_str;
 	int		argc;
 
-	input = readline(NULL); //add_history?
+	printf(" ~ minishell$ ");
+	input = readline(NULL);
 	if (input == NULL) //handles ctrl+d
 	{
 		write(1, "exit\n", 6);
-		exit(0);
+		exit(-1);
+	}
+	if (*input == '\0')
+	{
+		printf("\n");
+		return (free(input), -1);
 	}
 	data->pipe_num = ft_count_pipes(input);
 	data->tokens = ft_calloc(sizeof(char **), (data->pipe_num + 1)); //no NULL termination because we know pipe_num

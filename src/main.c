@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/27 01:29:09 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/27 15:01:31 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,11 @@ int	main(void)
 	if (data == NULL)
 		return (1);
 	while (1) {
-		ft_parse(data);
-		start_pipes(data);
-		ft_free_tokens(data);
+		if (0 <= ft_parse(data))
+		{
+			start_pipes(data);
+			ft_free_tokens(data);
+		}
 	}
 	free(data);
 	//print_tokens(data);
