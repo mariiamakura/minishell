@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:05:44 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/26 23:59:30 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/27 11:37:15 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,20 @@ void	ft_redir_out(char *str, int block, t_data *data)
 	i = 1;
 	while (str[i] == ' ')
 		i++;
-	fd = open(str + i, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-	data->pipes[block][1] = fd;
+	fd = open(str + i, O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+	data->pipes[block + 1][1] = fd;
+}
+
+void	ft_redir_in(char *str, int block, t_data *data)
+{
+	int	i;
+	int	fd;
+
+	i = 1;
+	while (str[i] == ' ')
+		i++;
+	fd = open(str + i, O_RDONLY, S_IRUSR | S_IWUSR);
+	data->pipes[block][0] = fd;
 }
 
 void	ft_remove_arg(t_data *data, int block, int arg)
@@ -77,6 +89,13 @@ void	ft_parse_redir(t_data *data)
 			{
 				ft_redir_out(data->tokens[i][j], i, data);
 				ft_remove_arg(data, i, j);
+				break ;
+			}
+			if (data->tokens[i][j][0] == '<')
+			{
+				ft_redir_in(data->tokens[i][j], i, data);
+				ft_remove_arg(data, i, j);
+				break ;
 			}
 			j++;
 		}

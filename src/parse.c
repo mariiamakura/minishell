@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/26 23:53:54 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/27 01:06:49 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,10 +152,10 @@ int	ft_split_sub(char *sub_str, int block, t_data *data)
 			j = 0;
 			while (sub_str[i + j] != ' ' && sub_str[i + j])
 			{
-				if (sub_str[i + j] == '>')
+				if (sub_str[i + j] == '<' || sub_str[i + j] == '>')
 				{
 					j++;
-					if (sub_str[i + j] == '>')
+					if (sub_str[i + j] == '<' || sub_str[i + j] == '>')
 						j++;
 					while (sub_str[i + j] == ' ')
 						j++;
@@ -163,7 +163,7 @@ int	ft_split_sub(char *sub_str, int block, t_data *data)
 				j += ft_quotations_count(&sub_str[i + j], 34); // skipp " "
 				j += ft_quotations_count(&sub_str[i + j], 39); // skipp ' '
 				j++;
-				if (sub_str[i + j] == '>')
+				if (sub_str[i + j] == '<' || sub_str[i + j] == '>')
 					break ;
 			}
 			data->tokens[block][arg] = ft_calloc(sizeof(char), j + 1);
@@ -204,7 +204,6 @@ int	ft_parse(t_data *data)
 	{
 		sub_str = ft_substr_pipe(input, &start); //get substring untill pipe
 		argc = ft_count_args(sub_str); //count arguments in substring
-		printf("argc %d\n", argc);
 		data->tokens[i] = ft_calloc(sizeof(char *), argc + 1);
 		if (data->tokens[i] == NULL)
 			exit (1);
