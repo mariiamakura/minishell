@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:05:44 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/27 11:37:15 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/27 20:25:58 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_redir_out(char *str, int block, t_data *data)
 	while (str[i] == ' ')
 		i++;
 	fd = open(str + i, O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-	data->pipes[block + 1][1] = fd;
+	data->pipes[block][1] = fd;
 }
 
 void	ft_redir_in(char *str, int block, t_data *data)
@@ -33,7 +33,10 @@ void	ft_redir_in(char *str, int block, t_data *data)
 	while (str[i] == ' ')
 		i++;
 	fd = open(str + i, O_RDONLY, S_IRUSR | S_IWUSR);
-	data->pipes[block][0] = fd;
+	if (block == 0)
+		data->pipes[data->pipe_num][0] = fd; // pipe[pipe_num][0] stores input for first child (its not initialized with pipe())
+	else
+		data->pipes[block - 1][0] = fd;
 }
 
 void	ft_remove_arg(t_data *data, int block, int arg)
