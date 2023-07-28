@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/07/27 20:45:45 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/28 17:08:27 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ t_data *init_pipes(t_data * data)
 		data->pipes[i] = malloc(sizeof(int) * 2); //each pipe has read/write ends
 		if ((i == 0 && data->pipe_num == 0) || i == data->pipe_num) //for single process or the last process
 		{
-			data->pipes[i][0] = 0;
-			data->pipes[i][1] = 1;
+			data->pipes[i][0] = STDIN_FILENO;
+			data->pipes[i][1] = STDOUT_FILENO;
 			break ;
 		}
 		if(pipe(data->pipes[i]) != 0)
@@ -47,6 +47,7 @@ int start_pipes(t_data *data)
 	data = init_pipes(data);
 	if (data == NULL)
 		return (-1); //maybe return data?
+	g_global->forked = TRUE;
 	i = 0;
 	while (i <= data->pipe_num)
 	{
@@ -71,6 +72,10 @@ int start_pipes(t_data *data)
 	}
 	close_fd(data);
 	wait_children(data); //return the last child process exit status
+	if (g_global->c_kill_child == TRUE)
+	{
+		term_processes(data, i);
+	}
 	free_wflags(data, i, FINISHED); //mb do it in the end if data is still needed after pipes
 	return (0);
 }

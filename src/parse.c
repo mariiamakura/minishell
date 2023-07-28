@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/27 15:11:23 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/28 17:14:23 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,18 +188,14 @@ int	ft_parse(t_data *data)
 	char	*sub_str;
 	int		argc;
 
-	printf(" ~ minishell$ ");
-	input = readline(NULL);
+    input = readline(" ~minishell$ ");
 	if (input == NULL) //handles ctrl+d
 	{
-		write(1, "exit\n", 6);
+		write(1, "exit\n", 5);
 		exit(-1);
 	}
 	if (*input == '\0')
-	{
-		printf("\n");
 		return (free(input), -1);
-	}
 	data->pipe_num = ft_count_pipes(input);
 	data->tokens = ft_calloc(sizeof(char **), (data->pipe_num + 1)); //no NULL termination because we know pipe_num
 	if (data->tokens == NULL)

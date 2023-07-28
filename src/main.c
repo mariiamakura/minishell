@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/27 15:01:31 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/28 15:42:30 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+t_global *g_global;
 
 void	ft_free_tokens(t_data *data)
 {
@@ -34,11 +36,10 @@ void	ft_free_tokens(t_data *data)
 
 int	main(void)
 {
-	//char *input;
-	//signal(SIGQUIT, sig_handler);
 	t_data	*data;
 
 	data = malloc(sizeof(t_data));
+	init_signals();
 	if (data == NULL)
 		return (1);
 	while (1) {

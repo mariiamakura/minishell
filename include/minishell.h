@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/26 22:27:24 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/28 16:41:08 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,16 @@ typedef struct s_data
 	int pipe_num;
 	int *child_pid;
 	int **pipes;
+	char *promt;
 } t_data;
+
+typedef struct s_global 
+{
+	int	forked;
+	int c_kill_child;
+} t_global;
+
+extern t_global *g_global;
 
 //parse.c
 int	ft_parse(t_data *data);
@@ -57,6 +66,7 @@ void term_processes(t_data * data, int i);
 
 //signals.c
 void	sig_handler(int signum);
+void	init_signals(void);
 
 //utils.c just useful for now
 void print_tokens(t_data *data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:11:45 by mparasku          #+#    #+#             */
-/*   Updated: 2023/07/27 17:10:20 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/28 17:08:16 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void term_processes(t_data * data, int i)
 	int	j;
 
 	j = 0;
-	while (j <= i)
+	while (j < i)
 	{
 		kill(data->child_pid[j], SIGTERM);
 		j++;
