@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:05:44 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/28 20:18:36 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/28 20:38:00 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,17 @@ int	ft_here_doc(char *str, int block, t_data *data) //maybe also close pipes her
 			free(input);
 			free(temp);
 		}
-		if (pipe(pipe_doc) != 0)
-			return (-1);
 		if (block == 0)
+		{
+			if (pipe(pipe_doc) != 0) //need to set a pipe 
+				return (-1);
 			data->pipes[data->pipe_num][0] = pipe_doc[0]; //set the read-end in pipes
+			write(pipe_doc[1], buffer, ft_strlen(buffer)); //write to pipe this process reads from
+			close(pipe_doc[1]);
+		}
 		else
-			data->pipes[block - 1][0] = pipe_doc[0];// set the read-end in pipes
-		write(pipe_doc[1], buffer, ft_strlen(buffer)); //write to pipe this process reads from
+			write(data->pipes[block - 1][1], buffer, ft_strlen(buffer)); //write to pipe this process reads from
+
 		free(buffer);
 		return (0);
 }
