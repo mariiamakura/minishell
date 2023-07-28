@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/27 15:11:23 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/28 17:54:47 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,13 @@ int		ft_count_pipes(char *input) //counts number of pipes
 
 void	ft_skipp_redir(char *str, int *i, int *count)
 {
-	if (str[*i] == '>')
+	if (str[*i] == '>' || str[*i] == '<')
 	{
 		if (0 < *i && str[*i - 1] != ' ')
 			*count += 1;
+		if ((str[*i] == '>' && str[*i + 1] == '>')
+			|| (str[*i] == '<' && str[*i + 1] == '<')) //skipps one < if <<
+			*i += 1;
 		if (str[*i + 1] == ' ')
 		{
 			*i += 1;
@@ -152,7 +155,7 @@ int	ft_split_sub(char *sub_str, int block, t_data *data)
 			j = 0;
 			while (sub_str[i + j] != ' ' && sub_str[i + j])
 			{
-				if (sub_str[i + j] == '<' || sub_str[i + j] == '>')
+				if (sub_str[i + j] == '<' || sub_str[i + j] == '>') // < und > trennen ---> getrennte funktion 
 				{
 					j++;
 					if (sub_str[i + j] == '<' || sub_str[i + j] == '>')
@@ -188,18 +191,15 @@ int	ft_parse(t_data *data)
 	char	*sub_str;
 	int		argc;
 
-	printf(" ~ minishell$ ");
-	input = readline(NULL);
+	input = readline(" ~ minishell$ ");
+	add_history(input);
 	if (input == NULL) //handles ctrl+d
 	{
 		write(1, "exit\n", 6);
 		exit(-1);
 	}
 	if (*input == '\0')
-	{
-		printf("\n");
 		return (free(input), -1);
-	}
 	data->pipe_num = ft_count_pipes(input);
 	data->tokens = ft_calloc(sizeof(char **), (data->pipe_num + 1)); //no NULL termination because we know pipe_num
 	if (data->tokens == NULL)

@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:11:45 by mparasku          #+#    #+#             */
-/*   Updated: 2023/07/27 17:10:20 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/28 14:35:10 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void free_wflags(t_data *data, int i, int flag)
 	}
 	else
 	{
-		while (j < i - 1)
+		while (j < i)
 		{
 			free(data->pipes[j]);
 			j++;

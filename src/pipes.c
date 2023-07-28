@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/07/27 20:45:45 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/28 20:10:38 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_data *init_pipes(t_data * data)
 
 	i = 0;
 	data->child_pid = malloc(sizeof(int) * (data->pipe_num + 1)); //number of processes
-	data->pipes = malloc(sizeof(int *) * data->pipe_num + 1); //the num of pipes + 1 (num of processes)
+	data->pipes = malloc(sizeof(int *) * (data->pipe_num + 1)); //the num of pipes + 1 (num of processes)
 	while (i <= data->pipe_num)
 	{
 		data->pipes[i] = malloc(sizeof(int) * 2); //each pipe has read/write ends
@@ -32,7 +32,7 @@ t_data *init_pipes(t_data * data)
 		{
 			free_wflags(data, i, NOT_FINISHED);
 			return (NULL);
-		} 	
+		}
 		i++;
 	}
 	ft_parse_redir(data);

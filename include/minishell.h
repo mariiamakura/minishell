@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/26 22:27:24 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/28 15:15:46 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ void	sig_handler(int signum);
 void print_tokens(t_data *data);
 
 //redirection.c
-void	ft_parse_redir(t_data *data);
+int	ft_parse_redir(t_data *data);
 void	ft_remove_arg(t_data *data, int block, int arg);
+int		ft_add_path(int i, t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/27 15:01:31 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/28 17:55:51 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,23 @@ int	main(void)
 	data = malloc(sizeof(t_data));
 	if (data == NULL)
 		return (1);
-	while (1) {
+	while (1) 
+	{
 		if (0 <= ft_parse(data))
 		{
+			/* int i = 0;
+			int j;
+			while (i <= data->pipe_num)
+			{
+				j = 0;
+				while(data->tokens[i][j])
+				{
+					printf("tokens[%d][%d]: %s\n", i , j, data->tokens[i][j]);
+					j++;
+				}
+					printf("tokens[%d][%d]: %s\n", i , j, data->tokens[i][j]);
+				i++;
+			} */
 			start_pipes(data);
 			ft_free_tokens(data);
 		}
