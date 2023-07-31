@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/28 15:15:46 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/31 08:34:24 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_data
 	int pipe_num;
 	int *child_pid;
 	int **pipes;
+	char **env;
 } t_data;
 
 //parse.c

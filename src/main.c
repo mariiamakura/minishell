@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/28 17:55:51 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/31 08:34:39 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,18 @@ void	ft_free_tokens(t_data *data)
 	free(data->tokens);
 }
 
-int	main(void)
+int	main(int argc, char *argv[], char *envp[])
 {
 	//char *input;
 	//signal(SIGQUIT, sig_handler);
+	if (argc != 1 || !argv[0]) //programm should be run without arguments (only env)
+	 return (1);
 	t_data	*data;
 
 	data = malloc(sizeof(t_data));
 	if (data == NULL)
 		return (1);
+	data->env = envp;
 	while (1) 
 	{
 		if (0 <= ft_parse(data))

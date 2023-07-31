@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/07/28 20:10:38 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/31 08:35:24 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int start_pipes(t_data *data)
 			else 
 				dup2(data->pipes[i - 1][0], STDIN_FILENO); // cmd reads from last cmd read pipe (not stdin)
 			close_fd(data);
-			if (execve(data->tokens[i][0], data->tokens[i], NULL) == -1)
+			if (execve(data->tokens[i][0], data->tokens[i], data->env) == -1)
 			{
 				perror("execve failed");
 				term_processes(data, i);
