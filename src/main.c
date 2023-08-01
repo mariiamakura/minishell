@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/31 08:34:39 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/01 11:43:16 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,6 @@ int	main(int argc, char *argv[], char *envp[])
 	{
 		if (0 <= ft_parse(data))
 		{
-			/* int i = 0;
-			int j;
-			while (i <= data->pipe_num)
-			{
-				j = 0;
-				while(data->tokens[i][j])
-				{
-					printf("tokens[%d][%d]: %s\n", i , j, data->tokens[i][j]);
-					j++;
-				}
-					printf("tokens[%d][%d]: %s\n", i , j, data->tokens[i][j]);
-				i++;
-			} */
 			start_pipes(data);
 			ft_free_tokens(data);
 		}

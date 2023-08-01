@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/31 08:34:24 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/07/31 16:58:56 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void print_tokens(t_data *data);
 //redirection.c
 int	ft_parse_redir(t_data *data);
 void	ft_remove_arg(t_data *data, int block, int arg);
-int		ft_add_path(int i, t_data *data);
+void	ft_add_path(int i, t_data *data);
+char	*ft_getenv(char *envp[], char *var_name);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:05:44 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/31 08:05:43 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/01 11:42:17 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,33 +107,102 @@ void	ft_remove_arg(t_data *data, int block, int arg)
 	free(temp);
 }
 
-int	ft_add_path(int i, t_data *data)
+void	ft_add_var(int block, int arg, int *start, t_data *data)
 {
-	char *temp;
-	char *test1;
-	char *test2;
+	char	*token;
+	char	*var_name;
+	char	*var_cont;
+	char	*new_token;
+	int		i;
 
-	temp = data->tokens[i][0];
-	test1 = ft_strjoin("/bin/", data->tokens[i][0]);
-	test2 = ft_strjoin("/usr/bin/", data->tokens[i][0]);
-	if (access(test1, F_OK) == 0)
+	token = data->tokens[block][arg];
+	i = 0;
+	while (token[*start + 1 + i] && token[*start + 1 + i] != ' ' &&
+		token[*start + 1 + i] != 34 && token[*start + 1 + i] != 39)
+		i++;
+	var_name = ft_calloc(i + 1, sizeof(char));
+	ft_memmove(var_name, token + *start + 1, i);
+	var_name[i] = '\0';
+	var_cont = ft_getenv(data->env, var_name);
+	new_token = ft_calloc(*start + ft_strlen(var_cont) + ft_strlen(token + *start + 1 + i) + 1, sizeof(char));
+	ft_memmove(new_token, token, *start);
+	ft_memmove(new_token + *start, var_cont, ft_strlen(var_cont));
+	ft_memmove(new_token + *start + ft_strlen(var_cont), token + *start + 1 + i, ft_strlen(token + *start + 1 + i));
+	new_token[*start + ft_strlen(var_cont) + ft_strlen(token + *start + 1 + i)] = '\0';
+	free(token);
+	free(var_name);
+	*start += i + 1;
+	data->tokens[block][arg] = new_token;
+}
+
+int	ft_quot_closed(char *str, int quot)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		data->tokens[i][0] = test1;
-		free(test2);
-		free(temp);
+		if (str[i] == quot)
+			return (TRUE);
+		i++;
 	}
-	else if (access(test2, F_OK) == 0)
+	return (FALSE);
+}
+
+void	ft_remove_quot(char *str, int first, int last)
+{
+	size_t	len_sub;
+	size_t	len_str;
+
+	if ((len_str = ft_strlen(str)) < 2)
+		return;
+	len_sub = ft_strlen(str + (last + 1));
+	ft_memmove(str + last, str + (last + 1), len_sub);
+	str[len_str - 1] = '\0';
+	len_str = ft_strlen(str);
+	len_sub = ft_strlen(str + (first + 1));
+	ft_memmove(str + first, str + (first + 1), len_sub);
+	str[len_str - 1] = '\0';
+}
+
+void	ft_parse_var(int block, int arg, t_data *data)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (data->tokens[block][arg][i])
 	{
-		data->tokens[i][0] = test2;
-		free(test1);
-		free(temp);
+		if (data->tokens[block][arg][i] == '$')
+			ft_add_var(block, arg, &i, data);
+		if (data->tokens[block][arg][i] == '"'
+			&& ft_quot_closed(&data->tokens[block][arg][i + 1], 34) == TRUE)
+		{
+			j = i + 1;
+			while (data->tokens[block][arg][j])
+			{
+				if (data->tokens[block][arg][j] == '$')
+					ft_add_var(block, arg, &j, data);
+				if (data->tokens[block][arg][j] == '"')
+				{
+					ft_remove_quot(data->tokens[block][arg], i, j);
+					i = j - 1;
+					break ;
+				}
+				j++;
+			}
+		}
+		if (data->tokens[block][arg][i] == 39
+			&& ft_quot_closed(&data->tokens[block][arg][i + 1], 39) == TRUE)
+		{
+			j = i + 1;
+			while (data->tokens[block][arg][j] != 39)
+				j++;
+			ft_remove_quot(data->tokens[block][arg], i, j);
+			i = j - 1;
+		}
+		i++;
 	}
-	else 
-	{
-		free(test1);
-		free(test2);
-	}
-	return (0);
 }
 
 int	ft_parse_redir(t_data *data) //return open error
@@ -172,6 +241,7 @@ int	ft_parse_redir(t_data *data) //return open error
 				ft_remove_arg(data, i, j);
 				break ;
 			}
+			ft_parse_var(i, j, data);
 			j++;
 		}
 		ft_add_path(i, data);
