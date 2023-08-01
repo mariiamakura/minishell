@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/01 14:20:08 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/01 18:41:19 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,9 @@ int	ft_parse_redir(t_data *data);
 void	ft_remove_arg(t_data *data, int block, int arg);
 void	ft_add_path(int i, t_data *data);
 char	*ft_getenv(char *envp[], char *var_name);
+
+//buildins
+int ft_echo(char *av[], int index, t_data *data);
+void ft_print(char *av[], int i, int flag, int index, t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/01 14:20:25 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/01 18:41:51 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ int start_pipes(t_data *data)
 	data = init_pipes(data);
 	if (data == NULL)
 		return (-1); //maybe return data?
+	printf("%i\n", (ft_strncmp(data->tokens[0][0], "/usr/bin/echo", ft_strlen("/usr/bin/echo"))));
+	if(ft_strncmp(data->tokens[0][0], "/usr/bin/echo", ft_strlen("/usr/bin/echo")) == 0)
+		ft_echo(data->tokens[0], 0, data); //create subfuction for this
 	g_global->forked = TRUE;
 	i = 0;
 	while (i <= data->pipe_num)
