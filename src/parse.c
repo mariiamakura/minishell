@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/28 17:54:47 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/01 14:22:23 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ int	ft_parse(t_data *data)
 	add_history(input);
 	if (input == NULL) //handles ctrl+d
 	{
-		write(1, "exit\n", 6);
+		write(1, "exit\n", 5);
 		exit(-1);
 	}
 	if (*input == '\0')

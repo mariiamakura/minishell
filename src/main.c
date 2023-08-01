@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/01 11:43:16 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/01 14:21:45 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+t_global *g_global;
 
 void	ft_free_tokens(t_data *data)
 {
@@ -34,13 +36,12 @@ void	ft_free_tokens(t_data *data)
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	//char *input;
-	//signal(SIGQUIT, sig_handler);
 	if (argc != 1 || !argv[0]) //programm should be run without arguments (only env)
 	 return (1);
 	t_data	*data;
 
 	data = malloc(sizeof(t_data));
+	init_signals();
 	if (data == NULL)
 		return (1);
 	data->env = envp;
