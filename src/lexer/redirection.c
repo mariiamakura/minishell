@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:05:44 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/02 17:37:51 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/02 18:09:20 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,15 @@ int	ft_redir_out(char *str, int block, int arg, t_data *data) // maybe close the
 		i++;
 	fd = open(str + i, O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 	data->pipes[block][1] = fd;
-	ft_remove_arg(data, block, arg);
 	if (fd == -1)
 	{
 		file_name = ft_strjoin("minishell: ", str + i);
 		perror(file_name);
+		free(file_name);
+		ft_remove_arg(data, block, arg);
 		return (1);
 	}
+	ft_remove_arg(data, block, arg);
 	return(0);
 }
 
@@ -44,13 +46,15 @@ int	ft_redir_app(char *str, int block, int arg, t_data *data)
 		i++;
 	fd = open(str + i, O_RDWR | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
 	data->pipes[block][1] = fd;
-	ft_remove_arg(data, block, arg);
 	if (fd == -1)
 	{
 		file_name = ft_strjoin("minishell: ", str + i);
 		perror(file_name);
+		free(file_name);
+		ft_remove_arg(data, block, arg);
 		return (1);
 	}
+	ft_remove_arg(data, block, arg);
 	return (0);
 }
 
@@ -68,13 +72,15 @@ int	ft_redir_in(char *str, int block, int arg, t_data *data) //add test if fd op
 		data->pipes[data->pipe_num][0] = fd; // pipe[pipe_num][0] stores input for first child (its not initialized with pipe())
 	else
 		data->pipes[block - 1][0] = fd;
-	ft_remove_arg(data, block, arg);
 	if (fd == -1)
 	{
 		file_name = ft_strjoin("minishell: ", str + i);
 		perror(file_name);
+		free(file_name);
+		ft_remove_arg(data, block, arg);
 		return (1);
 	}
+	ft_remove_arg(data, block, arg);
 	return (0);
 }
 
