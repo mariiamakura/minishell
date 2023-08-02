@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:11:45 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/01 14:20:17 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/02 13:08:39 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,16 @@ void term_processes(t_data * data, int i)
 
 void wait_children(t_data *data)
 {
-    int k;
-    int status;
+	int k;
+	int status;
+	pid_t	pid;
 
-    k = 0;
-    while (k <= data->pipe_num)
-    {
-        waitpid(-1, &status, 0);
-        // if (WIFEXITED(status))
-        // {
-        //     int exit_status = WEXITSTATUS(status);
-        //     printf("Child process %d exited with status: %d\n", data->child_pid[k], exit_status);
-        // }
-        // else
-        // {
-        //     printf("Child process %d terminated abnormally\n", data->child_pid[k]);
-        // }
-        k++;
-    }
+	k = 0;
+	while (k <= data->pipe_num)
+	{
+		pid = wait(&status);
+		if (pid == data->child_pid[data->pipe_num])
+			data->last_exit = status;
+		k++;
+	}
 }

@@ -6,11 +6,11 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 14:35:32 by ycardona          #+#    #+#             */
-/*   Updated: 2023/07/31 16:56:16 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/02 12:44:16 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 char	*ft_getenv(char *envp[], char *var_name)
 {
@@ -50,6 +50,8 @@ void	ft_add_path(int block, t_data *data)
 	char	*funct_name;
 	int		i;
 
+	if (ft_is_builtin(data->tokens[block][0]) == TRUE)
+		return ;
 	funct_name = ft_strjoin("/", data->tokens[block][0]); //adding '/' before function name
 	path_str = ft_getenv(data->env, "PATH");
 	path_env = ft_split(path_str, ':');

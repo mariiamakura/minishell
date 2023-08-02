@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/01 14:20:25 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/02 12:54:18 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_data *init_pipes(t_data * data)
 		}
 		i++;
 	}
-	ft_parse_redir(data);
+	ft_lexer(data);
 	return (data);
 }
 
@@ -47,32 +47,41 @@ int start_pipes(t_data *data)
 	data = init_pipes(data);
 	if (data == NULL)
 		return (-1); //maybe return data?
-	g_global->forked = TRUE;
-	i = 0;
-	while (i <= data->pipe_num)
+	if (data->pipe_num == 0 && ft_is_builtin(data->tokens[0][0]) == TRUE)//add ft_is_builtin to add_path
 	{
-		data->child_pid[i] = fork();
-		if (data->child_pid[i] == 0)
-		{
-			dup2(data->pipes[i][1], STDOUT_FILENO); //cmd write to it's write end pipe (not stdout)
-			if (i == 0)
-				dup2(data->pipes[data->pipe_num][0], STDIN_FILENO); //using the pipe[pipe_num][0] for input in first child
-			else 
-				dup2(data->pipes[i - 1][0], STDIN_FILENO); // cmd reads from last cmd read pipe (not stdin)
-			close_fd(data);
-			if (execve(data->tokens[i][0], data->tokens[i], data->env) == -1)
-			{
-				perror("execve failed");
-				term_processes(data, i);
-				free_wflags(data, i, FINISHED);
-				return (-1);
-			}
-		}
-		i++;
+		g_global->forked = FALSE;
+		ft_run_builtin(data);
+		close_fd(data);
 	}
-	close_fd(data);
-	wait_children(data); //return the last child process exit status
-	if (g_global->c_kill_child == TRUE)
+	else
+	{
+		g_global->forked = TRUE;
+		i = 0;
+		while (i <= data->pipe_num)
+		{
+			data->child_pid[i] = fork();
+			if (data->child_pid[i] == 0)
+			{
+				dup2(data->pipes[i][1], STDOUT_FILENO); //cmd write to it's write end pipe (not stdout)
+				if (i == 0)
+					dup2(data->pipes[data->pipe_num][0], STDIN_FILENO); //using the pipe[pipe_num][0] for input in first child
+				else 
+					dup2(data->pipes[i - 1][0], STDIN_FILENO); // cmd reads from last cmd read pipe (not stdin)
+				close_fd(data);
+				if (execve(data->tokens[i][0], data->tokens[i], data->env) == -1)
+				{
+					perror("execve failed");
+					term_processes(data, i);
+					free_wflags(data, i, FINISHED);
+					return (-1);
+				}
+			}
+			i++;
+		}
+		close_fd(data);
+		wait_children(data); //return the last child process exit status
+	}
+	if (g_global->c_kill_child == TRUE) //not sure where this should be
 	{
 		term_processes(data, i);
 	}

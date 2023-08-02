@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/01 14:20:08 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/02 13:08:44 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_data
 	int **pipes;
 	char **env;
 	char *promt;
+	int	last_exit; //to store the exit status of the last executed child process
 } t_data;
 
 typedef struct s_global 
@@ -52,8 +53,12 @@ typedef struct s_global
 
 extern t_global *g_global;
 
-//parse.c
-int	ft_parse(t_data *data);
+//parser
+int		ft_parse(t_data *data);
+int		ft_split_sub(char *sub_str, int block, t_data *data);
+int		ft_count_pipes(char *input);
+int		ft_count_args(char *s);
+char	*ft_substr_pipe(char *str, unsigned long *start);
 
 //pipes.c
 int start_pipes(t_data *data);
@@ -72,10 +77,20 @@ void	init_signals(void);
 //utils.c just useful for now
 void print_tokens(t_data *data);
 
-//redirection.c
-int	ft_parse_redir(t_data *data);
+//lexer
+int		ft_lexer(t_data *data);
 void	ft_remove_arg(t_data *data, int block, int arg);
 void	ft_add_path(int i, t_data *data);
+void	ft_parse_var(int block, int arg, t_data *data);
 char	*ft_getenv(char *envp[], char *var_name);
+void	ft_remove_quot(char *str, int first, int last);
+int		ft_here_doc(char *str, int block, int arg, t_data *data);
+int		ft_redir_in(char *str, int block, int arg, t_data *data);
+void	ft_redir_app(char *str, int block, int arg, t_data *data);
+void	ft_redir_out(char *str, int block, int arg, t_data *data);
+
+//builtins
+int		ft_is_builtin(char *str);
+void	ft_run_builtin(t_data *data);
 
 #endif
