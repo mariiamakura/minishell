@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/02 15:19:48 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/02 16:39:21 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,6 @@ void    ft_run_builtin(t_data *data, int i);
 int ft_echo(char *av[], int index, t_data *data);
 void ft_print(char *av[], int i, int flag, int index, t_data *data);
 void ft_cd(char *av[]/* , t_data *data */);
+int ft_prem_output(t_data *data, int index);
 
 #endif
