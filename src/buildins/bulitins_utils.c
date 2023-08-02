@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 12:19:33 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/02 14:55:38 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/02 15:22:17 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	ft_is_builtin(char *str)
 
 void    ft_run_builtin(t_data *data, int i)
 {
-    if (ft_strncmp("echo", data->tokens[i][0], ft_strlen(data->tokens[i][0])) == 0){
+    if (ft_strncmp("echo", data->tokens[i][0], ft_strlen(data->tokens[i][0])) == 0)
         ft_echo(data->tokens[i], i, data);
-	}
-
+    if (ft_strncmp("cd", data->tokens[i][0], ft_strlen(data->tokens[i][0])) == 0)
+        ft_cd(data->tokens[i]);
 }

@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 18:40:47 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/02 14:14:15 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/02 15:20:32 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int ft_echo(char *av[], int index, t_data *data)
 {
-	printf("my echo\n");
 	// if (ft_strncmp(av[0], "echo", ft_strlen("echo")) != 0)
 	// 	return (-1);
 	if (ft_strncmp(av[1], "-n", ft_strlen("-n")) == 0)	
