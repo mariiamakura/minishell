@@ -6,15 +6,16 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/02 12:54:18 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:37:33 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_data *init_pipes(t_data * data)
+int	init_pipes(t_data * data)
 {
 	int i;
+	int	ret;
 
 	i = 0;
 	data->child_pid = malloc(sizeof(int) * (data->pipe_num + 1)); //number of processes
@@ -31,20 +32,23 @@ t_data *init_pipes(t_data * data)
 		if(pipe(data->pipes[i]) != 0)
 		{
 			free_wflags(data, i, NOT_FINISHED);
-			return (NULL);
+			return (-1);
 		}
 		i++;
 	}
-	ft_lexer(data);
-	return (data);
+	if ((ret = ft_lexer(data) != 0))
+		return (ret);
+	return (0);
 }
 
 int start_pipes(t_data *data)
 {
 	int i;
+	int	ret;
 	
 	i = 0;
-	data = init_pipes(data);
+	if ((ret = init_pipes(data)) != 0)
+		return (data->last_exit = ret, ret);
 	if (data == NULL)
 		return (-1); //maybe return data?
 	if (data->pipe_num == 0 && ft_is_builtin(data->tokens[0][0]) == TRUE)//add ft_is_builtin to add_path
@@ -71,7 +75,7 @@ int start_pipes(t_data *data)
 				if (execve(data->tokens[i][0], data->tokens[i], data->env) == -1)
 				{
 					perror("execve failed");
-					term_processes(data, i);
+					term_processes(data);
 					free_wflags(data, i, FINISHED);
 					return (-1);
 				}
@@ -81,9 +85,9 @@ int start_pipes(t_data *data)
 		close_fd(data);
 		wait_children(data); //return the last child process exit status
 	}
-	if (g_global->c_kill_child == TRUE) //not sure where this should be
+	if (g_global->c_kill_child == TRUE)
 	{
-		term_processes(data, i);
+		term_processes(data);
 	}
 	free_wflags(data, i, FINISHED); //mb do it in the end if data is still needed after pipes
 	return (0);

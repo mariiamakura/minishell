@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 12:19:33 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/02 12:42:27 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/02 15:25:42 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void    ft_echo(int i, t_data *data)
 
 int	ft_is_builtin(char *str)
 {
-	if (ft_strncmp("echo", str, ft_strlen(str)) == 0
+	if (ft_strncmp("ech", str, ft_strlen(str)) == 0
 		|| ft_strncmp("cd", str, ft_strlen(str)) == 0
 		|| ft_strncmp("pwd", str, ft_strlen(str)) == 0
 		|| ft_strncmp("export", str, ft_strlen(str)) == 0

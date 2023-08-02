@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/02 13:08:44 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:36:30 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <errno.h>
 
 
 # define TRUE 1
@@ -62,13 +63,13 @@ char	*ft_substr_pipe(char *str, unsigned long *start);
 
 //pipes.c
 int start_pipes(t_data *data);
-t_data *init_pipes(t_data * data);
+int	init_pipes(t_data * data);
 
 //pipes_utils.c
 void free_wflags(t_data *data, int i, int flag);
 void close_fd(t_data *data);
 void wait_children(t_data *data);
-void term_processes(t_data * data, int i);
+void term_processes(t_data * data);
 
 //signals.c
 void	sig_handler(int signum);
@@ -80,7 +81,7 @@ void print_tokens(t_data *data);
 //lexer
 int		ft_lexer(t_data *data);
 void	ft_remove_arg(t_data *data, int block, int arg);
-void	ft_add_path(int i, t_data *data);
+int		ft_add_path(int i, t_data *data);
 void	ft_parse_var(int block, int arg, t_data *data);
 char	*ft_getenv(char *envp[], char *var_name);
 void	ft_remove_quot(char *str, int first, int last);
