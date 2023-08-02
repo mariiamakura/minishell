@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/02 16:39:21 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:35:37 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,17 +86,18 @@ char	*ft_getenv(char *envp[], char *var_name);
 void	ft_remove_quot(char *str, int first, int last);
 int		ft_here_doc(char *str, int block, int arg, t_data *data);
 int		ft_redir_in(char *str, int block, int arg, t_data *data);
-void	ft_redir_app(char *str, int block, int arg, t_data *data);
-void	ft_redir_out(char *str, int block, int arg, t_data *data);
+int		ft_redir_app(char *str, int block, int arg, t_data *data);
+int		ft_redir_out(char *str, int block, int arg, t_data *data);
 
 //builtins
 int		ft_is_builtin(char *str);
 void    ft_run_builtin(t_data *data, int i);
 
 //buildins
+//echo.c 
 int ft_echo(char *av[], int index, t_data *data);
 void ft_print(char *av[], int i, int flag, int index, t_data *data);
-void ft_cd(char *av[]/* , t_data *data */);
 int ft_prem_output(t_data *data, int index);
+void ft_cd(char *av[]/* , t_data *data */);
 
 #endif

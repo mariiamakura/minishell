@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:17:17 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/02 11:55:40 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:45:59 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	ft_lexer(t_data *data) //return open error
 {
 	int	i;
 	int	j;
+	int ret;
 
 	i = 0;
 	while (i <= data->pipe_num)
@@ -27,13 +28,22 @@ int	ft_lexer(t_data *data) //return open error
 			if (data->tokens[i][j][0] == '<' && data->tokens[i][j][1] == '<')
 				ft_here_doc(data->tokens[i][j], i, j, data);
 			else if (data->tokens[i][j][0] == '>' && data->tokens[i][j][1] == '>')
-				ft_redir_app(data->tokens[i][j], i, j, data);
+			{
+				ret = ft_redir_app(data->tokens[i][j], i, j, data);
+				if (ret != 0)
+					break ;
+			}
 			else if (data->tokens[i][j][0] == '>')
-				ft_redir_out(data->tokens[i][j], i, j, data);
+			{
+				ret = ft_redir_out(data->tokens[i][j], i, j, data);
+				if (ret != 0)
+					break ;
+			}
 			else if (data->tokens[i][j][0] == '<')
 			{
-				if (ft_redir_in(data->tokens[i][j], i, j, data) == -1)
-					return (-1); //exit??
+				ret = ft_redir_in(data->tokens[i][j], i, j, data);
+				if (ret != 0)
+					break ;
 			}
 			else 
 				j++;

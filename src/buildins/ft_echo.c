@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 18:40:47 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/02 16:41:24 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:40:53 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int ft_prem_output(t_data *data, int index)
 	
 	if (fstat(data->pipes[index][1], &file_info) != 0)
 	{
-		ft_putstr_fd("minishell: fstat: Permission denied\n", STDERR_FILENO);
+		//ft_putstr_fd("minishell: fstat: Permission denied\n", STDERR_FILENO);
 		return (FALSE);
 	}
 	return (TRUE);
