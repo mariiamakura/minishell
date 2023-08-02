@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:11:45 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/02 17:45:29 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/02 18:18:09 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void term_processes(t_data * data)
 		kill(data->child_pid[j], SIGTERM);
 		j++;
 	}
+	data->last_exit = 130;
 	g_global->c_kill_child = FALSE;
 }
 
