@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:11:45 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/03 15:08:03 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/03 22:48:55 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,6 @@ void term_processes(t_data * data)
 			j++;
 		}
 	}
-	data->last_exit = 130;
-	g_global->c_kill_child = FALSE;
-	//rl_replace_line("", 0);
-	if (data->forked == FALSE)
-	{
-			rl_redisplay();
-	}
-	rl_on_new_line();
 }
 
 void wait_children(t_data *data)
@@ -84,8 +76,8 @@ void wait_children(t_data *data)
 	while (k <= data->pipe_num)
 	{
 		pid = wait(&status);
-		if (pid == data->child_pid[data->pipe_num])
-			data->last_exit = status;
+		if (pid == data->child_pid[data->pipe_num] && last_exit_global != 130)
+			last_exit_global = status;
 		k++;
 	}
 }

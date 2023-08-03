@@ -6,13 +6,14 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/03 14:25:37 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/03 23:00:51 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_global *g_global;
+//t_global *g_global;
+int	last_exit_global;
 
 void	ft_free_tokens(t_data *data)
 {
@@ -45,14 +46,16 @@ int	main(int argc, char *argv[], char *envp[])
 	if (data == NULL)
 		return (1);
 	data->env = envp;
-	data->last_exit = 0;
+	last_exit_global = 0;
 	init_signals();
 	while (1) 
 	{
+		data->last_exit = last_exit_global;
+		last_exit_global = 0;
 		if (0 <= ft_parse(data))
 		{
 			start_pipes(data);
-			ft_free_tokens(data);
+			ft_free_tokens(data);	
 		}
 	}
 	free(data);

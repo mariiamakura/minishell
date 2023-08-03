@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 15:01:16 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/03 14:34:47 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/03 22:56:19 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,30 @@
 
 void init_signals(void)
 {
-	g_global = malloc(sizeof(t_global));
-	if (g_global == NULL)
-	{
-		ft_putstr_fd("global is not allocated", STDERR_FILENO);
-		exit (-1);
-	}
-	g_global->c_kill_child = FALSE;
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, sig_handler);
-	signal(SIGCHLD, sig_handler);
+	signal(SIGINT, sig_handler_parent);
+	//signal(SIGCHLD, sig_handler);
 }
 
-void	sig_handler(int signum)
+void	sig_handler_child(int signum)
 {
 	if (signum == SIGINT)
 	{
+		last_exit_global = 130;
 		printf("\n");
-		/*rl_on_new_line();
-		//rl_replace_line("", 0);
-		if (data->forked == FALSE)
-		{
-			rl_redisplay();
-		} */
-		g_global->c_kill_child = TRUE;
+		rl_on_new_line();
+		rl_replace_line("", 0);
+	}
+}
+
+void	sig_handler_parent(int signum)
+{
+	if (signum == SIGINT)
+	{
+		last_exit_global = 130;
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
 }
