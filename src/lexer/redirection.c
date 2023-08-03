@@ -6,53 +6,83 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:05:44 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/01 17:17:03 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:36:34 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	ft_redir_out(char *str, int block, int arg, t_data *data) // maybe close the fd that is redirected??
+int	ft_redir_out(char *str, int block, int arg, t_data *data) // maybe close the fd that is redirected??
 {
 	int	i;
 	int	fd;
+	char *file_name;
 
 	i = 1;
 	while (str[i] == ' ')
 		i++;
 	fd = open(str + i, O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 	data->pipes[block][1] = fd;
+	if (fd == -1)
+	{
+		file_name = ft_strjoin("minishell: ", str + i);
+		perror(file_name);
+		free(file_name);
+		ft_remove_arg(data, block, arg);
+		data->error_flags[block] = TRUE;
+		return (1);
+	}
 	ft_remove_arg(data, block, arg);
+	return(0);
 }
 
-void	ft_redir_app(char *str, int block, int arg, t_data *data)
+int	ft_redir_app(char *str, int block, int arg, t_data *data)
 {
 	int	i;
 	int	fd;
+	char *file_name;
 
 	i = 2;
 	while (str[i] == ' ')
 		i++;
 	fd = open(str + i, O_RDWR | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
 	data->pipes[block][1] = fd;
+	if (fd == -1)
+	{
+		file_name = ft_strjoin("minishell: ", str + i);
+		perror(file_name);
+		free(file_name);
+		ft_remove_arg(data, block, arg);
+		data->error_flags[block] = TRUE;
+		return (1);
+	}
 	ft_remove_arg(data, block, arg);
+	return (0);
 }
 
 int	ft_redir_in(char *str, int block, int arg, t_data *data) //add test if fd opens fails
 {
 	int	i;
 	int	fd;
+	char *file_name;
 
 	i = 1;
 	while (str[i] == ' ')
 		i++;
 	fd = open(str + i, O_RDONLY, S_IRUSR | S_IWUSR);
-	if (fd == -1)
-		return (-1);
 	if (block == 0)
 		data->pipes[data->pipe_num][0] = fd; // pipe[pipe_num][0] stores input for first child (its not initialized with pipe())
 	else
 		data->pipes[block - 1][0] = fd;
+	if (fd == -1)
+	{
+		file_name = ft_strjoin("minishell: ", str + i);
+		perror(file_name);
+		free(file_name);
+		ft_remove_arg(data, block, arg);
+		data->error_flags[block] = TRUE;
+		return (1);
+	}
 	ft_remove_arg(data, block, arg);
 	return (0);
 }

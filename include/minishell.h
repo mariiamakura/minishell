@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/02 17:36:30 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:30:40 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_data
 	char **env;
 	char *promt;
 	int	last_exit; //to store the exit status of the last executed child process
+	int *error_flags;
 } t_data;
 
 typedef struct s_global 
@@ -87,11 +88,13 @@ char	*ft_getenv(char *envp[], char *var_name);
 void	ft_remove_quot(char *str, int first, int last);
 int		ft_here_doc(char *str, int block, int arg, t_data *data);
 int		ft_redir_in(char *str, int block, int arg, t_data *data);
-void	ft_redir_app(char *str, int block, int arg, t_data *data);
-void	ft_redir_out(char *str, int block, int arg, t_data *data);
+int		ft_redir_app(char *str, int block, int arg, t_data *data);
+int		ft_redir_out(char *str, int block, int arg, t_data *data);
 
 //builtins
 int		ft_is_builtin(char *str);
-void	ft_run_builtin(t_data *data);
+void    ft_run_builtin(t_data *data, int i);
+int		ft_echo(char *av[], int index, t_data *data);
+void	ft_print(char *av[], int i, int flag, int index, t_data *data);
 
 #endif

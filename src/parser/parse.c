@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/01 15:36:23 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:34:55 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,16 @@ int	ft_parse(t_data *data)
 	if (*input == '\0')
 		return (free(input), -1);
 	data->pipe_num = ft_count_pipes(input);
-	data->tokens = ft_calloc(sizeof(char **), (data->pipe_num + 1)); //no NULL termination because we know pipe_num
+	data->error_flags = ft_calloc(data->pipe_num + 1, sizeof(int));
+	if (data->error_flags == NULL)
+		exit (1);
+	i = 0;
+	while (i <= data->pipe_num)
+	{
+		data->error_flags[i] = FALSE;
+		i++;
+	}
+	data->tokens = ft_calloc((data->pipe_num + 1), sizeof(char **)); //no NULL termination because we know pipe_num
 	if (data->tokens == NULL)
 		exit (1);
  	i = 0;

@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:17:17 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/02 17:05:32 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/03 12:43:35 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	ft_lexer(t_data *data) //return open error
 {
 	int	i;
 	int	j;
-	int	ret;
 
 	i = 0;
 	while (i <= data->pipe_num)
@@ -32,15 +31,11 @@ int	ft_lexer(t_data *data) //return open error
 			else if (data->tokens[i][j][0] == '>')
 				ft_redir_out(data->tokens[i][j], i, j, data);
 			else if (data->tokens[i][j][0] == '<')
-			{
-				if ((ret = ft_redir_in(data->tokens[i][j], i, j, data)) != 0)
-					return (ret);
-			}
+				ft_redir_in(data->tokens[i][j], i, j, data);
 			else 
 				j++;
 		}
-		if ((ret = ft_add_path(i, data)) != 0)
-			return (ret);
+		ft_add_path(i, data);
 		i++;
 	}
 	return (0);
