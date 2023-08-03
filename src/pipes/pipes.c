@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/03 13:46:03 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/03 14:19:59 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int start_pipes(t_data *data)
 		return (-1); //maybe return data?
 	if (data->pipe_num == 0 && ft_is_builtin(data->tokens[0][0]) == TRUE)//add ft_is_builtin to add_path
 	{
-		g_global->forked = FALSE;
+		data->forked = FALSE;
+		//g_global->forked = FALSE;
 		if (data->error_flags[0] == TRUE)
 			data->last_exit = errno;
 		else
@@ -61,7 +62,8 @@ int start_pipes(t_data *data)
 	}
 	else
 	{
-		g_global->forked = TRUE;
+		data->forked = TRUE;
+		//g_global->forked = TRUE;
 		i = 0;
 		while (i <= data->pipe_num)
 		{
@@ -95,9 +97,7 @@ int start_pipes(t_data *data)
 		wait_children(data); //return the last child process exit status
 	}
 	if (g_global->c_kill_child == TRUE)
-	{
 		term_processes(data);
-	}
 	free_wflags(data, i, FINISHED); //mb do it in the end if data is still needed after pipes
 	return (0);
 }

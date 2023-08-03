@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/03 13:31:31 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/03 14:25:37 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,12 @@ int	main(int argc, char *argv[], char *envp[])
 	t_data	*data;
 
 	data = malloc(sizeof(t_data));
-	init_signals();
+	data->forked = FALSE;
 	if (data == NULL)
 		return (1);
 	data->env = envp;
 	data->last_exit = 0;
+	init_signals();
 	while (1) 
 	{
 		if (0 <= ft_parse(data))
