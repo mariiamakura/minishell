@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 15:08:19 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/03 14:50:00 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:13:57 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void ft_cd(char *av[], t_data *data, int index)
 
 	dir = NULL;
 	if (av[1] == NULL)
-		ft_cd_home();
+		ft_cd_home(data);
 	else if (ft_strncmp(av[1], "-", ft_strlen(av[1])) == 0)
 		ft_cd_prev(data, index);
 	else if (chdir(av[1]) != 0)
@@ -29,15 +29,14 @@ void ft_cd(char *av[], t_data *data, int index)
 	}
 }
 
-void ft_cd_home(void)
+void ft_cd_home(t_data *data)
 {
 	char *home_dir;
 
-	home_dir = getenv("HOME");
+	home_dir = get_env_value(data, "HOME");
 	if (home_dir != NULL)
 		chdir(home_dir);
-	else 
-		perror("getenv:");
+	free(home_dir);
 }
 
 void ft_cd_prev(t_data *data, int index)
@@ -55,4 +54,4 @@ void ft_cd_prev(t_data *data, int index)
 		perror("getenv:");
 }
 
-void set_prev_dir
+// need to be changed to update envp

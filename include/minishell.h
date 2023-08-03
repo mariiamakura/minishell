@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/03 14:39:29 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:02:17 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ int ft_echo(char *av[], t_data *data, int index);
 void ft_print(char *av[], int i, int flag, int index, t_data *data);
 int ft_prem_output(t_data *data, int index);
 void ft_cd(char *av[], t_data *data, int index);
-void ft_cd_home(void);
+void ft_cd_home(t_data *data);
 void ft_cd_prev(t_data *data, int index);
-
+void ft_env(t_data *data, int index);
+char *get_env_value(t_data *data, char *var_name);
 #endif
