@@ -6,19 +6,19 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 18:40:47 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/02 18:10:31 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/03 14:39:22 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int ft_echo(char *av[], int index, t_data *data)
+int ft_echo(char *av[], t_data *data, int index)
 {
 	if (av[1] == NULL) {
 		ft_putstr_fd("\n", data->pipes[index][1]);
 		return(0);
 	}
-	else if (ft_strncmp(av[1], "-n", ft_strlen("-n")) == 0)	
+	else if (ft_strncmp(av[1], "-n", ft_strlen(av[1])) == 0)//changed ft_strlen("-n") to ft_strlen(av[1])
 		ft_print(av, 2, TRUE, index, data);
 	else 
 		ft_print(av, 1, FALSE, index, data);

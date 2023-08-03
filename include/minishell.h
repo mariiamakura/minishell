@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/02 17:35:37 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/03 14:39:29 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <errno.h>
 
 
 # define TRUE 1
@@ -43,6 +44,7 @@ typedef struct s_data
 	char **env;
 	char *promt;
 	int	last_exit; //to store the exit status of the last executed child process
+	int *error_flags;
 } t_data;
 
 typedef struct s_global 
@@ -62,13 +64,13 @@ char	*ft_substr_pipe(char *str, unsigned long *start);
 
 //pipes.c
 int start_pipes(t_data *data);
-t_data *init_pipes(t_data * data);
+int	init_pipes(t_data * data);
 
 //pipes_utils.c
 void free_wflags(t_data *data, int i, int flag);
 void close_fd(t_data *data);
 void wait_children(t_data *data);
-void term_processes(t_data * data, int i);
+void term_processes(t_data * data);
 
 //signals.c
 void	sig_handler(int signum);
@@ -80,7 +82,7 @@ void print_tokens(t_data *data);
 //lexer
 int		ft_lexer(t_data *data);
 void	ft_remove_arg(t_data *data, int block, int arg);
-void	ft_add_path(int i, t_data *data);
+int		ft_add_path(int i, t_data *data);
 void	ft_parse_var(int block, int arg, t_data *data);
 char	*ft_getenv(char *envp[], char *var_name);
 void	ft_remove_quot(char *str, int first, int last);
@@ -95,9 +97,11 @@ void    ft_run_builtin(t_data *data, int i);
 
 //buildins
 //echo.c 
-int ft_echo(char *av[], int index, t_data *data);
+int ft_echo(char *av[], t_data *data, int index);
 void ft_print(char *av[], int i, int flag, int index, t_data *data);
 int ft_prem_output(t_data *data, int index);
-void ft_cd(char *av[]/* , t_data *data */);
+void ft_cd(char *av[], t_data *data, int index);
+void ft_cd_home(void);
+void ft_cd_prev(t_data *data, int index);
 
 #endif

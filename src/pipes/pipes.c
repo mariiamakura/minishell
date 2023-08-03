@@ -6,13 +6,13 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/02 14:55:31 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/03 14:14:50 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_data *init_pipes(t_data * data)
+int	init_pipes(t_data * data)
 {
 	int i;
 
@@ -31,12 +31,12 @@ t_data *init_pipes(t_data * data)
 		if(pipe(data->pipes[i]) != 0)
 		{
 			free_wflags(data, i, NOT_FINISHED);
-			return (NULL);
+			return (-1);
 		}
 		i++;
 	}
 	ft_lexer(data);
-	return (data);
+	return (0);
 }
 
 int start_pipes(t_data *data)
@@ -44,14 +44,20 @@ int start_pipes(t_data *data)
 	int i;
 	
 	i = 0;
-	data = init_pipes(data);
+	init_pipes(data);
 	if (data == NULL)
 		return (-1); //maybe return data?
 	if (data->pipe_num == 0 && ft_is_builtin(data->tokens[0][0]) == TRUE)//add ft_is_builtin to add_path
 	{
 		g_global->forked = FALSE;
-		ft_run_builtin(data, 0);
-		close_fd(data);
+		if (data->error_flags[0] == TRUE)
+			data->last_exit = errno;
+		else
+		{
+			ft_run_builtin(data, 0);
+			close_fd(data);
+			data->last_exit = 0;
+		}
 	}
 	else
 	{
@@ -62,10 +68,12 @@ int start_pipes(t_data *data)
 			data->child_pid[i] = fork();
 			if (data->child_pid[i] == 0)
 			{
+				if (data->error_flags[i] == TRUE)
+					exit (errno);
 				dup2(data->pipes[i][1], STDOUT_FILENO); //cmd write to it's write end pipe (not stdout)
 				if (i == 0)
 					dup2(data->pipes[data->pipe_num][0], STDIN_FILENO); //using the pipe[pipe_num][0] for input in first child
-				else 
+				else
 					dup2(data->pipes[i - 1][0], STDIN_FILENO); // cmd reads from last cmd read pipe (not stdin)
 				close_fd(data);
 				if (ft_is_builtin(data->tokens[i][0]) == TRUE)
@@ -76,7 +84,7 @@ int start_pipes(t_data *data)
 				else if (execve(data->tokens[i][0], data->tokens[i], data->env) == -1)
 				{
 					perror("execve failed");
-					term_processes(data, i);
+					term_processes(data);
 					free_wflags(data, i, FINISHED);
 					return (-1);
 				}
@@ -86,9 +94,9 @@ int start_pipes(t_data *data)
 		close_fd(data);
 		wait_children(data); //return the last child process exit status
 	}
-	if (g_global->c_kill_child == TRUE) //not sure where this should be
+	if (g_global->c_kill_child == TRUE)
 	{
-		term_processes(data, i);
+		term_processes(data);
 	}
 	free_wflags(data, i, FINISHED); //mb do it in the end if data is still needed after pipes
 	return (0);

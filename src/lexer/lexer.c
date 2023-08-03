@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:17:17 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/02 17:56:35 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/03 14:14:23 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,7 @@ int	ft_lexer(t_data *data) //return open error
 				// 	break ;
 			}
 			else if (data->tokens[i][j][0] == '<')
-			{
-				ret = ft_redir_in(data->tokens[i][j], i, j, data);
-				// if (ret != 0)
-				// 	break ;
-			}
+				ft_redir_in(data->tokens[i][j], i, j, data);
 			else 
 				j++;
 		}

@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:11:45 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/02 13:08:39 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:35:55 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,18 @@ void close_fd(t_data *data)
 	}
 }
 
-void term_processes(t_data * data, int i)
+void term_processes(t_data * data)
 {
 	int	j;
 
 	j = 0;
-	while (j < i)
+	while (j <= data->pipe_num)
 	{
 		kill(data->child_pid[j], SIGTERM);
 		j++;
 	}
+	data->last_exit = 130;
+	g_global->c_kill_child = FALSE;
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:05:44 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/02 18:09:20 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/03 14:14:09 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	ft_redir_out(char *str, int block, int arg, t_data *data) // maybe close the
 		perror(file_name);
 		free(file_name);
 		ft_remove_arg(data, block, arg);
+		data->error_flags[block] = TRUE;
 		return (1);
 	}
 	ft_remove_arg(data, block, arg);
@@ -52,6 +53,7 @@ int	ft_redir_app(char *str, int block, int arg, t_data *data)
 		perror(file_name);
 		free(file_name);
 		ft_remove_arg(data, block, arg);
+		data->error_flags[block] = TRUE;
 		return (1);
 	}
 	ft_remove_arg(data, block, arg);
@@ -78,6 +80,7 @@ int	ft_redir_in(char *str, int block, int arg, t_data *data) //add test if fd op
 		perror(file_name);
 		free(file_name);
 		ft_remove_arg(data, block, arg);
+		data->error_flags[block] = TRUE;
 		return (1);
 	}
 	ft_remove_arg(data, block, arg);
