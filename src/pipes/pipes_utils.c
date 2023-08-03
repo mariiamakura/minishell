@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:11:45 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/03 14:41:15 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/03 14:52:38 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void term_processes(t_data * data)
 	data->last_exit = 130;
 	g_global->c_kill_child = FALSE;
 	rl_on_new_line();
-	//rl_replace_line("", 0);
+	rl_replace_line("", 0);
 	if (data->forked == FALSE)
 	{
 			rl_redisplay();
