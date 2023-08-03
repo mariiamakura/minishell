@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:17:17 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/03 14:14:23 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:37:16 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,10 @@ int	ft_lexer(t_data *data) //return open error
 			else if (data->tokens[i][j][0] == '>' && data->tokens[i][j][1] == '>')
 			{
 				ret = ft_redir_app(data->tokens[i][j], i, j, data);
-				// if (ret != 0)
-				// 	break ;
 			}
 			else if (data->tokens[i][j][0] == '>')
 			{
 				ret = ft_redir_out(data->tokens[i][j], i, j, data);
-				// if (ret != 0)
-				// 	break ;
 			}
 			else if (data->tokens[i][j][0] == '<')
 				ft_redir_in(data->tokens[i][j], i, j, data);

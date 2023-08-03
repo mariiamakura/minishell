@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 15:55:54 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/03 17:13:34 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:46:28 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,17 @@ char *get_env_value(t_data *data, char *var_name)
 	//to get "HOME"=/usr/mparasku and return usr/mparasku
 	int i;
 	char *new_str;
+	char *res;
 
 	i = 0;
 	new_str = NULL;
+	res = NULL;
 	while (data->env[i])
 	{
 		if (ft_strncmp(data->env[i], var_name, ft_strlen(var_name)) == 0)
 		{
 			new_str = ft_strdup(data->env[i]);
-			new_str = ft_strchr(new_str, '=');
+			res = ft_strchr(new_str, '=');
 			if (new_str == 0)
 			{
 				free(new_str);
@@ -46,14 +48,13 @@ char *get_env_value(t_data *data, char *var_name)
 			}
 			else
 			{
-				return (ft_strdup(new_str + 1));
+				free(new_str);
+				return (ft_strdup(res + 1));
 			}
 				
-		}
+		} 
 		free(new_str);
 		i++;
 	}
 	return (NULL);
 }
-
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 15:01:16 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/03 13:53:04 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:32:17 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void init_signals(void)
 	g_global->c_kill_child = FALSE;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, sig_handler);
-	signal(SIGCHLD, sig_handler);
 }
 
 void	sig_handler(int signum)
