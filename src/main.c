@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/03 15:55:02 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/04 14:29:36 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,10 @@ void	ft_free_tokens(t_data *data)
 
 int	main(int argc, char *argv[], char *envp[])
 {
+	t_data	*data;
+	
 	if (argc != 1 || !argv[0]) //programm should be run without arguments (only env)
 	 return (1);
-	t_data	*data;
 
 	data = malloc(sizeof(t_data));
 	init_signals();

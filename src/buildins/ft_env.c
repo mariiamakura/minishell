@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 15:55:54 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/03 17:46:28 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/04 14:48:04 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ char *get_env_value(t_data *data, char *var_name)
 			}
 			else
 			{
+				res = ft_strdup(res + 1);
 				free(new_str);
-				return (ft_strdup(res + 1));
+				return (res);
 			}
 				
 		} 

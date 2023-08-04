@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 12:19:33 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/03 16:35:38 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/04 16:00:27 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,21 @@ void    ft_run_builtin(t_data *data, int i)
 	{
 		ft_env(data, i);
 	}
+	if (ft_strncmp("export", data->tokens[i][0], ft_strlen(data->tokens[i][0])) == 0)
+	{
+		ft_export(data->tokens[i], data, i);
+	}
+}
+
+void ft_free_2d(char **av)
+{
+	int i;
+
+	i = 0;
+	while (av[i])
+	{
+		free(av[i]);
+		i++;
+	}
+	free(av);
 }

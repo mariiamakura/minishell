@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/03 17:02:17 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/04 17:53:37 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define FINISHED 1
 # define NOT_FINISHED 0
 
+
 typedef struct s_data
 {
 	char ***tokens; //tokens[0] - points to the 0 group (*tokens[]); makes more sense to store them as chars since char *argv[] goes into the execve function
@@ -46,6 +47,7 @@ typedef struct s_data
 	int	last_exit; //to store the exit status of the last executed child process
 	int *error_flags;
 } t_data;
+
 
 typedef struct s_global 
 {
@@ -94,15 +96,31 @@ int		ft_redir_out(char *str, int block, int arg, t_data *data);
 //builtins
 int		ft_is_builtin(char *str);
 void    ft_run_builtin(t_data *data, int i);
+void	ft_free_2d(char **av);
 
 //buildins
 //echo.c 
 int ft_echo(char *av[], t_data *data, int index);
 void ft_print(char *av[], int i, int flag, int index, t_data *data);
 int ft_prem_output(t_data *data, int index);
+
+//cd.c
 void ft_cd(char *av[], t_data *data, int index);
 void ft_cd_home(t_data *data);
 void ft_cd_prev(t_data *data, int index);
+
+//env.c
 void ft_env(t_data *data, int index);
 char *get_env_value(t_data *data, char *var_name);
+
+//export.c
+void ft_export(char *av[], t_data *data, int index);
+char *get_var_name(char* av);
+int count_arg(char **av);
+char **get_multi_var_name(char **av);
+int is_var_in_env(t_data *data, char *var_name);
+char **add_env_var(char *av, t_data *data/* , char *var_name */);
+int var_has_value(char *var_name);
+int no_space_after_equal(char *var_name);
+
 #endif
