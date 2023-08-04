@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/03 23:00:34 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/04 15:53:24 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void term_processes(t_data * data);
 void	sig_handler_child(int signum);
 void	sig_handler_parent(int signum);
 void	init_signals(void);
+void	sig_handler_inchild(int signum);
 
 //utils.c just useful for now
 void print_tokens(t_data *data);

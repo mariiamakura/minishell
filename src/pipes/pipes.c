@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/03 22:27:20 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/04 20:36:03 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,24 +51,25 @@ int start_pipes(t_data *data)
 	{
 		data->forked = FALSE;
 		if (data->error_flags[0] == TRUE)
-			last_exit_global = errno;
+			data->last_exit = errno;
 		else
 		{
 			ft_run_builtin(data, 0);
 			close_fd(data);
-			last_exit_global = 0;
+			data->last_exit = 0;
 		}
 	}
 	else
 	{
 		data->forked = TRUE;
 		i = 0;
-		signal(SIGINT, sig_handler_child);
 		while (i <= data->pipe_num)
 		{
 			data->child_pid[i] = fork();
 			if (data->child_pid[i] == 0)
 			{
+				signal(SIGINT, sig_handler_child);
+				//signal(SIGINT, sig_handler_inchild);
 				if (data->error_flags[i] == TRUE)
 					exit (errno);
 				dup2(data->pipes[i][1], STDOUT_FILENO); //cmd write to it's write end pipe (not stdout)
@@ -97,6 +98,8 @@ int start_pipes(t_data *data)
 	}
 	if (last_exit_global == 130)
 		term_processes(data);
+	else
+		last_exit_global = data->last_exit;
 	free_wflags(data, i, FINISHED); //mb do it in the end if data is still needed after pipes
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/03 23:00:51 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/04 20:02:56 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	main(int argc, char *argv[], char *envp[])
 	init_signals();
 	while (1) 
 	{
-		data->last_exit = last_exit_global;
 		last_exit_global = 0;
 		if (0 <= ft_parse(data))
 		{

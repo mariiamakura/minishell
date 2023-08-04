@@ -6,11 +6,24 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/03 23:04:38 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/04 22:39:50 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+int	ft_getc(FILE *stream)
+{
+    char buffer[1]; // Buffer to read a single character
+    ssize_t bytesRead;
+    bytesRead = read(0, buffer, 1);
+    if (bytesRead <= 0) {
+		
+		return (EOF);
+    }
+	stream++;
+    return (buffer[0]);
+}
 
 int	ft_parse(t_data *data)
 {
@@ -20,15 +33,20 @@ int	ft_parse(t_data *data)
 	char	*sub_str;
 	int		argc;
 
+	rl_getc_function = &ft_getc;
 	input = readline(" ~ minishell$ ");
-	add_history(input);
+	printf("exited readline\n");
 	if (input == NULL) //handles ctrl+d
 	{
+		free(input);
+		if (last_exit_global == 130)
+			return (-1);
 		write(1, "exit\n", 5);
 		exit(-1);
 	}
 	if (*input == '\0')
 		return (free(input), -1);
+	add_history(input);
 	data->pipe_num = ft_count_pipes(input);
 	data->error_flags = ft_calloc(data->pipe_num + 1, sizeof(int));
 	if (data->error_flags == NULL)
