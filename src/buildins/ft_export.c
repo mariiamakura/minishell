@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:52:26 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/07 17:45:52 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/07 17:48:37 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void ft_export(char *av[], t_data *data, int index)
 	var_names = NULL;
 	i = 0;
 	arg_num = ft_count_arg(av);
-	// if (ft_count_arg(av) == 0)
-	// 	ft_env_declare_x(data, index);
+	if (ft_count_arg(av) == 1)
+		ft_env_declare_x(data, index);
 	var_names = ft_get_multi_var_name(av, arg_num);
 	if (var_names == NULL)
 		return ;
