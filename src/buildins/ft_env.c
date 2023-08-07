@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 15:55:54 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/04 14:48:04 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/07 17:00:10 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void ft_env(t_data *data, int index)
 	}
 }
 
-char *get_env_value(t_data *data, char *var_name) 
+char *ft_get_env_value(t_data *data, char *var_name) 
 {
 	//to get "HOME"=/usr/mparasku and return usr/mparasku
 	int i;
@@ -58,4 +58,37 @@ char *get_env_value(t_data *data, char *var_name)
 		i++;
 	}
 	return (NULL);
+}
+
+void ft_env_declare_x(t_data *data, int index)
+{
+	int i;
+	char **temp_env;
+
+	i = 0;
+	temp_env = ft_copy_2d_arr(data);
+	printf("%s\n", temp_env[0]);
+	
+	ft_free_2d(temp_env);
+	index++;
+}
+
+char **ft_copy_2d_arr(t_data *data)
+{
+	int i;
+	char **new_arr;
+
+	i = 0;
+	new_arr = malloc(sizeof(char *));
+	if (new_arr == NULL)
+		return (NULL);
+	while (data->env[i])
+	{
+		new_arr[i] = ft_strdup(data->env[i]);
+		if (new_arr[i] == NULL)
+			return (NULL);
+		i++;
+	}
+	new_arr[i] = NULL;
+	return (new_arr);
 }

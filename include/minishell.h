@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/07 15:50:50 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/07 16:50:46 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,15 +111,17 @@ void ft_cd_prev(t_data *data, int index);
 
 //env.c
 void ft_env(t_data *data, int index);
-char *get_env_value(t_data *data, char *var_name);
+char *ft_get_env_value(t_data *data, char *var_name);
+void ft_env_declare_x(t_data *data, int index);
+char **ft_copy_2d_arr(t_data *data);
 
 //export.c
 void ft_export(char *av[], t_data *data, int index);
-char *get_var_name(char* av);
-int count_arg(char **av);
-char **get_multi_var_name(char **av, int num_var);
-int is_var_in_env(t_data *data, char *var_name);
-char **add_env_var(char *av, t_data *data);
-char **replace_env_var(char *av, t_data *data, char *var_name);
+char *ft_get_var_name(char* av);
+int ft_count_arg(char **av);
+char **ft_get_multi_var_name(char **av, int num_var);
+int ft_is_var_in_env(t_data *data, char *var_name);
+char **ft_add_env_var(char *av, t_data *data);
+char **ft_replace_env_var(char *av, t_data *data, char *var_name);
 
 #endif

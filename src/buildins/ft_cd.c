@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 15:08:19 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/03 17:13:57 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/07 16:53:37 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void ft_cd_home(t_data *data)
 {
 	char *home_dir;
 
-	home_dir = get_env_value(data, "HOME");
+	home_dir = ft_get_env_value(data, "HOME");
 	if (home_dir != NULL)
 		chdir(home_dir);
 	free(home_dir);
