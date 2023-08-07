@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:52:26 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/07 14:37:18 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/07 16:09:43 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@ void ft_export(char *av[], t_data *data, int index)
 		if (var_names[i] == NULL)
 			i++;
 		else if (is_var_in_env(data, var_names[i]) == TRUE)
-			printf("var in env!");
-			//var replace in env
+		{
+			data->env = replace_env_var(av[i + 1], data, var_names[i]);
+		}
 		else 
 		{
 			data->env = add_env_var(av[i + 1], data);
@@ -47,11 +48,31 @@ void ft_export(char *av[], t_data *data, int index)
 	index++;
 	ft_free_2d(var_names);
 }
-/* 
-char **replace_env_var(char **av, t_data *data)
+
+char **replace_env_var(char *av, t_data *data, char *var_name)
 {
-	
-} */
+	int i;
+	char *new_var;
+	char *data_env;
+
+	i = 0;
+	new_var = ft_strdup(av);
+	data_env = NULL;
+	if (new_var == NULL)
+		return(NULL);
+	while (data->env[i])
+	{
+		data_env = get_var_name(data->env[i]);
+		if (ft_strncmp(data_env, var_name, ft_strlen(var_name)) == 0 && 
+			ft_strlen(data_env) == ft_strlen(var_name))
+		{
+				data->env[i] = new_var;
+		}
+		free(data_env);
+		i++;
+	}
+	return (data->env);
+}
 
 char **add_env_var(char *av, t_data *data)
 {
@@ -84,22 +105,26 @@ int is_var_in_env(t_data *data, char *var_name)
 	int i;
 	int flag;
 	int size;
+	char *data_env;
 	
 	i = 0;
 	flag = FALSE;
 	size = 0;
+	data_env = NULL;
 	while (data->env[i])
 	{
-		if (ft_strncmp(data->env[i], var_name, ft_strlen(var_name)) == 0 && 
-			ft_strlen(data->env[i]) == (ft_strlen(var_name) + 1))
-			{
-			printf("%zu\n", ft_strlen(var_name));
+		data_env = get_var_name(data->env[i]);
+		if (ft_strncmp(data_env, var_name, ft_strlen(var_name)) == 0 && 
+			ft_strlen(data_env) == ft_strlen(var_name))
+		{
 			flag = TRUE;
-			}
+		}
+		free(data_env);
 		i++;
 	}
 	return (flag);
 }
+
 
 
 char **get_multi_var_name(char **av, int num_var)
@@ -116,8 +141,6 @@ char **get_multi_var_name(char **av, int num_var)
 	while (av[i])
 	{
 		var_names[j] = get_var_name(av[i]);
-		// if (var_names[j] == NULL)
-		// 	return (NULL);
 		i++;
 		j++;
 	}

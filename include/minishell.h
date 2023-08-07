@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/07 14:35:51 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/07 15:50:50 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,6 @@ int count_arg(char **av);
 char **get_multi_var_name(char **av, int num_var);
 int is_var_in_env(t_data *data, char *var_name);
 char **add_env_var(char *av, t_data *data);
-char **replace_env_var(char **av, t_data *data);
+char **replace_env_var(char *av, t_data *data, char *var_name);
 
 #endif
