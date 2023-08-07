@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 18:40:47 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/04 14:50:08 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/07 14:38:28 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int ft_echo(char *av[], t_data *data, int index)
 		ft_putstr_fd("\n", data->pipes[index][1]);
 		return(0);
 	}
-	else if (ft_strncmp(av[1], "-n", ft_strlen(av[1])) == 0)//changed ft_strlen("-n") to ft_strlen(av[1])
+	else if (ft_strncmp(av[1], "-n", ft_strlen(av[1])) == 0 
+			&& ft_strlen(av[1]) == ft_strlen("-n")) //changed ft_strlen("-n") to ft_strlen(av[1])
 		ft_print(av, 2, TRUE, index, data);
 	else 
 		ft_print(av, 1, FALSE, index, data);
