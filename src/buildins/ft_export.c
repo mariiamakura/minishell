@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:52:26 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/07 17:48:37 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/08 14:15:37 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,12 +146,15 @@ char **ft_get_multi_var_name(char **av, int num_var)
 	while (av[i])
 	{
 		var_names[j] = ft_get_var_name(av[i]);
-		if (var_names[j] != NULL && !(var_names[j][0] >= 'a' && var_names[j][0] <= 'z') && !(var_names[j][0] >= 'A' && var_names[j][0] <= 'Z'))
+		if (var_names[j] != NULL && !(var_names[j][0] >= 'a' && var_names[j][0] <= 'z') 
+			&& !(var_names[j][0] >= 'A' && var_names[j][0] <= 'Z')
+			&& var_names[j][0] != '_')
 		{
 			error = ft_strjoin("export: not an identifier: ", var_names[j]);
 			ft_putstr_fd(error, STDERR_FILENO);
 			ft_putstr_fd("\n", STDERR_FILENO);
 			free(error);
+			free (var_names[j]);
 			var_names[j] = NULL;
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/07 16:50:46 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/08 13:57:22 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ void ft_env(t_data *data, int index);
 char *ft_get_env_value(t_data *data, char *var_name);
 void ft_env_declare_x(t_data *data, int index);
 char **ft_copy_2d_arr(t_data *data);
+void swap(char **a, char **b);
+void print_declare_x(char **temp_env, int index, t_data *data);
 
 //export.c
 void ft_export(char *av[], t_data *data, int index);
