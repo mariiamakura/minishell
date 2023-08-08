@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/08 13:57:22 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/08 14:37:34 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,5 +125,8 @@ char **ft_get_multi_var_name(char **av, int num_var);
 int ft_is_var_in_env(t_data *data, char *var_name);
 char **ft_add_env_var(char *av, t_data *data);
 char **ft_replace_env_var(char *av, t_data *data, char *var_name);
+
+//pwd.c
+void ft_pwd(t_data *data, int index);
 
 #endif

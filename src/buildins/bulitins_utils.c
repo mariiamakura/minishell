@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 12:19:33 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/04 16:00:27 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/08 14:35:23 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,21 @@ void    ft_run_builtin(t_data *data, int i)
     {
 		ft_echo(data->tokens[i], data, i);
 	}
-    if (ft_strncmp("cd", data->tokens[i][0], ft_strlen(data->tokens[i][0])) == 0)
+    else if (ft_strncmp("cd", data->tokens[i][0], ft_strlen(data->tokens[i][0])) == 0)
 	{
         ft_cd(data->tokens[i], data, i);
 	}
-	if (ft_strncmp("env", data->tokens[i][0], ft_strlen(data->tokens[i][0])) == 0)
+	else if (ft_strncmp("env", data->tokens[i][0], ft_strlen(data->tokens[i][0])) == 0)
 	{
 		ft_env(data, i);
 	}
-	if (ft_strncmp("export", data->tokens[i][0], ft_strlen(data->tokens[i][0])) == 0)
+	else if (ft_strncmp("export", data->tokens[i][0], ft_strlen(data->tokens[i][0])) == 0)
 	{
 		ft_export(data->tokens[i], data, i);
+	}
+	else if (ft_strncmp("pwd", data->tokens[i][0], ft_strlen(data->tokens[i][0])) == 0)
+	{
+		ft_pwd(data, i);
 	}
 }
 
