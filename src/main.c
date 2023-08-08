@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/08 10:42:23 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:57:17 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,17 @@ int	main(int argc, char *argv[], char *envp[])
 		return (1);
 	data->env = envp;
 	last_exit_global = 0;
-	init_signals();
+	//rl_getc_function = &ft_getc;
 	while (1) 
 	{
-		last_exit_global = 0;
+		init_signals();
 		if (0 <= ft_parse(data))
 		{
 			start_pipes(data);
 			ft_free_tokens(data);
 			free(data->error_flags);
 		}
-		if (last_exit_global == 130)
-			data->last_exit = 130;
+		last_exit_global = 0;
 	}
 	free(data);
 	//print_tokens(data);

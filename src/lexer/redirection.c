@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:05:44 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/08 12:44:46 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/08 18:50:26 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,19 @@ int	ft_redir_in(char *str, int block, int arg, t_data *data) //add test if fd op
 	return (0);
 }
 
+int	ft_getc()
+{
+    char buffer[1]; // Buffer to read a single character
+    ssize_t bytesRead;
+    bytesRead = read(0, buffer, 1);
+    if (bytesRead <= 0) {
+		
+		return (EOF);
+    }
+	//stream++;
+    return (buffer[0]);
+}
+
 int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close pipes here
 {
 		int		i;
@@ -96,6 +109,7 @@ int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close 
 		char	*temp;
 		int		pipe_doc[2];
 		
+		signal(SIGINT, sig_handler_heredoc);
 		i = 2;
 		while (str[i] == ' ')
 			i++;
@@ -104,12 +118,10 @@ int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close 
 		while (ft_strncmp(delimiter, input = readline("> "), ft_strlen(delimiter) + 1) != 0)
 		{
 			temp = buffer;
+			printf("input: START%sEND\n", input);
 			if (input == NULL)
 			{
 				free (input);
-				ft_remove_arg(data, block, arg);
-				if (last_exit_global == 130)
-					data->error_flags[block] = TRUE;
 				break ;
 			}
 			buffer = ft_strjoin(buffer, input);
@@ -119,6 +131,8 @@ int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close 
 			free(input);
 			free(temp);
 		}
+		if (last_exit_global == 130)
+			data->error_flags[block] = TRUE;
 		if (block == 0)
 		{
 			if (pipe(pipe_doc) != 0) //for the first block need to set a pipe 
@@ -132,7 +146,7 @@ int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close 
 		free(buffer);
 		ft_remove_arg(data, block, arg);
 		return (0);
-}
+ }
 
 void	ft_remove_arg(t_data *data, int block, int arg)
 {

@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:08:45 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/08 10:36:45 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:41:42 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	ft_add_var(int block, int arg, int *start, t_data *data)
 
 	if (data->tokens[block][arg][*start + 1 + i] == '?')
 	{
-		var_cont = ft_itoa(data->last_exit);
+		var_cont = ft_itoa(last_exit_global);
+		//last_exit_global = 0;
 		i++;
 	}
 	else if (ft_isdigit(data->tokens[block][arg][*start + 1 + i]) == 1)

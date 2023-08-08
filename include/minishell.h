@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/04 15:53:24 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/08 18:02:50 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_data
 	char *promt;
 	int *error_flags;
 	int	forked;
-	int	last_exit;
+	//int	last_exit;
 } t_data;
 
 extern int	last_exit_global;
@@ -68,11 +68,11 @@ void wait_children(t_data *data);
 void term_processes(t_data * data);
 
 //signals.c
-//void	sig_handler(int signum);
+void	sig_handler(int signum);
 void	sig_handler_child(int signum);
 void	sig_handler_parent(int signum);
 void	init_signals(void);
-void	sig_handler_inchild(int signum);
+void	sig_handler_heredoc(int signum);
 
 //utils.c just useful for now
 void print_tokens(t_data *data);

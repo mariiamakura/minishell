@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/08 11:30:16 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:47:43 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,29 +47,30 @@ int start_pipes(t_data *data)
 	init_pipes(data);
 	if (data == NULL)
 		return (-1); //maybe return data?
-	if (data->pipe_num == 0 && ft_is_builtin(data->tokens[0][0]) == TRUE && last_exit_global != 130)//add ft_is_builtin to add_path
+	if (data->pipe_num == 0 && ft_is_builtin(data->tokens[0][0]) == TRUE) //&& last_exit_global != 130)//add ft_is_builtin to add_path
 	{
 		data->forked = FALSE;
 		if (data->error_flags[0] == TRUE)
-			data->last_exit = errno;
+			last_exit_global = errno;
 		else
 		{
 			ft_run_builtin(data, 0);
 			close_fd(data);
-			data->last_exit = 0;
+			last_exit_global = 0;
 		}
 	}
-	else if (last_exit_global != 130)
+	else //if (last_exit_global != 130)
 	{
 		data->forked = TRUE;
 		i = 0;
+		signal(SIGINT, sig_handler_parent);
 		while (i <= data->pipe_num)
 		{
 			data->child_pid[i] = fork();
+			signal(SIGINT, sig_handler_parent);
 			if (data->child_pid[i] == 0)
 			{
 				signal(SIGINT, sig_handler_child);
-				//signal(SIGINT, sig_handler_inchild);
 				if (data->error_flags[i] == TRUE)
 					exit (errno);
 				dup2(data->pipes[i][1], STDOUT_FILENO); //cmd write to it's write end pipe (not stdout)

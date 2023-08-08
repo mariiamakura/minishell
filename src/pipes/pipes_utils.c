@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:11:45 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/08 09:09:12 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:09:25 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void term_processes(t_data * data)
 			j++;
 		}
 	}
-	data->last_exit = 130;
+	//data->last_exit = 130;
 	//last_exit_global = 0;
 }
 
@@ -79,9 +79,9 @@ void wait_children(t_data *data)
 	{
 		pid = wait(&status);
 		//printf("pid: %d  exit: %d\n", pid, status);
-		if (pid == data->child_pid[data->pipe_num])
+		if (pid == data->child_pid[data->pipe_num] && last_exit_global != 130)
 		{
-			data->last_exit = status;
+			last_exit_global = status;
 		//printf("last-pid: %d  exit: %d\n", pid, status);
 		}
 		k++;
