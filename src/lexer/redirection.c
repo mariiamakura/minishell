@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:05:44 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/08 11:43:13 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/08 12:44:46 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,8 @@ int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close 
 			{
 				free (input);
 				ft_remove_arg(data, block, arg);
-				//data->error_flags[block] = TRUE;
+				if (last_exit_global == 130)
+					data->error_flags[block] = TRUE;
 				break ;
 			}
 			buffer = ft_strjoin(buffer, input);
