@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 15:01:16 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/04 22:40:59 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/08 09:10:42 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	sig_handler_child(int signum)
 {
 	if (signum == SIGINT)
 	{
+		printf("\n");
 		last_exit_global = 130;
  		//printf("\n");
 		/*rl_on_new_line();
@@ -47,6 +48,7 @@ void	sig_handler_parent(int signum)
 {
 	if (signum == SIGINT)
 	{
+		printf("\n");
 		last_exit_global = 130;
 	}
 }

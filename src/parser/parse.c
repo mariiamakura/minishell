@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/04 22:39:50 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/08 11:05:14 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,12 @@ int	ft_parse(t_data *data)
 	char	*sub_str;
 	int		argc;
 
+	//rl_on_new_line();
+	//rl_replace_line("", 0);
+	//rl_redisplay();
 	rl_getc_function = &ft_getc;
 	input = readline(" ~ minishell$ ");
-	printf("exited readline\n");
+	//printf("exited readline\n");
 	if (input == NULL) //handles ctrl+d
 	{
 		free(input);

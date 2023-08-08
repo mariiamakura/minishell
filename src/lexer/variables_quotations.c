@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:08:45 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/04 14:51:42 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/08 10:36:45 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,39 @@ void	ft_add_var(int block, int arg, int *start, t_data *data)
 	int		i;
 
 	token = data->tokens[block][arg];
+
 	i = 0;
-	while (token[*start + 1 + i] && token[*start + 1 + i] != ' ' &&
-		token[*start + 1 + i] != 34 && token[*start + 1 + i] != 39)
+
+	if (data->tokens[block][arg][*start + 1 + i] == '?')
+	{
+		var_cont = ft_itoa(data->last_exit);
 		i++;
-	var_name = ft_calloc(i + 1, sizeof(char));
-	ft_memmove(var_name, token + *start + 1, i);
-	var_name[i] = '\0';
-	if (var_name[0] == '?' && var_name[1] == '\0')
-		var_cont = ft_itoa(last_exit_global);
-	else
-		var_cont = ft_getenv(data->env, var_name);
-	last_exit_global = 0; //reset the global var
-	if (var_cont == NULL)
+	}
+	else if (ft_isdigit(data->tokens[block][arg][*start + 1 + i]) == 1)
+	{
 		var_cont = "";
+		i++;
+	}
+	else
+	{
+		while (ft_isalpha(data->tokens[block][arg][*start + 1 + i]) == 1
+			|| ft_isdigit(data->tokens[block][arg][*start + 1 + i])
+			|| data->tokens[block][arg][*start + 1 + i] == '_')
+			i++;
+		var_name = ft_calloc(i + 1, sizeof(char));
+		ft_memmove(var_name, token + *start + 1, i);
+		var_name[i] = '\0';
+		var_cont = ft_getenv(data->env, var_name);
+		if (var_cont == NULL)
+			var_cont = "";
+		free(var_name);
+	}
 	new_token = ft_calloc(*start + ft_strlen(var_cont) + ft_strlen(token + *start + 1 + i) + 1, sizeof(char));
 	ft_memmove(new_token, token, *start);
 	ft_memmove(new_token + *start, var_cont, ft_strlen(var_cont));
 	ft_memmove(new_token + *start + ft_strlen(var_cont), token + *start + 1 + i, ft_strlen(token + *start + 1 + i));
 	new_token[*start + ft_strlen(var_cont) + ft_strlen(token + *start + 1 + i)] = '\0';
 	free(token);
-	free(var_name);
 	*start += ft_strlen(var_cont);
 	data->tokens[block][arg] = new_token;
 }

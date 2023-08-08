@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/04 20:36:03 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/08 11:30:16 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int start_pipes(t_data *data)
 	init_pipes(data);
 	if (data == NULL)
 		return (-1); //maybe return data?
-	if (data->pipe_num == 0 && ft_is_builtin(data->tokens[0][0]) == TRUE)//add ft_is_builtin to add_path
+	if (data->pipe_num == 0 && ft_is_builtin(data->tokens[0][0]) == TRUE && last_exit_global != 130)//add ft_is_builtin to add_path
 	{
 		data->forked = FALSE;
 		if (data->error_flags[0] == TRUE)
@@ -59,7 +59,7 @@ int start_pipes(t_data *data)
 			data->last_exit = 0;
 		}
 	}
-	else
+	else if (last_exit_global != 130)
 	{
 		data->forked = TRUE;
 		i = 0;
@@ -85,8 +85,8 @@ int start_pipes(t_data *data)
 				}
 				else if (execve(data->tokens[i][0], data->tokens[i], data->env) == -1)
 				{
-					perror("execve failed");
-					term_processes(data);
+					perror("execve failed"); 
+					term_processes(data); //could also be removed to prevent exiting
 					free_wflags(data, i, FINISHED);
 					return (-1);
 				}
@@ -98,8 +98,6 @@ int start_pipes(t_data *data)
 	}
 	if (last_exit_global == 130)
 		term_processes(data);
-	else
-		last_exit_global = data->last_exit;
 	free_wflags(data, i, FINISHED); //mb do it in the end if data is still needed after pipes
 	return (0);
 }

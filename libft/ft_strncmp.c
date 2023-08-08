@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:31:03 by ycardona          #+#    #+#             */
-/*   Updated: 2022/12/07 16:52:38 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/08 11:25:29 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	unsigned char	*u_s1;
 	unsigned char	*u_s2;
 
+	if (!s1 || !s2)
+		return (-1);
 	u_s1 = (unsigned char *) s1;
 	u_s2 = (unsigned char *) s2;
 	if (n == 0)

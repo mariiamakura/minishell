@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:05:44 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/03 13:36:34 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/08 11:43:13 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,13 @@ int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close 
 		while (ft_strncmp(delimiter, input = readline("> "), ft_strlen(delimiter) + 1) != 0)
 		{
 			temp = buffer;
+			if (input == NULL)
+			{
+				free (input);
+				ft_remove_arg(data, block, arg);
+				//data->error_flags[block] = TRUE;
+				break ;
+			}
 			buffer = ft_strjoin(buffer, input);
 			free(temp);
 			temp = buffer;
@@ -121,7 +128,6 @@ int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close 
 		}
 		else
 			write(data->pipes[block - 1][1], buffer, ft_strlen(buffer)); //write to pipe this process reads from
-
 		free(buffer);
 		ft_remove_arg(data, block, arg);
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:11:45 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/04 15:50:08 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/08 09:09:12 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,11 @@ void wait_children(t_data *data)
 	while (k <= data->pipe_num)
 	{
 		pid = wait(&status);
-		printf("pid: %d  exit: %d\n", pid, status);
+		//printf("pid: %d  exit: %d\n", pid, status);
 		if (pid == data->child_pid[data->pipe_num])
 		{
 			data->last_exit = status;
-		printf("last-pid: %d  exit: %d\n", pid, status);
+		//printf("last-pid: %d  exit: %d\n", pid, status);
 		}
 		k++;
 	}
