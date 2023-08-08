@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/04 14:29:36 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:41:35 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	main(int argc, char *argv[], char *envp[])
 	init_signals();
 	if (data == NULL)
 		return (1);
-	data->env = envp;
+	data->env = envp; //add dynamic allocation!
 	data->last_exit = 0;
 	while (1) 
 	{

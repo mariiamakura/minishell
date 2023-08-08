@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:52:26 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/08 14:15:37 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:41:53 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void ft_export(char *av[], t_data *data, int index)
 		}
 		i++;
 	}
-	index++;
 	ft_free_2d(var_names);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 15:08:19 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/08 14:37:56 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:12:58 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void ft_cd(char *av[], t_data *data, int index)
 		perror(dir);
 		free(dir);
 	}
-	//char cwd[1024]; 
-	//printf("%s\n", getcwd(cwd, sizeof(cwd)));
+	ft_update_pwd(data, index);
 }
+
 
 void ft_cd_home(t_data *data)
 {

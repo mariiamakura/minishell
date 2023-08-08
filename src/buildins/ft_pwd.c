@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 14:31:44 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/08 14:40:26 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:03:30 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,44 @@ void ft_pwd(t_data *data, int index)
 	}
 	else 
 	{
-		perror("minishell: pwd: ");
+		perror("minishell: getcwd: ");
 	}
+}
+
+void ft_update_pwd(t_data *data, int index)
+{
+		char *current_pwd[3];
+		char *current_path;
+		char *current_temp;
+
+		ft_update_oldpwd(data, index);
+		current_temp = getcwd(NULL, 0);
+		if (current_temp == NULL)
+		{
+			perror("minishell: getcwd: ");
+			return ;
+		}
+		current_path = ft_strjoin("PWD=", current_temp);
+		current_pwd[0] = "export";
+		current_pwd[1] = current_path;
+		current_pwd[2] = NULL;
+		ft_export(current_pwd, data, index);
+		free(current_temp);
+		free(current_path);
+}
+
+void ft_update_oldpwd(t_data *data, int index)
+{
+	char *prev_temp;
+	char *prev;
+	char *av_old_pwd[3];
+
+	prev_temp = ft_get_env_value(data, "PWD");
+	prev = ft_strjoin("OLDPWD=", prev_temp);
+	av_old_pwd[0] = "export";
+	av_old_pwd[1] = prev;
+	av_old_pwd[2] = NULL;
+	ft_export(av_old_pwd, data, index);
+	free(prev);
+	free(prev_temp);
 }

@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/08 14:37:34 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:03:59 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,5 +128,7 @@ char **ft_replace_env_var(char *av, t_data *data, char *var_name);
 
 //pwd.c
 void ft_pwd(t_data *data, int index);
+void ft_update_pwd(t_data *data, int index);
+void ft_update_oldpwd(t_data *data, int index);
 
 #endif

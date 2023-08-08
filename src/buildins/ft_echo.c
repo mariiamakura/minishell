@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 18:40:47 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/07 16:55:29 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:51:01 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,9 @@ void ft_print(char *av[], int i, int flag, int index, t_data *data)
 	home_dir = ft_get_env_value(data, "HOME");
 	while (av[i])
 	{
-		if ((ft_strncmp(av[1], "~", ft_strlen(av[1]))) == 0 || (ft_strncmp(av[2], "~", ft_strlen(av[2]))) == 0) //do ex cases Emilie sent pdf 
+		if ((ft_strncmp(av[i], "~", ft_strlen(av[i]))) == 0) //do ex cases Emilie sent pdf 
 		{
 			ft_putstr_fd(home_dir, data->pipes[index][1]);
-			free(home_dir);
 		}
 		else 
 		{
@@ -47,6 +46,7 @@ void ft_print(char *av[], int i, int flag, int index, t_data *data)
 			ft_putstr_fd(" ", data->pipes[index][1]);
 		i++;
 	}
+	free(home_dir);
 	if (flag == FALSE)
 		ft_putstr_fd("\n", data->pipes[index][1]);
 }
