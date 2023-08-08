@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:05:44 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/08 18:50:26 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/08 19:34:46 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	ft_redir_in(char *str, int block, int arg, t_data *data) //add test if fd op
 	return (0);
 }
 
-int	ft_getc()
+int	ft_getc(FILE *stream)
 {
     char buffer[1]; // Buffer to read a single character
     ssize_t bytesRead;
@@ -96,7 +96,7 @@ int	ft_getc()
 		
 		return (EOF);
     }
-	//stream++;
+	stream++;
     return (buffer[0]);
 }
 
@@ -115,13 +115,23 @@ int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close 
 			i++;
 		delimiter = str + i;
 		buffer = ft_calloc(1, sizeof(char));
+		last_exit_global = 0;
+		rl_getc_function = ft_getc;
 		while (ft_strncmp(delimiter, input = readline("> "), ft_strlen(delimiter) + 1) != 0)
 		{
 			temp = buffer;
-			printf("input: START%sEND\n", input);
 			if (input == NULL)
 			{
 				free (input);
+				if (last_exit_global == 130)
+				{
+					i = 0;
+					while (i <= data->pipe_num)
+					{
+						data->error_flags[i] = TRUE;
+						i++;
+					}
+				}
 				break ;
 			}
 			buffer = ft_strjoin(buffer, input);

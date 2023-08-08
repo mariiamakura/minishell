@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/08 18:25:13 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/08 19:46:44 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	ft_parse(t_data *data)
 	char	*sub_str;
 	int		argc;
 
+	rl_getc_function = rl_getc;
 	input = readline(" ~ minishell$ ");
 	if (input == NULL) //handles ctrl+d
 	{
@@ -42,7 +43,7 @@ int	ft_parse(t_data *data)
 	}
 	if (*input == '\0')
 	{
-		//last_exit_global = 0;
+		last_exit_global = 0;
 		free(input);
 		return (-1);
 	}

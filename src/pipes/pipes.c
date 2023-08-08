@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/08 17:47:43 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/08 19:44:23 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int start_pipes(t_data *data)
 			last_exit_global = 0;
 		}
 	}
-	else //if (last_exit_global != 130)
+	else
 	{
 		data->forked = TRUE;
 		i = 0;
