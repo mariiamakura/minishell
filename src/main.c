@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 14:11:19 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 15:17:45 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,12 @@ int	main(int argc, char *argv[], char *envp[])
 	 return (1);
 
 	data = malloc(sizeof(t_data));
-	init_signals();
+	data->forked = FALSE;
 	if (data == NULL)
 		return (1);
-	data->env = ft_copy_2d_arr(envp); //add dynamic allocation!
+	data->env = envp;
 	data->last_exit = 0;
+	init_signals();
 	while (1) 
 	{
 		if (0 <= ft_parse(data))

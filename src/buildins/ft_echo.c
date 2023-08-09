@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 18:40:47 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/09 14:56:14 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 15:15:56 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,3 +50,5 @@ void ft_print(char *av[], int i, int flag, int index, t_data *data)
 	if (flag == FALSE)
 		ft_putstr_fd("\n", data->pipes[index][1]);
 }
+
+//check echo

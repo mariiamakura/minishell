@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 15:06:21 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 15:11:51 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,13 @@ typedef struct s_data
 	char *promt;
 	int	last_exit; //to store the exit status of the last executed child process
 	int *error_flags;
+	int	forked;
 } t_data;
 
 
 typedef struct s_global 
 {
-	int	forked;
+	//int	forked;
 	int c_kill_child;
 } t_global;
 
