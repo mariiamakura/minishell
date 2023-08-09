@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 15:38:47 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 17:14:55 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ int	main(int argc, char *argv[], char *envp[])
 			free_wflags(data, data->pipe_num, FINISHED); //mb do it in the end if data is still needed after pipes
 		}
 	}
-	ft_free_2d(data->env);
-	free(data);
+	//ft_free_2d(data->env);
+	//free(data);
 	//print_tokens(data);
 	//printf("%d\n", execve(data->tokens[0][0], data->tokens[0], NULL));
 }

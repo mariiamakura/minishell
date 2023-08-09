@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:52:26 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/09 15:02:04 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 17:12:40 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void ft_export(char *av[], t_data *data, int index)
 	arg_num = ft_count_arg(av);
 	if (ft_count_arg(av) == 1)
 		ft_env_declare_x(data, index);
-	var_names = ft_get_multi_var_name(av, arg_num);
+	var_names = ft_get_multi_var_name(av, arg_num, FT_EXPORT);
 	if (var_names == NULL)
 		return ;
 	while (i < arg_num - 1)
@@ -149,12 +149,11 @@ int ft_is_var_in_env(t_data *data, char *var_name)
 	return (flag);
 }
 
-char **ft_get_multi_var_name(char **av, int num_var)
+char **ft_get_multi_var_name(char **av, int num_var, int flag)
 {
 	int i;
 	char **var_names;
 	int j;
-	char *error;
 	
 	i = 1;
 	j = 0;
@@ -163,24 +162,45 @@ char **ft_get_multi_var_name(char **av, int num_var)
 		return (NULL);
 	while (av[i])
 	{
-		var_names[j] = ft_get_var_name(av[i]);
+		if (flag == FT_EXPORT)
+			var_names[j] = ft_get_var_name(av[i]);
+		else if (flag == FT_UNSET)
+			var_names[j] = ft_strdup(av[i]);
 		if (var_names[j] != NULL && !(var_names[j][0] >= 'a' && var_names[j][0] <= 'z') 
 			&& !(var_names[j][0] >= 'A' && var_names[j][0] <= 'Z')
 			&& var_names[j][0] != '_')
 		{
-			error = ft_strjoin("export: not an identifier: ", var_names[j]);
-			ft_putstr_fd(error, STDERR_FILENO);
-			ft_putstr_fd("\n", STDERR_FILENO);
-			free(error);
-			free (var_names[j]);
-			var_names[j] = NULL;
+			var_name_error(var_names[j], flag);
 		}
 		i++;
 		j++;
 	}
 	var_names[j] = NULL;
 	return(var_names);
+}
+
+void var_name_error(char *var_name, int flag)
+{
+	char *error;
 	
+	if (flag == FT_EXPORT)
+	{
+		error = ft_strjoin("export: not an identifier: ", var_name);
+		ft_putstr_fd(error, STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
+		free(error);
+		free (var_name);
+		var_name = NULL;
+	}
+	// else if (flag == FT_UNSET) probably don't needed
+	// {
+	// 	error = ft_strjoin("unset: invalid parameter name: ", var_name);
+	// 	ft_putstr_fd(error, STDERR_FILENO);
+	// 	ft_putstr_fd("\n", STDERR_FILENO);
+	// 	free(error);
+	// 	free (var_name);
+	// 	var_name = NULL;
+	// }
 }
 
 char *ft_get_var_name(char* av)

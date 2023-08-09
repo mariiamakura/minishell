@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 12:19:33 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 15:06:01 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 16:59:32 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void    ft_run_builtin(t_data *data, int i)
 	}
 	else if (ft_strncmp("unset", data->tokens[i][0], ft_strlen(data->tokens[i][0])) == 0)
 	{
-		ft_unset(data->tokens[i], data, i);
+		ft_unset(data->tokens[i], data);
 	}
 }
 

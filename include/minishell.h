@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 15:37:54 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 16:59:38 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 # define FALSE 0
 # define FINISHED 1
 # define NOT_FINISHED 0
+# define FT_EXPORT 111
+# define FT_UNSET  222
 
 
 typedef struct s_data
@@ -118,10 +120,11 @@ void print_declare_x(char **temp_env, int index, t_data *data);
 void ft_export(char *av[], t_data *data, int index);
 char *ft_get_var_name(char* av);
 int ft_count_arg(char **av);
-char **ft_get_multi_var_name(char **av, int num_var);
+char **ft_get_multi_var_name(char **av, int num_var, int flag);
 int ft_is_var_in_env(t_data *data, char *var_name);
 char **ft_add_env_var(char *av, t_data *data);
 char **ft_replace_env_var(char *av, t_data *data, char *var_name);
+void var_name_error(char *var_name, int flag);
 
 //pwd.c
 void ft_pwd(t_data *data, int index);
@@ -129,6 +132,7 @@ void ft_update_pwd(t_data *data, int index);
 void ft_update_oldpwd(t_data *data, int index);
 
 //ft_unset.c
-void ft_unset(char *av[], t_data *data, int index);
+void ft_unset(char *av[], t_data *data);
+char **ft_remove_env(t_data * data, char *var_name);
 
 #endif
