@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 16:59:38 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 17:27:02 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,5 +134,9 @@ void ft_update_oldpwd(t_data *data, int index);
 //ft_unset.c
 void ft_unset(char *av[], t_data *data);
 char **ft_remove_env(t_data * data, char *var_name);
+
+//exit.c
+void ft_exit(t_data *data);
+void	ft_free_tokens(t_data *data);
 
 #endif
