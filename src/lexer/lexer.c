@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:17:17 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/03 17:37:16 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 15:38:09 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,6 @@ int	ft_lexer(t_data *data) //return open error
 		ft_add_path(i, data);
 		i++;
 	}
+	last_exit_global = 0;
 	return (0);
 }

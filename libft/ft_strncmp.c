@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 15:31:03 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/07 14:13:41 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 15:35:32 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	unsigned char	*u_s1;
 	unsigned char	*u_s2;
 
+	if (!s1 || !s2)
+		return (-1);
 	u_s1 = (unsigned char *) s1;
 	u_s2 = (unsigned char *) s2;
 

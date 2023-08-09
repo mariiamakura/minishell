@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 15:01:16 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/09 15:13:05 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 15:33:31 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,46 @@
 
 void init_signals(void)
 {
-	g_global = malloc(sizeof(t_global));
-	if (g_global == NULL)
-	{
-		ft_putstr_fd("global is not allocated", STDERR_FILENO);
-		exit (-1);
-	}
-	g_global->c_kill_child = FALSE;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, sig_handler);
+}
+
+void	sig_handler_child(int signum)
+{
+	if (signum == SIGINT)
+	{
+		last_exit_global = 130;
+		exit (130);
+	}
+}
+
+void	sig_handler_parent(int signum)
+{
+	if (signum == SIGINT)
+	{
+		write(1, "\n", 1);
+		last_exit_global = 130;
+	}
+}
+
+void	sig_handler_heredoc(int signum)
+{
+	signal(SIGINT, SIG_IGN);
+	if (signum == SIGINT)
+	{
+		last_exit_global = 130;
+	}
 }
 
 void	sig_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
-		printf("\n");
-		/*rl_on_new_line();
-		//rl_replace_line("", 0);
-		if (data->forked == FALSE)
-		{
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		if (0 == ft_strlen(rl_line_buffer))
 			rl_redisplay();
-		} */
-		g_global->c_kill_child = TRUE;
+		last_exit_global = 130;
 	}
 }

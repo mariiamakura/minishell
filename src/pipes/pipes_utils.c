@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:11:45 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/03 14:56:22 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/09 15:00:07 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void free_wflags(t_data *data, int i, int flag)
 	j = 0;
 	if (flag == NOT_FINISHED)
 	{
-		while (j < i)
+		while (j < i) //not sure about < or <=
 		{
 			free(data->pipes[j]);
 			j++;
@@ -27,7 +27,7 @@ void free_wflags(t_data *data, int i, int flag)
 	}
 	else
 	{
-		while (j < i)
+		while (j <= data->pipe_num)
 		{
 			free(data->pipes[j]);
 			j++;
@@ -35,7 +35,6 @@ void free_wflags(t_data *data, int i, int flag)
 	}
 	free(data->pipes);
 	free(data->child_pid);
-	//free(data); -free where it was malloc or in main
 }
 
 void close_fd(t_data *data)
@@ -64,14 +63,6 @@ void term_processes(t_data * data)
 			j++;
 		}
 	}
-	data->last_exit = 130;
-	g_global->c_kill_child = FALSE;
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	if (data->forked == FALSE)
-	{
-			rl_redisplay();
-	}
 }
 
 void wait_children(t_data *data)
@@ -84,8 +75,8 @@ void wait_children(t_data *data)
 	while (k <= data->pipe_num)
 	{
 		pid = wait(&status);
-		if (pid == data->child_pid[data->pipe_num])
-			data->last_exit = status;
+		if (pid == data->child_pid[data->pipe_num] && last_exit_global != 130)
+			last_exit_global = status;
 		k++;
 	}
 }

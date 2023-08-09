@@ -6,11 +6,25 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/03 13:34:55 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/09 15:01:09 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+/* int	ft_getc(FILE *stream)
+{
+    char buffer[1]; // Buffer to read a single character
+    ssize_t bytesRead;
+    bytesRead = read(0, buffer, 1);
+    if (bytesRead <= 0) {
+		//buffer[0] = '\0';
+		//rl_replace_line("", 0);
+		return (EOF);
+    }
+	stream++;
+    return (buffer[0]);
+} */
 
 int	ft_parse(t_data *data)
 {
@@ -20,15 +34,22 @@ int	ft_parse(t_data *data)
 	char	*sub_str;
 	int		argc;
 
+	rl_getc_function = rl_getc;
 	input = readline(" ~ minishell$ ");
-	add_history(input);
 	if (input == NULL) //handles ctrl+d
 	{
 		write(1, "exit\n", 5);
+		rl_clear_history();
+		free(data);
 		exit(-1);
 	}
 	if (*input == '\0')
-		return (free(input), -1);
+	{
+		last_exit_global = 0;
+		free(input);
+		return (-1);
+	}
+	add_history(input);
 	data->pipe_num = ft_count_pipes(input);
 	data->error_flags = ft_calloc(data->pipe_num + 1, sizeof(int));
 	if (data->error_flags == NULL)

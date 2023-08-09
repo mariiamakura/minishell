@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 15:11:51 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 15:37:54 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,12 @@ typedef struct s_data
 	int **pipes;
 	char **env;
 	char *promt;
-	int	last_exit; //to store the exit status of the last executed child process
 	int *error_flags;
 	int	forked;
+	//int	last_exit;
 } t_data;
 
-
-typedef struct s_global 
-{
-	//int	forked;
-	int c_kill_child;
-} t_global;
-
-extern t_global *g_global;
+extern int	last_exit_global;
 
 //parser
 int		ft_parse(t_data *data);
@@ -77,7 +70,10 @@ void term_processes(t_data * data);
 
 //signals.c
 void	sig_handler(int signum);
+void	sig_handler_child(int signum);
+void	sig_handler_parent(int signum);
 void	init_signals(void);
+void	sig_handler_heredoc(int signum);
 
 //utils.c just useful for now
 void print_tokens(t_data *data);

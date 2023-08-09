@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:05:44 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/03 14:14:09 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 15:38:14 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,19 @@ int	ft_redir_in(char *str, int block, int arg, t_data *data) //add test if fd op
 	return (0);
 }
 
+int	ft_getc(FILE *stream)
+{
+    char buffer[1]; // Buffer to read a single character
+    ssize_t bytesRead;
+    bytesRead = read(0, buffer, 1);
+    if (bytesRead <= 0) {
+		
+		return (EOF);
+    }
+	stream++;
+    return (buffer[0]);
+}
+
 int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close pipes here
 {
 		int		i;
@@ -96,14 +109,31 @@ int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close 
 		char	*temp;
 		int		pipe_doc[2];
 		
+		signal(SIGINT, sig_handler_heredoc);
 		i = 2;
 		while (str[i] == ' ')
 			i++;
 		delimiter = str + i;
 		buffer = ft_calloc(1, sizeof(char));
+		last_exit_global = 0;
+		rl_getc_function = ft_getc;
 		while (ft_strncmp(delimiter, input = readline("> "), ft_strlen(delimiter) + 1) != 0)
 		{
 			temp = buffer;
+			if (input == NULL)
+			{
+				free (input);
+				if (last_exit_global == 130)
+				{
+					i = 0;
+					while (i <= data->pipe_num)
+					{
+						data->error_flags[i] = TRUE;
+						i++;
+					}
+				}
+				break ;
+			}
 			buffer = ft_strjoin(buffer, input);
 			free(temp);
 			temp = buffer;
@@ -111,6 +141,8 @@ int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close 
 			free(input);
 			free(temp);
 		}
+		if (last_exit_global == 130)
+			data->error_flags[block] = TRUE;
 		if (block == 0)
 		{
 			if (pipe(pipe_doc) != 0) //for the first block need to set a pipe 
@@ -121,11 +153,10 @@ int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close 
 		}
 		else
 			write(data->pipes[block - 1][1], buffer, ft_strlen(buffer)); //write to pipe this process reads from
-
 		free(buffer);
 		ft_remove_arg(data, block, arg);
 		return (0);
-}
+ }
 
 void	ft_remove_arg(t_data *data, int block, int arg)
 {

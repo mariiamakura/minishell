@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/09 15:12:24 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 15:34:52 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ int	init_pipes(t_data * data)
 		if(pipe(data->pipes[i]) != 0)
 		{
 			free_wflags(data, i, NOT_FINISHED);
+			data->error_flags[i] = TRUE;
 			return (-1);
 		}
 		i++;
 	}
-	ft_lexer(data);
 	return (0);
 }
 
@@ -44,32 +44,32 @@ int start_pipes(t_data *data)
 	int i;
 	
 	i = 0;
-	init_pipes(data);
 	if (data == NULL)
 		return (-1); //maybe return data?
-	if (data->pipe_num == 0 && ft_is_builtin(data->tokens[0][0]) == TRUE)//add ft_is_builtin to add_path
+	if (data->pipe_num == 0 && ft_is_builtin(data->tokens[0][0]) == TRUE) //&& last_exit_global != 130)//add ft_is_builtin to add_path
 	{
 		data->forked = FALSE;
-		//g_global->forked = FALSE;
 		if (data->error_flags[0] == TRUE)
-			data->last_exit = errno;
+			last_exit_global = errno;
 		else
 		{
 			ft_run_builtin(data, 0);
 			close_fd(data);
-			data->last_exit = 0;
+			last_exit_global = 0;
 		}
 	}
 	else
 	{
 		data->forked = TRUE;
-		//g_global->forked = TRUE;
 		i = 0;
+		signal(SIGINT, sig_handler_parent);
 		while (i <= data->pipe_num)
 		{
 			data->child_pid[i] = fork();
+			signal(SIGINT, sig_handler_parent);
 			if (data->child_pid[i] == 0)
 			{
+				signal(SIGINT, sig_handler_child);
 				if (data->error_flags[i] == TRUE)
 					exit (errno);
 				dup2(data->pipes[i][1], STDOUT_FILENO); //cmd write to it's write end pipe (not stdout)
@@ -85,8 +85,8 @@ int start_pipes(t_data *data)
 				}
 				else if (execve(data->tokens[i][0], data->tokens[i], data->env) == -1)
 				{
-					perror("execve failed");
-					term_processes(data);
+					perror("execve failed"); 
+					term_processes(data); //could also be removed to prevent exiting
 					free_wflags(data, i, FINISHED);
 					return (-1);
 				}
@@ -96,9 +96,8 @@ int start_pipes(t_data *data)
 		close_fd(data);
 		wait_children(data); //return the last child process exit status
 	}
-	if (g_global->c_kill_child == TRUE)
+	if (last_exit_global == 130)
 		term_processes(data);
-	free_wflags(data, i, FINISHED); //mb do it in the end if data is still needed after pipes
 	return (0);
 }
 
