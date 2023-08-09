@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:52:26 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/09 17:12:40 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 17:19:17 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,15 +192,6 @@ void var_name_error(char *var_name, int flag)
 		free (var_name);
 		var_name = NULL;
 	}
-	// else if (flag == FT_UNSET) probably don't needed
-	// {
-	// 	error = ft_strjoin("unset: invalid parameter name: ", var_name);
-	// 	ft_putstr_fd(error, STDERR_FILENO);
-	// 	ft_putstr_fd("\n", STDERR_FILENO);
-	// 	free(error);
-	// 	free (var_name);
-	// 	var_name = NULL;
-	// }
 }
 
 char *ft_get_var_name(char* av)
