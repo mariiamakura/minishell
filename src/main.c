@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 15:17:45 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 15:19:30 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	main(int argc, char *argv[], char *envp[])
 	data->forked = FALSE;
 	if (data == NULL)
 		return (1);
-	data->env = envp;
+	data->env = ft_copy_2d_arr(envp);
 	data->last_exit = 0;
 	init_signals();
 	while (1) 
