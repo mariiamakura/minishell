@@ -6,25 +6,25 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 15:01:09 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/09 16:35:10 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-/* int	ft_getc(FILE *stream)
+int	ft_all_whitespace(char *str)
 {
-    char buffer[1]; // Buffer to read a single character
-    ssize_t bytesRead;
-    bytesRead = read(0, buffer, 1);
-    if (bytesRead <= 0) {
-		//buffer[0] = '\0';
-		//rl_replace_line("", 0);
-		return (EOF);
-    }
-	stream++;
-    return (buffer[0]);
-} */
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ' || str[i] != '\t')
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
+}
 
 int	ft_parse(t_data *data)
 {
@@ -40,10 +40,11 @@ int	ft_parse(t_data *data)
 	{
 		write(1, "exit\n", 5);
 		rl_clear_history();
+		ft_free_2d(data->env);
 		free(data);
 		exit(-1);
 	}
-	if (*input == '\0')
+	if (*input == '\0' || ft_all_whitespace(input) == TRUE)
 	{
 		last_exit_global = 0;
 		free(input);

@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 15:30:14 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/04 17:02:58 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/09 16:06:54 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,15 @@ static void	ft_skipp_redir(char *str, int *i, int *count)
 {
 	if (str[*i] == '>' || str[*i] == '<')
 	{
-		if (0 < *i && str[*i - 1] != ' ')
+		if (0 < *i && str[*i - 1] != ' ' && str[*i - 1] != '\t')
 			*count += 1;
 		if ((str[*i] == '>' && str[*i + 1] == '>')
 			|| (str[*i] == '<' && str[*i + 1] == '<'))
 			*i += 1;
-		if (str[*i + 1] == ' ')
+		if (str[*i + 1] == ' ' || str[*i + 1] == '\t')
 		{
 			*i += 1;
-			while (str[*i] == ' ')
+			while (str[*i] == ' ' || str[*i] == '\t')
 				*i += 1;
 			if (!str[*i])
 				*i -= 1;
@@ -80,9 +80,9 @@ int	ft_count_args(char *s)
 	count = 0;
 	while (s[i])
 	{
-		if (s[i] != ' ' && s[i])
+		if (s[i] != ' ' && s[i] != '\t' && s[i])
 		{
-			while (s[i] != ' ' && s[i])
+			while (s[i] != ' ' && s[i] != '\t' && s[i])
 			{
 				ft_quotation(s, &i, 34);
 				ft_quotation(s, &i, 39);

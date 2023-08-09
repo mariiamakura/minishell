@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:05:44 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 15:38:14 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 16:12:15 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_redir_out(char *str, int block, int arg, t_data *data) // maybe close the
 	char *file_name;
 
 	i = 1;
-	while (str[i] == ' ')
+	while (str[i] == ' ' && str[i] == '\t')
 		i++;
 	fd = open(str + i, O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 	data->pipes[block][1] = fd;
@@ -43,7 +43,7 @@ int	ft_redir_app(char *str, int block, int arg, t_data *data)
 	char *file_name;
 
 	i = 2;
-	while (str[i] == ' ')
+	while (str[i] == ' ' && str[i] == '\t')
 		i++;
 	fd = open(str + i, O_RDWR | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
 	data->pipes[block][1] = fd;
@@ -67,7 +67,7 @@ int	ft_redir_in(char *str, int block, int arg, t_data *data) //add test if fd op
 	char *file_name;
 
 	i = 1;
-	while (str[i] == ' ')
+	while (str[i] == ' ' && str[i] == '\t')
 		i++;
 	fd = open(str + i, O_RDONLY, S_IRUSR | S_IWUSR);
 	if (block == 0)
@@ -111,7 +111,7 @@ int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close 
 		
 		signal(SIGINT, sig_handler_heredoc);
 		i = 2;
-		while (str[i] == ' ')
+		while (str[i] == ' ' && str[i] == '\t')
 			i++;
 		delimiter = str + i;
 		buffer = ft_calloc(1, sizeof(char));

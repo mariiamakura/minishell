@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 14:35:32 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/08 09:37:46 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/09 17:26:30 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,20 @@ static void	ft_free_path(char **path_env)
 	free(path_env);
 }
 
+int	ft_is_path(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '/')
+			return (TRUE);
+		i++;
+	}
+	return (FALSE);
+}
+
 int	ft_add_path(int block, t_data *data)
 {
 	char	**path_env;
@@ -51,6 +65,14 @@ int	ft_add_path(int block, t_data *data)
 
 	if (ft_is_builtin(data->tokens[block][0]) == TRUE)
 		return (0);
+	if (ft_is_path(data->tokens[block][0]) == FALSE && ft_is_builtin(data->tokens[block][0]) == FALSE)
+	{
+		funct_name = ft_strjoin(data->tokens[block][0], ": command not found\n");
+		ft_putstr_fd(funct_name, 2);
+		free(funct_name);
+		data->error_flags[block] = TRUE;
+		return (-1);
+	}
 	if (data->tokens[block][0][0] == '.' && data->tokens[block][0][1] == '/')
 	{
 		if (access(data->tokens[block][0] + 2, F_OK) == 0 && access(data->tokens[block][0] + 2, X_OK) == 0)
@@ -70,25 +92,20 @@ int	ft_add_path(int block, t_data *data)
 	while (path_env[i])
 	{
 		test = ft_strjoin(path_env[i], funct_name);
-		if (access(test, F_OK) == 0)
+		if (access(test, F_OK) == 0 && access(test, X_OK) == 0)
 		{
-			if (access(test, X_OK) == 0) //checks if file is exectuable
-			{
-				free(data->tokens[block][0]);
-				ft_free_path(path_env);
-				free(funct_name);
-				data->tokens[block][0] = test;
-				return (0);
-			}
+			free(data->tokens[block][0]);
+			ft_free_path(path_env);
+			free(funct_name);
+			data->tokens[block][0] = test;
+			return (0);
 		}
 		free(test);
 		i++;
 	}
 	ft_free_path(path_env);
-	test = ft_strjoin(funct_name + 1, ": command not found\n");
-	path_str = ft_strjoin("minishell: ", test);
-	ft_putstr_fd(path_str, 2);
-	free(test);
+	path_str = ft_strjoin("minishell: ", funct_name + 1);
+	perror(path_str);
 	free(path_str);
 	free(funct_name);
 	data->error_flags[block] = TRUE;

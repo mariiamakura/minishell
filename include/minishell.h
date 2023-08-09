@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 15:37:54 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 16:18:33 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,6 @@ void	sig_handler_child(int signum);
 void	sig_handler_parent(int signum);
 void	init_signals(void);
 void	sig_handler_heredoc(int signum);
-
-//utils.c just useful for now
-void print_tokens(t_data *data);
 
 //lexer
 int		ft_lexer(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 15:24:09 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/01 16:02:12 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/09 16:17:25 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_red_count(char *str, int red)
 		j++;
 		if (str[j] == red)
 			j++;
-		while (str[j] == ' ')
+		while (str[j] == ' ' || str[j] == '\t')
 			j++;
 	}
 	return (j);
@@ -58,10 +58,10 @@ int	ft_split_sub(char *sub_str, int block, t_data *data)
 	arg = 0;
 	while(sub_str[i])
 	{
-		if (sub_str[i] != ' ')
+		if (sub_str[i] != ' ' && sub_str[i] != '\t')
 		{
 			j = 0;
-			while (sub_str[i + j] != ' ' && sub_str[i + j])
+			while (sub_str[i + j] != ' ' && sub_str[i + j] != '\t' && sub_str[i + j])
 			{
 				j += ft_red_count(&sub_str[i + j], '<');
 				j += ft_red_count(&sub_str[i + j], '>');
