@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 14:35:32 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 17:26:30 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/09 18:34:08 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,17 @@ int	ft_add_path(int block, t_data *data)
 
 	if (ft_is_builtin(data->tokens[block][0]) == TRUE)
 		return (0);
-	if (ft_is_path(data->tokens[block][0]) == FALSE && ft_is_builtin(data->tokens[block][0]) == FALSE)
+	/* if (ft_is_path(data->tokens[block][0]) == FALSE && ft_is_builtin(data->tokens[block][0]) == FALSE)
 	{
+		
 		funct_name = ft_strjoin(data->tokens[block][0], ": command not found\n");
 		ft_putstr_fd(funct_name, 2);
 		free(funct_name);
+		errno = 127;
+		last_exit_global = 127;
 		data->error_flags[block] = TRUE;
 		return (-1);
-	}
+	} */
 	if (data->tokens[block][0][0] == '.' && data->tokens[block][0][1] == '/')
 	{
 		if (access(data->tokens[block][0] + 2, F_OK) == 0 && access(data->tokens[block][0] + 2, X_OK) == 0)
@@ -83,8 +86,17 @@ int	ft_add_path(int block, t_data *data)
 		data->error_flags[block] = TRUE;
 		return (-1);
 	}
-	if (access(data->tokens[block][0], F_OK) == 0 && access(data->tokens[block][0], X_OK) == 0)
-		return (0);
+	if (ft_is_path(data->tokens[block][0]) == TRUE)
+	{
+		if (access(data->tokens[block][0], F_OK) == 0 && access(data->tokens[block][0], X_OK) == 0)
+			return (0);
+		funct_name = ft_strjoin("minishell: ", data->tokens[block][0]);
+		perror(funct_name);
+		free(funct_name);
+		last_exit_global = errno;
+		data->error_flags[block] = TRUE;
+		return (-1);
+	}
 	funct_name = ft_strjoin("/", data->tokens[block][0]); //adding '/' before function name
 	path_str = ft_getenv(data->env, "PATH");
 	path_env = ft_split(path_str, ':');
@@ -104,10 +116,11 @@ int	ft_add_path(int block, t_data *data)
 		i++;
 	}
 	ft_free_path(path_env);
-	path_str = ft_strjoin("minishell: ", funct_name + 1);
-	perror(path_str);
-	free(path_str);
+	funct_name = ft_strjoin(data->tokens[block][0], ": command not found\n");
+	ft_putstr_fd(funct_name, 2);
 	free(funct_name);
+	errno = 127;
+	last_exit_global = 127;
 	data->error_flags[block] = TRUE;
 	return (1);
 }

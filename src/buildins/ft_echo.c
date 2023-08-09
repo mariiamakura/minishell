@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 18:40:47 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/09 15:15:56 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 17:44:08 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void ft_print(char *av[], int i, int flag, int index, t_data *data)
 	home_dir = ft_get_env_value(data, "HOME");
 	while (av[i])
 	{
-		if ((ft_strncmp(av[i], "~", ft_strlen(av[i]))) == 0) //do ex cases Emilie sent pdf 
+		if ((ft_strncmp(av[i], "~", ft_strlen(av[i]))) == 0 && ft_strlen(av[i]) == 1) //do ex cases Emilie sent pdf 
 		{
 			ft_putstr_fd(home_dir, data->pipes[index][1]);
 		}
