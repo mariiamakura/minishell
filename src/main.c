@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/08 19:44:05 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/09 15:00:58 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,14 @@ int	main(int argc, char *argv[], char *envp[])
 		init_signals();
 		if (0 <= ft_parse(data))
 		{
+			init_pipes(data);
+			ft_lexer(data);
 			start_pipes(data);
 			ft_free_tokens(data);
 			free(data->error_flags);
+			free_wflags(data, data->pipe_num, FINISHED); //mb do it in the end if data is still needed after pipes
 		}
 	}
-	free(data);
 	//print_tokens(data);
 	//printf("%d\n", execve(data->tokens[0][0], data->tokens[0], NULL));
 }

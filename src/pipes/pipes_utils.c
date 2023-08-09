@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:11:45 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/08 16:09:25 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/09 15:00:07 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void free_wflags(t_data *data, int i, int flag)
 	j = 0;
 	if (flag == NOT_FINISHED)
 	{
-		while (j < i)
+		while (j < i) //not sure about < or <=
 		{
 			free(data->pipes[j]);
 			j++;
@@ -27,7 +27,7 @@ void free_wflags(t_data *data, int i, int flag)
 	}
 	else
 	{
-		while (j < i)
+		while (j <= data->pipe_num)
 		{
 			free(data->pipes[j]);
 			j++;
@@ -35,7 +35,6 @@ void free_wflags(t_data *data, int i, int flag)
 	}
 	free(data->pipes);
 	free(data->child_pid);
-	//free(data); -free where it was malloc or in main
 }
 
 void close_fd(t_data *data)
@@ -64,8 +63,6 @@ void term_processes(t_data * data)
 			j++;
 		}
 	}
-	//data->last_exit = 130;
-	//last_exit_global = 0;
 }
 
 void wait_children(t_data *data)
@@ -78,12 +75,8 @@ void wait_children(t_data *data)
 	while (k <= data->pipe_num)
 	{
 		pid = wait(&status);
-		//printf("pid: %d  exit: %d\n", pid, status);
 		if (pid == data->child_pid[data->pipe_num] && last_exit_global != 130)
-		{
 			last_exit_global = status;
-		//printf("last-pid: %d  exit: %d\n", pid, status);
-		}
 		k++;
 	}
 }

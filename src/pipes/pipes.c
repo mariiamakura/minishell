@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/08 19:44:23 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/09 14:58:51 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ int	init_pipes(t_data * data)
 		if(pipe(data->pipes[i]) != 0)
 		{
 			free_wflags(data, i, NOT_FINISHED);
+			data->error_flags[i] = TRUE;
 			return (-1);
 		}
 		i++;
 	}
-	ft_lexer(data);
 	return (0);
 }
 
@@ -44,7 +44,6 @@ int start_pipes(t_data *data)
 	int i;
 	
 	i = 0;
-	init_pipes(data);
 	if (data == NULL)
 		return (-1); //maybe return data?
 	if (data->pipe_num == 0 && ft_is_builtin(data->tokens[0][0]) == TRUE) //&& last_exit_global != 130)//add ft_is_builtin to add_path
@@ -99,7 +98,6 @@ int start_pipes(t_data *data)
 	}
 	if (last_exit_global == 130)
 		term_processes(data);
-	free_wflags(data, i, FINISHED); //mb do it in the end if data is still needed after pipes
 	return (0);
 }
 
