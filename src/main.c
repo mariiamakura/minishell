@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/08 17:41:35 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 14:11:19 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	main(int argc, char *argv[], char *envp[])
 	init_signals();
 	if (data == NULL)
 		return (1);
-	data->env = envp; //add dynamic allocation!
+	data->env = ft_copy_2d_arr(envp); //add dynamic allocation!
 	data->last_exit = 0;
 	while (1) 
 	{
@@ -55,6 +55,7 @@ int	main(int argc, char *argv[], char *envp[])
 			ft_free_tokens(data);
 		}
 	}
+	ft_free_2d(data->env);
 	free(data);
 	//print_tokens(data);
 	//printf("%d\n", execve(data->tokens[0][0], data->tokens[0], NULL));

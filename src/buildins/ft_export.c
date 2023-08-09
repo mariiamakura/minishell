@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:52:26 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/08 17:41:53 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 15:02:04 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ char **ft_replace_env_var(char *av, t_data *data, char *var_name)
 		if (ft_strncmp(data_env, var_name, ft_strlen(var_name)) == 0 && 
 			ft_strlen(data_env) == ft_strlen(var_name))
 		{
+				free(data->env[i]);
 				data->env[i] = new_var;
 		}
 		free(data_env);
@@ -83,15 +84,33 @@ char **ft_add_env_var(char *av, t_data *data)
 {
 	int size;
 	char *new_var;
+	char **new_env;
 
 	size = ft_count_arg(data->env);
+	new_env = malloc(sizeof(char *) * (size + 2));
+	if (new_env == NULL)
+		return (NULL);
 	new_var = ft_strdup(av);
 	if (new_var == NULL)
 		return (NULL);
-	data->env[size] = new_var;
-	data->env[size + 1] = NULL;
+	size = 0;
+	while (data->env[size])
+	{
+		new_env[size] = ft_strdup(data->env[size]);
+		if (new_env[size] == NULL)
+		{
+			ft_free_2d(new_env);
+			return (NULL);
+		}
+		size++;
+	}
+	new_env[size] = new_var;
+	new_env[size + 1] = NULL;
+	ft_free_2d(data->env);
+	data->env = new_env;
 	return (data->env);
 }
+
 
 int ft_count_arg(char **av)
 {

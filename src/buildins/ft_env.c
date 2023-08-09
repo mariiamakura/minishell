@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 15:55:54 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/08 15:45:32 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 14:17:20 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void ft_env_declare_x(t_data *data, int index)
 	int size;
 
 	i = 0;
-	temp_env = ft_copy_2d_arr(data);
+	temp_env = ft_copy_2d_arr(data->env);
 	sort_flag = FALSE;
 	size = ft_count_arg(data->env);
 	while (sort_flag != TRUE)
@@ -112,21 +112,21 @@ void print_declare_x(char **temp_env, int index, t_data *data)
 	}
 }
 
-char **ft_copy_2d_arr(t_data *data)
+char **ft_copy_2d_arr(char **env)
 {
 	int i;
 	char **new_arr;
 
 	i = 0;
-	while (data->env[i])
+	while (env[i])
         i++;
 	new_arr = malloc(sizeof(char *) * (i + 1));
 	if (new_arr == NULL)
 		return (NULL);
 	i = 0;
-	while (data->env[i])
+	while (env[i])
 	{
-		new_arr[i] = ft_strdup(data->env[i]);
+		new_arr[i] = ft_strdup(env[i]);
 		if (new_arr[i] == NULL)
 		{
 			ft_free_2d(new_arr);

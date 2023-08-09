@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/08 17:03:59 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 15:06:21 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void ft_cd_prev(t_data *data, int index);
 void ft_env(t_data *data, int index);
 char *ft_get_env_value(t_data *data, char *var_name);
 void ft_env_declare_x(t_data *data, int index);
-char **ft_copy_2d_arr(t_data *data);
+char **ft_copy_2d_arr(char **env);
 void swap(char **a, char **b);
 void print_declare_x(char **temp_env, int index, t_data *data);
 
@@ -130,5 +130,8 @@ char **ft_replace_env_var(char *av, t_data *data, char *var_name);
 void ft_pwd(t_data *data, int index);
 void ft_update_pwd(t_data *data, int index);
 void ft_update_oldpwd(t_data *data, int index);
+
+//ft_unset.c
+void ft_unset(char *av[], t_data *data, int index);
 
 #endif
