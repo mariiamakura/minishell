@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 17:31:08 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 18:15:40 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <errno.h>
+#include <limits.h>
 
 
 # define TRUE 1
@@ -133,7 +134,7 @@ void ft_unset(char *av[], t_data *data);
 char **ft_remove_env(t_data * data, char *var_name);
 
 //exit.c
-void ft_exit(t_data *data);
+void ft_exit(char *av[], t_data *data);
 void	ft_free_tokens(t_data *data);
 
 #endif
