@@ -6,23 +6,35 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 15:55:54 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/09 14:17:20 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/10 15:53:10 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void ft_env(t_data *data, int index)
+int ft_env(char *av[], t_data *data, int index)
 {
 	int j;
+	char *error;
 
 	j = 0;
+	if (av[1] != NULL)
+	{
+		error = ft_strjoin("minishell: env: Permission denied: ", av[1]);
+		ft_putstr_fd(error, STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
+		last_exit_global = 127;
+		free(error);
+		return (last_exit_global);
+	}
 	while (data->env[j])
 	{
 		ft_putstr_fd(data->env[j], data->pipes[index][1]);
 		ft_putstr_fd("\n", data->pipes[index][1]);
 		j++;
 	}
+	last_exit_global = 0;
+	return(last_exit_global);
 }
 
 char *ft_get_env_value(t_data *data, char *var_name) 
@@ -68,7 +80,7 @@ void swap(char **a, char **b)
 	*b = temp;
 }
 
-void ft_env_declare_x(t_data *data, int index)
+int ft_env_declare_x(t_data *data, int index)
 {
 	int i;
 	char **temp_env;
@@ -96,6 +108,7 @@ void ft_env_declare_x(t_data *data, int index)
 	}
 	print_declare_x(temp_env, index, data);
 	ft_free_2d(temp_env);
+	return (0);
 }
 
 void print_declare_x(char **temp_env, int index, t_data *data)

@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 18:15:40 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/10 16:11:33 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_data
 	char *promt;
 	int *error_flags;
 	int	forked;
+	// char *oldpwd;
 	//int	last_exit;
 } t_data;
 
@@ -102,27 +103,28 @@ void ft_print(char *av[], int i, int flag, int index, t_data *data);
 int ft_prem_output(t_data *data, int index);
 
 //cd.c
-void ft_cd(char *av[], t_data *data, int index);
-void ft_cd_home(t_data *data);
-void ft_cd_prev(t_data *data, int index);
+int ft_cd(char *av[], t_data *data, int index);
+int ft_cd_home(t_data *data);
+int ft_cd_prev(t_data *data, int index);
 
 //env.c
-void ft_env(t_data *data, int index);
+int		ft_env(char *av[], t_data *data, int index);
 char *ft_get_env_value(t_data *data, char *var_name);
-void ft_env_declare_x(t_data *data, int index);
+int ft_env_declare_x(t_data *data, int index);
 char **ft_copy_2d_arr(char **env);
 void swap(char **a, char **b);
 void print_declare_x(char **temp_env, int index, t_data *data);
 
 //export.c
-void ft_export(char *av[], t_data *data, int index);
+int ft_export(char *av[], t_data *data, int index);
 char *ft_get_var_name(char* av);
 int ft_count_arg(char **av);
 char **ft_get_multi_var_name(char **av, int num_var, int flag);
 int ft_is_var_in_env(t_data *data, char *var_name);
 char **ft_add_env_var(char *av, t_data *data);
 char **ft_replace_env_var(char *av, t_data *data, char *var_name);
-void var_name_error(char *var_name, int flag);
+//void var_name_error(char *var_name, int flag);
+int var_name_error_new(char **var_names);
 
 //pwd.c
 void ft_pwd(t_data *data, int index);
@@ -132,9 +134,11 @@ void ft_update_oldpwd(t_data *data, int index);
 //ft_unset.c
 void ft_unset(char *av[], t_data *data);
 char **ft_remove_env(t_data * data, char *var_name);
+// int ft_copy_env_var(t_data *data, char *var_name);
 
 //exit.c
-void ft_exit(char *av[], t_data *data);
+int ft_exit(char *av[], t_data *data);
+
 void	ft_free_tokens(t_data *data);
 
 #endif

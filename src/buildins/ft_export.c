@@ -6,13 +6,13 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:52:26 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/09 17:19:17 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/10 16:43:12 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void ft_export(char *av[], t_data *data, int index)
+int ft_export(char *av[], t_data *data, int index)
 {
 	char **var_names;
 	int i;
@@ -22,13 +22,16 @@ void ft_export(char *av[], t_data *data, int index)
 	i = 0;
 	arg_num = ft_count_arg(av);
 	if (ft_count_arg(av) == 1)
-		ft_env_declare_x(data, index);
+		return (ft_env_declare_x(data, index));
 	var_names = ft_get_multi_var_name(av, arg_num, FT_EXPORT);
 	if (var_names == NULL)
-		return ;
+	{
+		last_exit_global = 1;
+		return (last_exit_global);
+	}
+	last_exit_global = var_name_error_new(var_names);
 	while (i < arg_num - 1)
 	{
-		//printf("%s\n", var_names[i]);
 		if (var_names[i] == NULL)
 			i++;
 		else if (ft_is_var_in_env(data, var_names[i]) == TRUE)
@@ -37,7 +40,8 @@ void ft_export(char *av[], t_data *data, int index)
 			if (data->env == NULL)
 			{
 				ft_putstr_fd("minishell: export", STDERR_FILENO);
-				return ;
+				last_exit_global = 1;
+				return (last_exit_global);
 			}
 		}
 		else 
@@ -46,12 +50,52 @@ void ft_export(char *av[], t_data *data, int index)
 			if (data->env == NULL)
 			{
 				ft_putstr_fd("minishell: export", STDERR_FILENO);
-				return ;
+				last_exit_global = 1;
+				return (last_exit_global);
 			}
 		}
 		i++;
 	}
 	ft_free_2d(var_names);
+	return (last_exit_global);
+}
+
+int var_name_error_new(char **var_names)
+{
+	int j;
+	char *error;
+
+	j = 0;
+	error = NULL;
+	if (var_names[0] == NULL)
+	{
+			ft_putstr_fd("minishell: export: not a valid identidier\n", STDERR_FILENO);
+			last_exit_global = 1;
+			return (1);
+	}
+	while (var_names[j])
+	{
+		printf("%s\n", var_names[j]);
+		if (var_names[j] == NULL)
+		{
+			ft_putstr_fd("minishell: export: not a valid identidier\n", STDERR_FILENO);
+			return (1);
+		}
+		if (var_names[j] != NULL && !(var_names[j][0] >= 'a' && var_names[j][0] <= 'z') 
+			&& !(var_names[j][0] >= 'A' && var_names[j][0] <= 'Z')
+			&& var_names[j][0] != '_')
+		{
+			error = ft_strjoin("export: not an identifier: ", var_names[j]);
+			ft_putstr_fd(error, STDERR_FILENO);
+			ft_putstr_fd("\n", STDERR_FILENO);
+			free(error);
+			free (var_names[j]);
+			var_names[j] = NULL;
+			return (1);
+		}
+		j++;
+	}
+	return (0);
 }
 
 char **ft_replace_env_var(char *av, t_data *data, char *var_name)
@@ -166,32 +210,11 @@ char **ft_get_multi_var_name(char **av, int num_var, int flag)
 			var_names[j] = ft_get_var_name(av[i]);
 		else if (flag == FT_UNSET)
 			var_names[j] = ft_strdup(av[i]);
-		if (var_names[j] != NULL && !(var_names[j][0] >= 'a' && var_names[j][0] <= 'z') 
-			&& !(var_names[j][0] >= 'A' && var_names[j][0] <= 'Z')
-			&& var_names[j][0] != '_')
-		{
-			var_name_error(var_names[j], flag);
-		}
 		i++;
 		j++;
 	}
 	var_names[j] = NULL;
 	return(var_names);
-}
-
-void var_name_error(char *var_name, int flag)
-{
-	char *error;
-	
-	if (flag == FT_EXPORT)
-	{
-		error = ft_strjoin("export: not an identifier: ", var_name);
-		ft_putstr_fd(error, STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
-		free(error);
-		free (var_name);
-		var_name = NULL;
-	}
 }
 
 char *ft_get_var_name(char* av)
