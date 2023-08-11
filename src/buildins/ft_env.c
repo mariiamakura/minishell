@@ -6,16 +6,16 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 15:55:54 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/10 15:53:10 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/11 16:41:42 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int ft_env(char *av[], t_data *data, int index)
+int	ft_env(char *av[], t_data *data, int index)
 {
-	int j;
-	char *error;
+	int		j;
+	char	*error;
 
 	j = 0;
 	if (av[1] != NULL)
@@ -23,9 +23,8 @@ int ft_env(char *av[], t_data *data, int index)
 		error = ft_strjoin("minishell: env: Permission denied: ", av[1]);
 		ft_putstr_fd(error, STDERR_FILENO);
 		ft_putstr_fd("\n", STDERR_FILENO);
-		last_exit_global = 127;
 		free(error);
-		return (last_exit_global);
+		return (127);
 	}
 	while (data->env[j])
 	{
@@ -33,8 +32,7 @@ int ft_env(char *av[], t_data *data, int index)
 		ft_putstr_fd("\n", data->pipes[index][1]);
 		j++;
 	}
-	last_exit_global = 0;
-	return(last_exit_global);
+	return(0);
 }
 
 char *ft_get_env_value(t_data *data, char *var_name) 

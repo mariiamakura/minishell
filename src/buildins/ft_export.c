@@ -6,17 +6,17 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:52:26 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/10 16:43:12 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/11 17:05:42 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int ft_export(char *av[], t_data *data, int index)
+int	ft_export(char *av[], t_data *data, int index)
 {
-	char **var_names;
-	int i;
-	int arg_num;
+	char	**var_names;
+	int		i;
+	int		arg_num;
 
 	var_names = NULL;
 	i = 0;
@@ -25,98 +25,59 @@ int ft_export(char *av[], t_data *data, int index)
 		return (ft_env_declare_x(data, index));
 	var_names = ft_get_multi_var_name(av, arg_num, FT_EXPORT);
 	if (var_names == NULL)
-	{
-		last_exit_global = 1;
-		return (last_exit_global);
-	}
-	last_exit_global = var_name_error_new(var_names);
+		return (1);
+	last_exit_global = var_name_error_new(var_names, arg_num);
+	last_exit_global = ft_export_loop(arg_num, data, var_names, av);
+	ft_free_var_names(var_names, arg_num);
+	return (last_exit_global);
+}
+
+int	ft_export_loop(int arg_num, t_data *data, char **var_names, char **av)
+{
+	int	i;
+
+	i = 0;
 	while (i < arg_num - 1)
 	{
 		if (var_names[i] == NULL)
 			i++;
 		else if (ft_is_var_in_env(data, var_names[i]) == TRUE)
 		{
-			data->env = ft_replace_env_var(av[i + 1], data, var_names[i]);
-			if (data->env == NULL)
-			{
-				ft_putstr_fd("minishell: export", STDERR_FILENO);
-				last_exit_global = 1;
-				return (last_exit_global);
-			}
+			if (ft_replace_env_var(av[i + 1], data, var_names[i]) == NULL)
+				return (ft_print_error_buildins("minishell: export", ""));
+			i++;
 		}
 		else 
 		{
-			data->env = ft_add_env_var(av[i + 1], data);
-			if (data->env == NULL)
-			{
-				ft_putstr_fd("minishell: export", STDERR_FILENO);
-				last_exit_global = 1;
-				return (last_exit_global);
-			}
+			if (ft_add_env_var(av[i + 1], data) == NULL)
+				return (ft_print_error_buildins("minishell: export", ""));
+			i++;
 		}
-		i++;
 	}
-	ft_free_2d(var_names);
-	return (last_exit_global);
-}
-
-int var_name_error_new(char **var_names)
-{
-	int j;
-	char *error;
-
-	j = 0;
-	error = NULL;
-	if (var_names[0] == NULL)
-	{
-			ft_putstr_fd("minishell: export: not a valid identidier\n", STDERR_FILENO);
-			last_exit_global = 1;
-			return (1);
-	}
-	while (var_names[j])
-	{
-		printf("%s\n", var_names[j]);
-		if (var_names[j] == NULL)
-		{
-			ft_putstr_fd("minishell: export: not a valid identidier\n", STDERR_FILENO);
-			return (1);
-		}
-		if (var_names[j] != NULL && !(var_names[j][0] >= 'a' && var_names[j][0] <= 'z') 
-			&& !(var_names[j][0] >= 'A' && var_names[j][0] <= 'Z')
-			&& var_names[j][0] != '_')
-		{
-			error = ft_strjoin("export: not an identifier: ", var_names[j]);
-			ft_putstr_fd(error, STDERR_FILENO);
-			ft_putstr_fd("\n", STDERR_FILENO);
-			free(error);
-			free (var_names[j]);
-			var_names[j] = NULL;
-			return (1);
-		}
-		j++;
-	}
+	if (last_exit_global != 0)
+		return (last_exit_global);
 	return (0);
 }
 
-char **ft_replace_env_var(char *av, t_data *data, char *var_name)
+char	**ft_replace_env_var(char *av, t_data *data, char *var_name)
 {
-	int i;
-	char *new_var;
-	char *data_env;
+	int		i;
+	char	*new_var;
+	char	*data_env;
 
 	i = 0;
 	new_var = ft_strdup(av);
 	data_env = NULL;
 	if (new_var == NULL)
-		return(NULL);
+		return (NULL);
 	while (data->env[i])
 	{
 		data_env = ft_get_var_name(data->env[i]);
 		if (ft_strncmp(data_env, var_name, ft_strlen(var_name)) == 0 && 
 			ft_strlen(data_env) == ft_strlen(var_name))
 		{
-				free(data->env[i]);
-				data->env[i] = new_var;
+			free(data->env[i]);
+			data->env[i] = new_var;
 		}
 		free(data_env);
 		i++;
@@ -124,18 +85,16 @@ char **ft_replace_env_var(char *av, t_data *data, char *var_name)
 	return (data->env);
 }
 
-char **ft_add_env_var(char *av, t_data *data)
+char	**ft_add_env_var(char *av, t_data *data)
 {
-	int size;
-	char *new_var;
-	char **new_env;
+	int		size;
+	char	*new_var;
+	char	**new_env;
 
 	size = ft_count_arg(data->env);
 	new_env = malloc(sizeof(char *) * (size + 2));
-	if (new_env == NULL)
-		return (NULL);
 	new_var = ft_strdup(av);
-	if (new_var == NULL)
+	if (new_var == NULL || new_env == NULL)
 		return (NULL);
 	size = 0;
 	while (data->env[size])
@@ -155,50 +114,12 @@ char **ft_add_env_var(char *av, t_data *data)
 	return (data->env);
 }
 
-
-int ft_count_arg(char **av)
+char	**ft_get_multi_var_name(char **av, int num_var, int flag)
 {
-	int i;
+	int		i;
+	char	**var_names;
+	int		j;
 
-	i = 1;
-	while (av[i])
-	{
-		i++;
-	}
-	return (i);
-}
-
-int ft_is_var_in_env(t_data *data, char *var_name)
-{
-	int i;
-	int flag;
-	int size;
-	char *data_env;
-	
-	i = 0;
-	flag = FALSE;
-	size = 0;
-	data_env = NULL;
-	while (data->env[i])
-	{
-		data_env = ft_get_var_name(data->env[i]);
-		if (ft_strncmp(data_env, var_name, ft_strlen(var_name)) == 0 && 
-			ft_strlen(data_env) == ft_strlen(var_name))
-		{
-			flag = TRUE;
-		}
-		free(data_env);
-		i++;
-	}
-	return (flag);
-}
-
-char **ft_get_multi_var_name(char **av, int num_var, int flag)
-{
-	int i;
-	char **var_names;
-	int j;
-	
 	i = 1;
 	j = 0;
 	var_names = malloc(sizeof(char *) * num_var);
@@ -214,32 +135,5 @@ char **ft_get_multi_var_name(char **av, int num_var, int flag)
 		j++;
 	}
 	var_names[j] = NULL;
-	return(var_names);
-}
-
-char *ft_get_var_name(char* av)
-{
-	int end;
-	char *var_name;
-	int equal_sign;
-	
-	end = 0;
-	var_name = NULL;
-	equal_sign = FALSE;
-	while (av[end])
-	{
-		if (av[end] == '=')
-		{
-			equal_sign = TRUE;
-			break;
-		}
-		end++;
-	}
-	if (equal_sign == FALSE)
-			return (NULL);
-	var_name = malloc(sizeof(char) * (end + 1));
-	if (var_name == NULL)
-		return (NULL);
-	ft_strlcpy(var_name, av, end + 1);
-	return (var_name);
+	return (var_names);
 }

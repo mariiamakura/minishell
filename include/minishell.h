@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/10 16:11:33 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/11 17:18:22 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,15 @@ int		ft_redir_out(char *str, int block, int arg, t_data *data);
 
 //builtins
 int		ft_is_builtin(char *str);
-void    ft_run_builtin(t_data *data, int i);
+int		ft_run_builtin(t_data *data, int i);
 void	ft_free_2d(char **av);
+void	ft_free_var_names(char **av, int arg_num);
+int	ft_print_error_buildins(char *s1, char *s2);
 
 //buildins
 //echo.c 
 int ft_echo(char *av[], t_data *data, int index);
-void ft_print(char *av[], int i, int flag, int index, t_data *data);
+void ft_print(char *av[],int flag, int index, t_data *data);
 int ft_prem_output(t_data *data, int index);
 
 //cd.c
@@ -115,21 +117,24 @@ char **ft_copy_2d_arr(char **env);
 void swap(char **a, char **b);
 void print_declare_x(char **temp_env, int index, t_data *data);
 
+//ft_export_utils.c
+int var_name_error_new(char **var, int arg_num);
+int ft_is_var_in_env(t_data *data, char *var_name);
+int ft_count_arg(char **av);
+void ft_free_var_names(char **av, int arg_num);
+char *ft_get_var_name(char* av);
+
 //export.c
 int ft_export(char *av[], t_data *data, int index);
-char *ft_get_var_name(char* av);
-int ft_count_arg(char **av);
 char **ft_get_multi_var_name(char **av, int num_var, int flag);
-int ft_is_var_in_env(t_data *data, char *var_name);
 char **ft_add_env_var(char *av, t_data *data);
 char **ft_replace_env_var(char *av, t_data *data, char *var_name);
-//void var_name_error(char *var_name, int flag);
-int var_name_error_new(char **var_names);
+int ft_export_loop(int arg_num, t_data *data, char **var_names, char **av);
 
 //pwd.c
-void ft_pwd(t_data *data, int index);
-void ft_update_pwd(t_data *data, int index);
-void ft_update_oldpwd(t_data *data, int index);
+int ft_pwd(t_data *data, int index);
+int ft_update_pwd(t_data *data, int index);
+int ft_update_oldpwd(t_data *data, int index);
 
 //ft_unset.c
 void ft_unset(char *av[], t_data *data);
@@ -138,6 +143,8 @@ char **ft_remove_env(t_data * data, char *var_name);
 
 //exit.c
 int ft_exit(char *av[], t_data *data);
+int	exit_error(char *av[]);
+void ft_exit_error(char *s1, char *s2);
 
 void	ft_free_tokens(t_data *data);
 
