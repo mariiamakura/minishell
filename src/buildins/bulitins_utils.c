@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 12:19:33 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/11 17:19:42 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/11 18:13:03 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,31 @@ void ft_free_2d(char **av)
 		i++;
 	}
 	free(av);
+}
+
+
+char	**ft_copy_2d_arr(char **env)
+{
+	int		i;
+	char	**new_arr;
+
+	i = 0;
+	while (env[i])
+		i++;
+	new_arr = malloc(sizeof(char *) * (i + 1));
+	if (new_arr == NULL)
+		return (NULL);
+	i = 0;
+	while (env[i])
+	{
+		new_arr[i] = ft_strdup(env[i]);
+		if (new_arr[i] == NULL)
+		{
+			ft_free_2d(new_arr);
+			return (NULL);
+		}
+		i++;
+	}
+	new_arr[i] = NULL;
+	return (new_arr);
 }

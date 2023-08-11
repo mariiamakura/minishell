@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 15:55:54 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/11 16:41:42 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/11 18:20:44 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ int	ft_env(char *av[], t_data *data, int index)
 		ft_putstr_fd("\n", data->pipes[index][1]);
 		j++;
 	}
-	return(0);
+	return (0);
 }
 
-char *ft_get_env_value(t_data *data, char *var_name) 
+char	*ft_get_env_value(t_data *data, char *var_name)
 {
-	int i;
-	char *new_str;
-	char *res;
+	int		i;
+	char	*new_str;
+	char	*res;
 
 	i = 0;
 	new_str = NULL;
@@ -50,68 +50,73 @@ char *ft_get_env_value(t_data *data, char *var_name)
 		{
 			new_str = ft_strdup(data->env[i]);
 			res = ft_strchr(new_str, '=');
-			if (new_str == 0)
-			{
-				free(new_str);
-				return (NULL);
-			}
-			else
+			if (res)
 			{
 				res = ft_strdup(res + 1);
 				free(new_str);
 				return (res);
 			}
-				
-		} 
+		}
 		free(new_str);
+		new_str = NULL;
 		i++;
 	}
 	return (NULL);
 }
 
-void swap(char **a, char **b)
+void	swap(char **a, char **b)
 {
-	char *temp;
-	
+	char	*temp;
+
 	temp = *a;
 	*a = *b;
 	*b = temp;
 }
 
-int ft_env_declare_x(t_data *data, int index)
+void ft_declare_x(t_data *data, int index)
 {
-	int i;
-	char **temp_env;
-	int sort_flag;
-	int size;
+	char	**tm;
+	int		size;
 
-	i = 0;
-	temp_env = ft_copy_2d_arr(data->env);
-	sort_flag = FALSE;
+	tm = ft_copy_2d_arr(data->env);
 	size = ft_count_arg(data->env);
+
+	
+}
+
+int	ft_env_declare_x(t_data *data, int index)
+{
+	int		i;
+	//char	**tm;
+	int		sort_flag;
+	//int		size;
+
+	//tm = ft_copy_2d_arr(data->env);
+	sort_flag = FALSE;
+	//size = ft_count_arg(data->env);
 	while (sort_flag != TRUE)
 	{
 		sort_flag = TRUE;
 		i = 0;
 		while (i < size - 1)
 		{
-			if (ft_strncmp(temp_env[i], temp_env[i + 1], ft_strlen(temp_env[i])) > 0)
+			if (ft_strncmp(tm[i], tm[i + 1], ft_strlen(tm[i])) > 0)
 			{
-				swap(&temp_env[i], &temp_env[i + 1]);
+				swap(&tm[i], &tm[i + 1]);
 				sort_flag = FALSE;
 			}
 			i++;
 		}
 		size--;
 	}
-	print_declare_x(temp_env, index, data);
-	ft_free_2d(temp_env);
+	print_declare_x(tm, index, data);
+	ft_free_2d(tm);
 	return (0);
 }
 
-void print_declare_x(char **temp_env, int index, t_data *data)
+void	print_declare_x(char **temp_env, int index, t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (temp_env[i])
@@ -121,30 +126,4 @@ void print_declare_x(char **temp_env, int index, t_data *data)
 		ft_putstr_fd("\n", data->pipes[index][1]);
 		i++;
 	}
-}
-
-char **ft_copy_2d_arr(char **env)
-{
-	int i;
-	char **new_arr;
-
-	i = 0;
-	while (env[i])
-        i++;
-	new_arr = malloc(sizeof(char *) * (i + 1));
-	if (new_arr == NULL)
-		return (NULL);
-	i = 0;
-	while (env[i])
-	{
-		new_arr[i] = ft_strdup(env[i]);
-		if (new_arr[i] == NULL)
-		{
-			ft_free_2d(new_arr);
-			return (NULL);
-		}
-		i++;
-	}
-	new_arr[i] = NULL;
-	return (new_arr);
 }
