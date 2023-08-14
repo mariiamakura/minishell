@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/11 17:18:22 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/14 15:25:55 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ typedef struct s_data
 	char *promt;
 	int *error_flags;
 	int	forked;
-	// char *oldpwd;
-	//int	last_exit;
 } t_data;
 
 extern int	last_exit_global;
@@ -109,13 +107,16 @@ int ft_cd(char *av[], t_data *data, int index);
 int ft_cd_home(t_data *data);
 int ft_cd_prev(t_data *data, int index);
 
+//declare.c
+int ft_declare_x(t_data *data, int index);
+int	ft_env_declare_sort(char **tm, int size);
+void swap(char **a, char **b);
+void print_declare_x(char **temp_env, int index, t_data *data);
+
 //env.c
 int		ft_env(char *av[], t_data *data, int index);
 char *ft_get_env_value(t_data *data, char *var_name);
-int ft_env_declare_x(t_data *data, int index);
 char **ft_copy_2d_arr(char **env);
-void swap(char **a, char **b);
-void print_declare_x(char **temp_env, int index, t_data *data);
 
 //ft_export_utils.c
 int var_name_error_new(char **var, int arg_num);
@@ -137,9 +138,8 @@ int ft_update_pwd(t_data *data, int index);
 int ft_update_oldpwd(t_data *data, int index);
 
 //ft_unset.c
-void ft_unset(char *av[], t_data *data);
-char **ft_remove_env(t_data * data, char *var_name);
-// int ft_copy_env_var(t_data *data, char *var_name);
+int ft_unset(char *av[], t_data *data);
+char **ft_remove_env(t_data *data, char *var_name, int j);
 
 //exit.c
 int ft_exit(char *av[], t_data *data);

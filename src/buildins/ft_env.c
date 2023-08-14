@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 15:55:54 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/11 18:20:44 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/14 15:20:23 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,68 +62,4 @@ char	*ft_get_env_value(t_data *data, char *var_name)
 		i++;
 	}
 	return (NULL);
-}
-
-void	swap(char **a, char **b)
-{
-	char	*temp;
-
-	temp = *a;
-	*a = *b;
-	*b = temp;
-}
-
-void ft_declare_x(t_data *data, int index)
-{
-	char	**tm;
-	int		size;
-
-	tm = ft_copy_2d_arr(data->env);
-	size = ft_count_arg(data->env);
-
-	
-}
-
-int	ft_env_declare_x(t_data *data, int index)
-{
-	int		i;
-	//char	**tm;
-	int		sort_flag;
-	//int		size;
-
-	//tm = ft_copy_2d_arr(data->env);
-	sort_flag = FALSE;
-	//size = ft_count_arg(data->env);
-	while (sort_flag != TRUE)
-	{
-		sort_flag = TRUE;
-		i = 0;
-		while (i < size - 1)
-		{
-			if (ft_strncmp(tm[i], tm[i + 1], ft_strlen(tm[i])) > 0)
-			{
-				swap(&tm[i], &tm[i + 1]);
-				sort_flag = FALSE;
-			}
-			i++;
-		}
-		size--;
-	}
-	print_declare_x(tm, index, data);
-	ft_free_2d(tm);
-	return (0);
-}
-
-void	print_declare_x(char **temp_env, int index, t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (temp_env[i])
-	{
-		ft_putstr_fd("declare -x ", data->pipes[index][1]);
-		ft_putstr_fd(temp_env[i], data->pipes[index][1]);
-		ft_putstr_fd("\n", data->pipes[index][1]);
-		i++;
-	}
 }
