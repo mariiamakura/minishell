@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/09 15:34:52 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/09 18:10:06 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int start_pipes(t_data *data)
 		{
 			ft_run_builtin(data, 0);
 			close_fd(data);
-			last_exit_global = 0;
+			//last_exit_global = 0;
 		}
 	}
 	else
