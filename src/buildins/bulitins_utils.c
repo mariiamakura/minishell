@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bulitins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 12:19:33 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 17:26:08 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/15 12:17:18 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	ft_is_builtin(char *str)
 {
+	if (str == NULL)
+		return (FALSE);
 	if (ft_strncmp("echo", str, ft_strlen(str)) == 0
 		|| ft_strncmp("cd", str, ft_strlen(str)) == 0
 		|| ft_strncmp("pwd", str, ft_strlen(str)) == 0

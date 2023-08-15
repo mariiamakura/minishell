@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:17:17 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 15:38:09 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/15 13:09:55 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,9 @@ int	ft_lexer(t_data *data) //return open error
 			if (data->tokens[i][j][0] == '<' && data->tokens[i][j][1] == '<')
 				ft_here_doc(data->tokens[i][j], i, j, data);
 			else if (data->tokens[i][j][0] == '>' && data->tokens[i][j][1] == '>')
-			{
-				ret = ft_redir_app(data->tokens[i][j], i, j, data);
-			}
+				ft_redir_app(data->tokens[i][j], i, j, data);
 			else if (data->tokens[i][j][0] == '>')
-			{
 				ret = ft_redir_out(data->tokens[i][j], i, j, data);
-			}
 			else if (data->tokens[i][j][0] == '<')
 				ft_redir_in(data->tokens[i][j], i, j, data);
 			else 
@@ -43,6 +39,6 @@ int	ft_lexer(t_data *data) //return open error
 		ft_add_path(i, data);
 		i++;
 	}
-	last_exit_global = 0;
+	last_exit_global = 0; // reset the variable after parsing 
 	return (0);
 }
