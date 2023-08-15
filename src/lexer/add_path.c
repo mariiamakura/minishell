@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 14:35:32 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 18:34:08 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/15 13:08:57 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*ft_getenv(char *envp[], char *var_name)
 			return (&envp[i][var_len + 1]);
 		i++;
 	}
-	return (NULL);
+	return (" ");
 }
 
 static void	ft_free_path(char **path_env)
@@ -63,19 +63,13 @@ int	ft_add_path(int block, t_data *data)
 	char	*funct_name; 
 	int		i;
 
-	if (ft_is_builtin(data->tokens[block][0]) == TRUE)
-		return (0);
-	/* if (ft_is_path(data->tokens[block][0]) == FALSE && ft_is_builtin(data->tokens[block][0]) == FALSE)
+	if (data->tokens[block][0] == NULL)
 	{
-		
-		funct_name = ft_strjoin(data->tokens[block][0], ": command not found\n");
-		ft_putstr_fd(funct_name, 2);
-		free(funct_name);
-		errno = 127;
-		last_exit_global = 127;
 		data->error_flags[block] = TRUE;
 		return (-1);
-	} */
+	}
+	if (ft_is_builtin(data->tokens[block][0]) == TRUE)
+		return (0);
 	if (data->tokens[block][0][0] == '.' && data->tokens[block][0][1] == '/')
 	{
 		if (access(data->tokens[block][0] + 2, F_OK) == 0 && access(data->tokens[block][0] + 2, X_OK) == 0)
@@ -93,7 +87,6 @@ int	ft_add_path(int block, t_data *data)
 		funct_name = ft_strjoin("minishell: ", data->tokens[block][0]);
 		perror(funct_name);
 		free(funct_name);
-		last_exit_global = errno;
 		data->error_flags[block] = TRUE;
 		return (-1);
 	}
@@ -120,7 +113,6 @@ int	ft_add_path(int block, t_data *data)
 	ft_putstr_fd(funct_name, 2);
 	free(funct_name);
 	errno = 127;
-	last_exit_global = 127;
 	data->error_flags[block] = TRUE;
 	return (1);
 }

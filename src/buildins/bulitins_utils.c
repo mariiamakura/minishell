@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 12:19:33 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/14 15:25:16 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/15 13:29:29 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	ft_is_builtin(char *str)
 {
+	if (str == NULL)
+		return (FALSE);
 	if ((ft_strncmp("echo", str, ft_strlen(str)) == 0 
 			&& ft_strlen("echo") == ft_strlen(str))
 		|| (ft_strncmp("cd", str, ft_strlen(str)) == 0 

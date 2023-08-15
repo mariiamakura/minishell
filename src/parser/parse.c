@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 17:31:13 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/15 11:32:29 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_all_whitespace(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] != ' ' || str[i] != '\t')
+		if (str[i] != ' ') //|| str[i] != '\t')
 			return (FALSE);
 		i++;
 	}
@@ -44,7 +44,7 @@ int	ft_parse(t_data *data)
 		free(data);
 		exit(-1);
 	}
-	if (*input == '\0' || ft_all_whitespace(input) == TRUE)
+	if (ft_all_whitespace(input) == TRUE || *input == '\0')
 	{
 		last_exit_global = 0;
 		free(input);
