@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 15:55:54 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/14 15:20:23 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/15 16:32:08 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	ft_env(char *av[], t_data *data, int index)
 	j = 0;
 	if (av[1] != NULL)
 	{
-		error = ft_strjoin("minishell: env: Permission denied: ", av[1]);
+		ft_putstr_fd("minishell: env: ", STDERR_FILENO);
+		error = ft_strjoin("No such file or directory: ", av[1]);
 		ft_putstr_fd(error, STDERR_FILENO);
 		ft_putstr_fd("\n", STDERR_FILENO);
 		free(error);

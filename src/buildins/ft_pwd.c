@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 14:31:44 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/11 17:21:01 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/15 17:49:35 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,14 @@ int	ft_pwd(t_data *data, int index)
 	}
 }
 
-int	ft_update_pwd(t_data *data, int index)
+void	ft_update_pwd(t_data *data, int index)
 {
 	char	*current_pwd[3];
 	char	*current_path;
 	char	*current_temp;
 
-	if (ft_update_oldpwd(data, index) != 0)
-		return (1);
+	ft_update_oldpwd(data, index);
 	current_temp = getcwd(NULL, 0);
-	if (current_temp == NULL)
-	{
-		perror("minishell: getcwd: ");
-		return (1);
-	}
 	current_path = ft_strjoin("PWD=", current_temp);
 	current_pwd[0] = "export";
 	current_pwd[1] = current_path;
@@ -52,10 +46,9 @@ int	ft_update_pwd(t_data *data, int index)
 	ft_export(current_pwd, data, index);
 	free(current_temp);
 	free(current_path);
-	return (0);
 }
 
-int	ft_update_oldpwd(t_data *data, int index)
+void	ft_update_oldpwd(t_data *data, int index)
 {
 	char	*prev_temp;
 	char	*prev;
@@ -69,5 +62,20 @@ int	ft_update_oldpwd(t_data *data, int index)
 	ft_export(av_old_pwd, data, index);
 	free(prev);
 	free(prev_temp);
+}
+
+int	ft_cd_only_home(t_data *data)
+{
+	char	*home_dir;
+
+	home_dir = ft_get_env_value(data, "HOME");
+	if (home_dir == NULL)
+	{
+		ft_putstr_fd("minishell: cd: HOME not set", STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
+		return (1);
+	}
+	chdir(home_dir);
+	free(home_dir);
 	return (0);
 }

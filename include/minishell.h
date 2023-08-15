@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/14 15:25:55 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/15 17:49:28 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,10 @@ int ft_prem_output(t_data *data, int index);
 
 //cd.c
 int ft_cd(char *av[], t_data *data, int index);
-int ft_cd_home(t_data *data);
+int ft_cd_home(t_data *data, char *str);
 int ft_cd_prev(t_data *data, int index);
+int ft_error_cd(char *str);
+int ft_go_to_dir(char *dir);
 
 //declare.c
 int ft_declare_x(t_data *data, int index);
@@ -134,8 +136,9 @@ int ft_export_loop(int arg_num, t_data *data, char **var_names, char **av);
 
 //pwd.c
 int ft_pwd(t_data *data, int index);
-int ft_update_pwd(t_data *data, int index);
-int ft_update_oldpwd(t_data *data, int index);
+void ft_update_pwd(t_data *data, int index);
+void ft_update_oldpwd(t_data *data, int index);
+int ft_cd_only_home(t_data *data);
 
 //ft_unset.c
 int ft_unset(char *av[], t_data *data);
