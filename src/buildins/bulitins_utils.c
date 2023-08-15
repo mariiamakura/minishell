@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 12:19:33 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/15 13:29:29 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/15 13:41:18 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	ft_print_error_buildins(char *s1, char *s2)
 	char	*error;
 
 	error = ft_strjoin(s1, s2);
+	ft_putstr_fd("minishell: export: ", STDERR_FILENO);
 	ft_putstr_fd(error, STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
 	free(error);

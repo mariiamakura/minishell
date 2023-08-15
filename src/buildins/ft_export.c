@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:52:26 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/14 15:15:10 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/15 13:42:41 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ int	ft_export_loop(int arg_num, t_data *data, char **var_names, char **av)
 		else if (ft_is_var_in_env(data, var_names[i]) == TRUE)
 		{
 			if (ft_replace_env_var(av[i + 1], data, var_names[i]) == NULL)
-				return (ft_print_error_buildins("minishell: export", ""));
+				return (ft_print_error_buildins("", "replacing error"));
 			i++;
 		}
 		else 
 		{
 			if (ft_add_env_var(av[i + 1], data) == NULL)
-				return (ft_print_error_buildins("minishell: export", ""));
+				return (ft_print_error_buildins("", "adding error"));
 			i++;
 		}
 	}
