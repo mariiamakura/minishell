@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 14:35:32 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/15 13:08:57 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/15 17:54:28 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,44 +55,44 @@ int	ft_is_path(char *str)
 	return (FALSE);
 }
 
-int	ft_add_path(int block, t_data *data)
+int	ft_check_rel_path(int block, t_data *data)
 {
-	char	**path_env;
-	char	*path_str;
-	char	*test;
 	char	*funct_name; 
-	int		i;
+	char	*path;
 
-	if (data->tokens[block][0] == NULL)
+	funct_name = ft_getenv(data->env, "PWD");
+	path = ft_strjoin(funct_name, data->tokens[block][0] + 1);
+	if (access(path, F_OK) == 0 && access(path, X_OK) == 0)
 	{
-		data->error_flags[block] = TRUE;
-		return (-1);
-	}
-	if (ft_is_builtin(data->tokens[block][0]) == TRUE)
+		free(path);
 		return (0);
-	if (data->tokens[block][0][0] == '.' && data->tokens[block][0][1] == '/')
-	{
-		if (access(data->tokens[block][0] + 2, F_OK) == 0 && access(data->tokens[block][0] + 2, X_OK) == 0)
-			return (0);
-		funct_name = ft_strjoin("minishell: ", data->tokens[block][0]);
-		perror(funct_name);
-		free(funct_name);
-		data->error_flags[block] = TRUE;
-		return (-1);
 	}
-	if (ft_is_path(data->tokens[block][0]) == TRUE)
-	{
-		if (access(data->tokens[block][0], F_OK) == 0 && access(data->tokens[block][0], X_OK) == 0)
-			return (0);
-		funct_name = ft_strjoin("minishell: ", data->tokens[block][0]);
-		perror(funct_name);
-		free(funct_name);
-		data->error_flags[block] = TRUE;
-		return (-1);
-	}
-	funct_name = ft_strjoin("/", data->tokens[block][0]); //adding '/' before function name
-	path_str = ft_getenv(data->env, "PATH");
-	path_env = ft_split(path_str, ':');
+	funct_name = ft_strjoin("minishell: ", data->tokens[block][0]);
+	perror(funct_name);
+	free(funct_name);
+	free(path);
+	data->error_flags[block] = TRUE;
+	return (-1);
+}
+
+int	ft_check_path(int block, t_data *data)
+{
+	char	*funct_name; 
+
+	if (access(data->tokens[block][0], F_OK) == 0 && access(data->tokens[block][0], X_OK) == 0)
+		return (0);
+	funct_name = ft_strjoin("minishell: ", data->tokens[block][0]);
+	perror(funct_name);
+	free(funct_name);
+	data->error_flags[block] = TRUE;
+	return (-1);
+}
+
+int	ft_check_cmd(char **path_env, char *funct_name, t_data *data, int block)
+{
+	int		i;
+	char	*test;
+
 	i = 0;
 	while (path_env[i])
 	{
@@ -115,4 +115,30 @@ int	ft_add_path(int block, t_data *data)
 	errno = 127;
 	data->error_flags[block] = TRUE;
 	return (1);
+}
+
+int	ft_add_path(int block, t_data *data)
+{
+	char	**path_env;
+	char	*path_str;
+	char	*funct_name; 
+
+	if (data->tokens[block][0] == NULL)
+	{
+		data->error_flags[block] = TRUE;
+		return (-1);
+	}
+	else if (ft_is_builtin(data->tokens[block][0]) == TRUE)
+		return (0);
+	else if (data->tokens[block][0][0] == '.' && data->tokens[block][0][1] == '/')
+		return (ft_check_rel_path(block, data));
+	else if (ft_is_path(data->tokens[block][0]) == TRUE)
+		return (ft_check_path(block, data));
+	else
+	{
+		funct_name = ft_strjoin("/", data->tokens[block][0]); //adding '/' before function name
+		path_str = ft_getenv(data->env, "PATH");
+		path_env = ft_split(path_str, ':');
+		return (ft_check_cmd(path_env, funct_name, data, block));
+	}		
 }

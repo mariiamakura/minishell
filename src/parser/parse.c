@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/15 11:32:29 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/15 13:46:18 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_all_whitespace(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] != ' ') //|| str[i] != '\t')
+		if (str[i] != ' ' || str[i] != '	')
 			return (FALSE);
 		i++;
 	}

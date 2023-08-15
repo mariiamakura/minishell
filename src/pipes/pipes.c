@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/15 13:14:56 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/15 17:22:44 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int start_pipes(t_data *data)
 		signal(SIGINT, sig_handler_parent);
 		while (i <= data->pipe_num)
 		{
+			//usleep(10000000);
 			data->child_pid[i] = fork();
 			signal(SIGINT, sig_handler_parent);
 			if (data->child_pid[i] == 0)
@@ -72,18 +73,19 @@ int start_pipes(t_data *data)
 				signal(SIGINT, sig_handler_child);
 				if (data->error_flags[i] == TRUE)
 					exit (errno);
+				if (ft_is_builtin(data->tokens[i][0]) == TRUE)
+				{
+					ft_run_builtin(data, i);
+					exit (0);
+				}
 				dup2(data->pipes[i][1], STDOUT_FILENO); //cmd write to it's write end pipe (not stdout)
 				if (i == 0)
 					dup2(data->pipes[data->pipe_num][0], STDIN_FILENO); //using the pipe[pipe_num][0] for input in first child
 				else
 					dup2(data->pipes[i - 1][0], STDIN_FILENO); // cmd reads from last cmd read pipe (not stdin)
 				close_fd(data);
-				if (ft_is_builtin(data->tokens[i][0]) == TRUE)
-				{
-					ft_run_builtin(data, i);
-					exit (0);
-				}
-				else if (execve(data->tokens[i][0], data->tokens[i], data->env) == -1)
+				//execve(data->tokens[i][0], data->tokens[i], data->env);
+				if (execve(data->tokens[i][0], data->tokens[i], data->env) == -1)
 				{
 					perror("execve failed"); 
 					term_processes(data); //could also be removed to prevent exiting

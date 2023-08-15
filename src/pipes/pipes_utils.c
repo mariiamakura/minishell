@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:11:45 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/15 13:08:42 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/15 18:07:58 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,10 @@ void wait_children(t_data *data)
 		pid = wait(&status);
 		if (pid == data->child_pid[data->pipe_num] && last_exit_global != 130)
 		{	
-			if (data->error_flags[data->pipe_num] == TRUE) //|| status != 0)
+			if (data->error_flags[data->pipe_num] == TRUE)
 				last_exit_global = errno;
 			else if (status != 0)
-				last_exit_global = status - 255;
+				last_exit_global = status % 255;
 			else
 				last_exit_global = 0;
 		}

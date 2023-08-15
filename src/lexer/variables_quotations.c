@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:08:45 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 16:12:43 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/15 14:10:19 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ void	ft_add_var(int block, int arg, int *start, t_data *data)
 	int		i;
 
 	token = data->tokens[block][arg];
-
 	i = 0;
-
 	if (data->tokens[block][arg][*start + 1 + i] == '?')
 	{
 		var_cont = ft_itoa(last_exit_global);
