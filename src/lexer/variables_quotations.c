@@ -6,11 +6,84 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:08:45 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/16 14:21:23 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/16 15:31:36 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+static int	ft_has_spaces(char *str)
+{
+	int	i;
+
+	i = 0;
+	while ( str[i])
+	{
+		if (str[i] == ' ')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static void	ft_expand_token(t_data *data, int block, int arg, int *start, char *var_cont, int end)
+{
+	char	**split;
+	int		count1;
+	int		count2;
+	char	**new_block;
+	int		i;
+	int		j;
+
+	split = ft_split(var_cont, ' ');
+	count1 = 0;
+	while (split[count1])
+		count1++;
+	count2 = 0;
+	while (data->tokens[block][count2])
+		count2++;
+	new_block = ft_calloc(count1 + count2, sizeof(char *));
+	//assign the arguments before the argument containing the var to new block
+	i = 0;
+	while (i < arg)
+	{
+		new_block[i] = data->tokens[block][i];
+		i++;
+	}
+	//merge the start of the argument with the first argument of the var_cont-split
+	new_block[i] = ft_calloc(*start + ft_strlen(split[0]) + 1, sizeof(char));
+	ft_memmove(new_block[i], data->tokens[block][arg], *start);
+	ft_memmove(new_block[i] + *start, split[0], ft_strlen(split[0]));
+	new_block[i][*start + ft_strlen(split[0]) + 1] = '\0';
+	free(split[0]);
+	i++;
+	//assign the middle parts
+	j = 1;
+	while (j < count1 - 1)
+	{
+		new_block[i] = split[j];
+		i++;
+		j++;
+	}
+	//merge the last part of the argument with the last argument of the var_cont-split
+	new_block[i] = ft_calloc(ft_strlen(split[j]) + ft_strlen(data->tokens[block][arg] + *start + end + 1), sizeof(char));
+	ft_memmove(new_block[i], split[j], ft_strlen(split[j]));
+	ft_memmove(new_block[i] + ft_strlen(split[j]), data->tokens[block][arg] + *start + end + 1, ft_strlen(data->tokens[block][arg] + *start + end + 1));
+	new_block[i][ft_strlen(split[j]) + ft_strlen(data->tokens[block][arg] + *start + end + 1)] = '\0';
+	free(data->tokens[block][arg]);
+	free(split[j]);
+	//assign the arguments after the argument containing the var to new block
+	j = 1;
+	while (data->tokens[block][arg + j])
+	{
+		new_block[i + j] = data->tokens[block][arg + j];
+		j++;
+	}
+	new_block[i + j] = NULL;
+	free(data->tokens[block]);
+	data->tokens[block] = new_block;
+	free(split);
+}
 
 void	ft_add_var(int block, int arg, int *start, t_data *data)
 {
@@ -19,13 +92,16 @@ void	ft_add_var(int block, int arg, int *start, t_data *data)
 	char	*var_cont;
 	char	*new_token;
 	int		i;
+	int		FLAG;
 
 	token = data->tokens[block][arg];
+	FLAG = FALSE;
 	i = 0;
 	if (data->tokens[block][arg][*start + 1 + i] == '?')
 	{
 		var_cont = ft_itoa(g_last_exit);
 		i++;
+		FLAG = TRUE;
 	}
 	else if (ft_isdigit(data->tokens[block][arg][*start + 1 + i]) == 1)
 	{
@@ -35,7 +111,7 @@ void	ft_add_var(int block, int arg, int *start, t_data *data)
 	else
 	{
 		while (ft_isalpha(data->tokens[block][arg][*start + 1 + i]) == 1
-			|| ft_isdigit(data->tokens[block][arg][*start + 1 + i])
+			|| ft_isdigit(data->tokens[block][arg][*start + 1 + i]) == 1
 			|| data->tokens[block][arg][*start + 1 + i] == '_')
 			i++;
 		var_name = ft_calloc(i + 1, sizeof(char));
@@ -46,14 +122,21 @@ void	ft_add_var(int block, int arg, int *start, t_data *data)
 			var_cont = "";
 		free(var_name);
 	}
-	new_token = ft_calloc(*start + ft_strlen(var_cont) + ft_strlen(token + *start + 1 + i) + 1, sizeof(char));
-	ft_memmove(new_token, token, *start);
-	ft_memmove(new_token + *start, var_cont, ft_strlen(var_cont));
-	ft_memmove(new_token + *start + ft_strlen(var_cont), token + *start + 1 + i, ft_strlen(token + *start + 1 + i));
-	new_token[*start + ft_strlen(var_cont) + ft_strlen(token + *start + 1 + i)] = '\0';
-	free(token);
-	*start += ft_strlen(var_cont);
-	data->tokens[block][arg] = new_token;
+	if (ft_has_spaces(var_cont) == 0)
+	{
+		new_token = ft_calloc(*start + ft_strlen(var_cont) + ft_strlen(token + *start + 1 + i) + 1, sizeof(char));
+		ft_memmove(new_token, token, *start);
+		ft_memmove(new_token + *start, var_cont, ft_strlen(var_cont));
+		ft_memmove(new_token + *start + ft_strlen(var_cont), token + *start + 1 + i, ft_strlen(token + *start + 1 + i));
+		new_token[*start + ft_strlen(var_cont) + ft_strlen(token + *start + 1 + i)] = '\0';
+		free(token);
+		*start += ft_strlen(var_cont);
+		data->tokens[block][arg] = new_token;
+	}
+	else
+		ft_expand_token(data, block, arg, start, var_cont, i);
+	if (FLAG == TRUE)
+		free(var_cont);
 }
 
 int	ft_quot_closed(char *str, int quot)
