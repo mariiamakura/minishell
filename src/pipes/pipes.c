@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/16 15:28:42 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/16 16:46:11 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,11 @@ int	ft_run_child(t_data *data, int i)
 	close_fd(data);
 	if (execve(data->tokens[i][0], data->tokens[i], data->env) == -1)
 	{
-		perror("execve failed"); 
-		term_processes(data);
-		free_wflags(data, i, FINISHED);
-		return (-1);
+		perror("execve failed");
+		//printf("erro: %d\n", errno);
+		//term_processes(data);
+		//free_wflags(data, i, FINISHED);
+		return (errno);
 	}
 	return (0);
 }

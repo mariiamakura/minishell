@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 14:35:32 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/16 15:17:59 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/16 17:19:17 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,13 +145,41 @@ int	ft_check_cmd(char **path_env, char *funct_name, t_data *data, int block)
 		free(test);
 		i++;
 	}
+	free(funct_name);
 	ft_free_path(path_env);
 	funct_name = ft_strjoin(data->tokens[block][0], ": command not found\n");
 	ft_putstr_fd(funct_name, 2);
 	free(funct_name);
 	errno = 127;
 	data->error_flags[block] = TRUE;
-	return (1);
+	return (-1);
+}
+
+int	ft_check_dub_dots(int block, t_data *data)
+{
+	char	*err_msg;
+
+	err_msg = ft_strjoin(data->tokens[block][0], ": command not found\n");
+	ft_putstr_fd(err_msg, 2);
+	free(err_msg);
+	errno = 127;
+	data->error_flags[block] = TRUE;
+	return (-1);
+}
+
+int	ft_check_dot(int block, t_data *data)
+{
+	char	*err_msg;
+	char	*funct_name;
+
+	funct_name = ft_strjoin("minishell: ", data->tokens[block][0]);
+	err_msg = ft_strjoin(funct_name, ": filename argument required\n");
+	ft_putstr_fd(err_msg, 2);
+	free(err_msg);
+	free(funct_name);
+	errno = 2;
+	data->error_flags[block] = TRUE;
+	return (-1);
 }
 
 int	ft_add_path(int block, t_data *data)
@@ -169,13 +197,15 @@ int	ft_add_path(int block, t_data *data)
 		return (0);
 	else if (data->tokens[block][0][0] == '.' && data->tokens[block][0][1] == '/')
 		return (ft_check_rel_path(block, data));
+	else if ((data->tokens[block][0][0] == '.' && data->tokens[block][0][1] == '.'
+		&& data->tokens[block][0][2] == '\0'))
+		return (ft_check_dub_dots(block, data));
+	else if (data->tokens[block][0][0] == '.' && data->tokens[block][0][1] == '\0')
+		return (ft_check_dot(block, data));
 	else if (ft_is_path(data->tokens[block][0]) == TRUE)
 		return (ft_check_path(block, data));
-	else
-	{
-		funct_name = ft_strjoin("/", data->tokens[block][0]); //adding '/' before function name
-		path_str = ft_getenv(data->env, "PATH");
-		path_env = ft_split(path_str, ':');
-		return (ft_check_cmd(path_env, funct_name, data, block));
-	}		
+	funct_name = ft_strjoin("/", data->tokens[block][0]); //adding '/' before function name
+	path_str = ft_getenv(data->env, "PATH");
+	path_env = ft_split(path_str, ':');
+	return (ft_check_cmd(path_env, funct_name, data, block));
 }
