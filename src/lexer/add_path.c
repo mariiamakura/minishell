@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 14:35:32 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/15 17:54:28 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/16 15:17:59 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,30 +60,67 @@ int	ft_check_rel_path(int block, t_data *data)
 	char	*funct_name; 
 	char	*path;
 
-	funct_name = ft_getenv(data->env, "PWD");
-	path = ft_strjoin(funct_name, data->tokens[block][0] + 1);
-	if (access(path, F_OK) == 0 && access(path, X_OK) == 0)
+	path = ft_strjoin(ft_getenv(data->env, "PWD"), data->tokens[block][0] + 1);
+	if (access(path, F_OK) == 0 && access(path, X_OK) == 0 &&  data->tokens[block][0][2] != '\0')
 	{
 		free(path);
 		return (0);
 	}
-	funct_name = ft_strjoin("minishell: ", data->tokens[block][0]);
-	perror(funct_name);
-	free(funct_name);
 	free(path);
+	funct_name = ft_strjoin("minishell: ", data->tokens[block][0]);
+	if (data->tokens[block][0][2] == '\0')
+	{
+		path = ft_strjoin(funct_name, ": Is a directory\n");
+		ft_putstr_fd(path, 2);
+		free(path);
+	}
+	else
+		perror(funct_name);
+	if (errno == 13 || data->tokens[block][0][2] == '\0')
+		errno = 126;
+	else
+		errno = 127;
+	free(funct_name);
 	data->error_flags[block] = TRUE;
 	return (-1);
 }
 
+int	ft_is_slash(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != '/')
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
+}
+
 int	ft_check_path(int block, t_data *data)
 {
-	char	*funct_name; 
+	char	*funct_name;
+	char	*err_msg; 
 
-	if (access(data->tokens[block][0], F_OK) == 0 && access(data->tokens[block][0], X_OK) == 0)
+	if (access(data->tokens[block][0], F_OK) == 0 && access(data->tokens[block][0], X_OK) == 0
+		&& ft_is_slash(data->tokens[block][0]) == FALSE)
 		return (0);
 	funct_name = ft_strjoin("minishell: ", data->tokens[block][0]);
-	perror(funct_name);
+	if (ft_is_slash(data->tokens[block][0]) == TRUE)
+	{
+		err_msg = ft_strjoin(funct_name, ": Is a directory\n");
+		ft_putstr_fd(err_msg, 2);
+		free(err_msg);
+	}
+	else
+		perror(funct_name);
 	free(funct_name);
+	if (errno == 13 || ft_is_slash(data->tokens[block][0]) == TRUE)
+		errno = 126;
+	else
+		errno = 127;
 	data->error_flags[block] = TRUE;
 	return (-1);
 }
