@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/15 18:11:46 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/16 14:21:23 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,16 @@ int start_pipes(t_data *data)
 	i = 0;
 	if (data == NULL)
 		return (-1); //maybe return data?
-	if (data->pipe_num == 0 && ft_is_builtin(data->tokens[0][0]) == TRUE) //&& last_exit_global != 130)//add ft_is_builtin to add_path
+	if (data->pipe_num == 0 && ft_is_builtin(data->tokens[0][0]) == TRUE) //&& g_last_exit != 130)//add ft_is_builtin to add_path
 	{
 		data->forked = FALSE;
 		if (data->error_flags[0] == TRUE)
-			last_exit_global = errno;
+			g_last_exit = errno;
 		else
 		{
 			ft_run_builtin(data, 0);
 			close_fd(data);
-			//last_exit_global = 0;
+			//g_last_exit = 0;
 		}
 	}
 	else
@@ -98,7 +98,7 @@ int start_pipes(t_data *data)
 		close_fd(data);
 		wait_children(data); //return the last child process exit status
 	}
-	if (last_exit_global == 130)
+	if (g_last_exit == 130)
 		term_processes(data);
 	return (0);
 }

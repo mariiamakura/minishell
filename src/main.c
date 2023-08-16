@@ -6,18 +6,17 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/16 14:03:27 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/16 14:21:58 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-//t_global *g_global;
-int	last_exit_global;
+int	g_last_exit;
 
 void	ft_free_tokens(t_data *data)
 {
-	int i;
+	int	i;
 	int	j;
 
 	i = 0;
@@ -35,12 +34,12 @@ void	ft_free_tokens(t_data *data)
 	free(data->tokens);
 }
 
-void ft_shlvl_update(t_data *data)
+void	ft_shlvl_update(t_data *data)
 {
-	char *new_shlvl;
-	int i;
-	char *str;
-	char *char_num;
+	char	*new_shlvl;
+	int		i;
+	char	*str;
+	char	*char_num;
 
 	i = 0;
 	while (data->env[i])
@@ -54,7 +53,7 @@ void ft_shlvl_update(t_data *data)
 		i++;
 	}
 	if (char_num == NULL)
-		return;
+		return ;
 	data->shlvl = ft_atoi(char_num);
 	free(char_num);
 	data->shlvl++;
@@ -64,7 +63,7 @@ void ft_shlvl_update(t_data *data)
 	ft_shlvl_export(data, new_shlvl);
 }
 
-void ft_shlvl_export(t_data *data, char *new_shlvl)
+void	ft_shlvl_export(t_data *data, char *new_shlvl)
 {
 	char	*update_shlvl[3];
 
@@ -78,17 +77,16 @@ void ft_shlvl_export(t_data *data, char *new_shlvl)
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_data	*data;
-	
-	if (argc != 1 || !argv[0]) //programm should be run without arguments (only env)
-	 return (1);
 
+	if (argc != 1 || !argv[0])
+		return (1);
 	data = malloc(sizeof(t_data));
 	data->forked = FALSE;
 	if (data == NULL)
 		return (1);
 	data->env = ft_copy_2d_arr(envp);
 	ft_shlvl_update(data);
-	last_exit_global = 0;
+	g_last_exit = 0;
 	init_signals();
 	while (1) 
 	{
@@ -100,9 +98,7 @@ int	main(int argc, char *argv[], char *envp[])
 			start_pipes(data);
 			ft_free_tokens(data);
 			free(data->error_flags);
-			free_wflags(data, data->pipe_num, FINISHED); //mb do it in the end if data is still needed after pipes
+			free_wflags(data, data->pipe_num, FINISHED);
 		}
 	}
-	//print_tokens(data);
-	//printf("%d\n", execve(data->tokens[0][0], data->tokens[0], NULL));
 }

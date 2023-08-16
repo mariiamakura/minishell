@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 15:08:19 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/15 17:53:54 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/16 14:21:23 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@ int	ft_cd(char *av[], t_data *data, int index)
 
 	cur_gl = 0;
 	if (av[1] == NULL)
-		last_exit_global = ft_cd_only_home(data);
+		g_last_exit = ft_cd_only_home(data);
 	else if (ft_strncmp(av[1], "~", ft_strlen("~")) == 0)
-		last_exit_global = ft_cd_home(data, av[1]);
+		g_last_exit = ft_cd_home(data, av[1]);
 	else if (ft_strncmp(av[1], "-", ft_strlen(av[1])) == 0 
 		&& ft_strlen(av[1]) == ft_strlen("-"))
 	{
-		last_exit_global = ft_cd_prev(data, index);
+		g_last_exit = ft_cd_prev(data, index);
 	}
 	else
-		last_exit_global = ft_go_to_dir(av[1]);
-	cur_gl = last_exit_global;
+		g_last_exit = ft_go_to_dir(av[1]);
+	cur_gl = g_last_exit;
 	ft_update_pwd(data, index);
 	return (cur_gl);
 }
@@ -51,10 +51,10 @@ int	ft_cd_home(t_data *data, char *str)
 	if (str[1] == '/' && str[2] != '\0')
 	{
 		dir = ft_strdup(str + 2);
-		last_exit_global = ft_go_to_dir(dir);
+		g_last_exit = ft_go_to_dir(dir);
 		free(dir);
 		free(home_dir);
-		return (last_exit_global);
+		return (g_last_exit);
 	}
 	free(home_dir);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/16 14:01:27 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/16 14:18:56 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_data
 	int shlvl;
 } t_data;
 
-extern int	last_exit_global;
+extern int	g_last_exit;
 
 //main.c 
 void ft_shlvl_update(t_data *data);

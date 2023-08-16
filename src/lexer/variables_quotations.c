@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variables_quotations.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:08:45 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/15 14:10:19 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/16 14:21:23 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_add_var(int block, int arg, int *start, t_data *data)
 	i = 0;
 	if (data->tokens[block][arg][*start + 1 + i] == '?')
 	{
-		var_cont = ft_itoa(last_exit_global);
+		var_cont = ft_itoa(g_last_exit);
 		i++;
 	}
 	else if (ft_isdigit(data->tokens[block][arg][*start + 1 + i]) == 1)

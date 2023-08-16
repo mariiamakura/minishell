@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 14:52:26 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/15 13:42:41 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/16 14:21:23 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ int	ft_export(char *av[], t_data *data, int index)
 	var_names = ft_get_multi_var_name(av, arg_num, FT_EXPORT);
 	if (var_names == NULL)
 		return (1);
-	last_exit_global = var_name_error_new(var_names, arg_num);
-	last_exit_global = ft_export_loop(arg_num, data, var_names, av);
+	g_last_exit = var_name_error_new(var_names, arg_num);
+	g_last_exit = ft_export_loop(arg_num, data, var_names, av);
 	ft_free_var_names(var_names, arg_num);
-	return (last_exit_global);
+	return (g_last_exit);
 }
 
 int	ft_export_loop(int arg_num, t_data *data, char **var_names, char **av)
@@ -54,8 +54,8 @@ int	ft_export_loop(int arg_num, t_data *data, char **var_names, char **av)
 			i++;
 		}
 	}
-	if (last_exit_global != 0)
-		return (last_exit_global);
+	if (g_last_exit != 0)
+		return (g_last_exit);
 	return (0);
 }
 

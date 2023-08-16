@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/15 13:46:18 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/16 14:21:23 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_parse(t_data *data)
 	}
 	if (ft_all_whitespace(input) == TRUE || *input == '\0')
 	{
-		last_exit_global = 0;
+		g_last_exit = 0;
 		free(input);
 		return (-1);
 	}

@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 12:19:33 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/15 13:41:18 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/16 14:21:23 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,26 +39,26 @@ int	ft_run_builtin(t_data *data, int i)
 {
 	if (ft_strncmp("echo", data->tokens[i][0], 
 		ft_strlen(data->tokens[i][0])) == 0)
-		last_exit_global = ft_echo(data->tokens[i], data, i);
+		g_last_exit = ft_echo(data->tokens[i], data, i);
 	else if (ft_strncmp("cd", data->tokens[i][0],
 		ft_strlen(data->tokens[i][0])) == 0)
-		last_exit_global = ft_cd(data->tokens[i], data, i);
+		g_last_exit = ft_cd(data->tokens[i], data, i);
 	else if (ft_strncmp("env", data->tokens[i][0],
 		ft_strlen(data->tokens[i][0])) == 0)
-		last_exit_global = ft_env(data->tokens[i], data, i);
+		g_last_exit = ft_env(data->tokens[i], data, i);
 	else if (ft_strncmp("export", data->tokens[i][0],
 		ft_strlen(data->tokens[i][0])) == 0)
-		last_exit_global = ft_export(data->tokens[i], data, i);
+		g_last_exit = ft_export(data->tokens[i], data, i);
 	else if (ft_strncmp("pwd", data->tokens[i][0],
 		ft_strlen(data->tokens[i][0])) == 0)
-		last_exit_global = ft_pwd(data, i);
+		g_last_exit = ft_pwd(data, i);
 	else if (ft_strncmp("unset", data->tokens[i][0],
 		ft_strlen(data->tokens[i][0])) == 0)
 		ft_unset(data->tokens[i], data);
 	else if (ft_strncmp("exit", data->tokens[i][0],
 		ft_strlen(data->tokens[i][0])) == 0)
-		last_exit_global = ft_exit(data->tokens[i], data);
-	return (last_exit_global);
+		g_last_exit = ft_exit(data->tokens[i], data);
+	return (g_last_exit);
 }
 
 int	ft_print_error_buildins(char *s1, char *s2)
@@ -70,8 +70,8 @@ int	ft_print_error_buildins(char *s1, char *s2)
 	ft_putstr_fd(error, STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
 	free(error);
-	last_exit_global = 1;
-	return (last_exit_global);
+	g_last_exit = 1;
+	return (g_last_exit);
 }
 
 void	ft_free_2d(char **av)

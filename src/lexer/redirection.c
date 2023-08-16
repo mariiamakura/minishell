@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:05:44 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/15 16:21:52 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/16 14:21:23 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close 
 			i++;
 		delimiter = str + i;
 		buffer = ft_calloc(1, sizeof(char));
-		last_exit_global = 0;
+		g_last_exit = 0;
 		rl_getc_function = ft_getc;
 		while (ft_strncmp(delimiter, input = readline("> "), ft_strlen(delimiter) + 1) != 0)
 		{
@@ -123,7 +123,7 @@ int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close 
 			if (input == NULL)
 			{
 				free (input);
-				if (last_exit_global == 130)
+				if (g_last_exit == 130)
 				{
 					i = 0;
 					while (i <= data->pipe_num)
@@ -141,7 +141,7 @@ int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close 
 			free(input);
 			free(temp);
 		}
-		if (last_exit_global == 130)
+		if (g_last_exit == 130)
 			data->error_flags[block] = TRUE;
 		if (block == 0)
 		{
