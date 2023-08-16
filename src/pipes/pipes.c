@@ -6,29 +6,29 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/16 14:21:23 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/16 15:02:35 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	init_pipes(t_data * data)
+int	init_pipes(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	data->child_pid = malloc(sizeof(int) * (data->pipe_num + 1)); //number of processes
-	data->pipes = malloc(sizeof(int *) * (data->pipe_num + 1)); //the num of pipes + 1 (num of processes)
+	data->child_pid = malloc(sizeof(int) * (data->pipe_num + 1));
+	data->pipes = malloc(sizeof(int *) * (data->pipe_num + 1));
 	while (i <= data->pipe_num)
 	{
-		data->pipes[i] = malloc(sizeof(int) * 2); //each pipe has read/write ends
-		if ((i == 0 && data->pipe_num == 0) || i == data->pipe_num) //for single process or the last process
+		data->pipes[i] = malloc(sizeof(int) * 2);
+		if ((i == 0 && data->pipe_num == 0) || i == data->pipe_num)
 		{
 			data->pipes[i][0] = STDIN_FILENO;
 			data->pipes[i][1] = STDOUT_FILENO;
 			break ;
 		}
-		if(pipe(data->pipes[i]) != 0)
+		if (pipe(data->pipes[i]) != 0)
 		{
 			free_wflags(data, i, NOT_FINISHED);
 			data->error_flags[i] = TRUE;
@@ -39,68 +39,79 @@ int	init_pipes(t_data * data)
 	return (0);
 }
 
-int start_pipes(t_data *data)
+void	ft_run_one_buildin(t_data *data)
 {
-	int i;
-	
+	data->forked = FALSE;
+	if (data->error_flags[0] == TRUE)
+		g_last_exit = errno;
+	else
+	{
+		ft_run_builtin(data, 0);
+		close_fd(data);
+	}
+}
+
+int	ft_child_configur(t_data *data, int i)
+{
+	data->child_pid[i] = fork();
+	signal(SIGINT, sig_handler_parent);
+	if (data->child_pid[i] == 0)
+	{
+		if (ft_run_child(data, i) == -1)
+			return (-1);
+	}
+	return (0);
+}
+
+int	ft_run_child(t_data *data, int i)
+{
+	signal(SIGINT, sig_handler_child);
+	if (data->error_flags[i] == TRUE)
+		exit (errno);
+	if (ft_is_builtin(data->tokens[i][0]) == TRUE)
+	{
+		ft_run_builtin(data, i);
+		exit (0);
+	}
+	dup2(data->pipes[i][1], STDOUT_FILENO);
+	if (i == 0)
+		dup2(data->pipes[data->pipe_num][0], STDIN_FILENO);
+	else
+		dup2(data->pipes[i - 1][0], STDIN_FILENO);
+	close_fd(data);
+	if (execve(data->tokens[i][0], data->tokens[i], data->env) == -1)
+	{
+		perror("execve failed"); 
+		term_processes(data);
+		free_wflags(data, i, FINISHED);
+		return (-1);
+	}
+	return (0);
+}
+
+int	start_pipes(t_data *data)
+{
+	int	i;
+
 	i = 0;
 	if (data == NULL)
-		return (-1); //maybe return data?
-	if (data->pipe_num == 0 && ft_is_builtin(data->tokens[0][0]) == TRUE) //&& g_last_exit != 130)//add ft_is_builtin to add_path
-	{
-		data->forked = FALSE;
-		if (data->error_flags[0] == TRUE)
-			g_last_exit = errno;
-		else
-		{
-			ft_run_builtin(data, 0);
-			close_fd(data);
-			//g_last_exit = 0;
-		}
-	}
+		return (-1);
+	if (data->pipe_num == 0 && ft_is_builtin(data->tokens[0][0]) == TRUE)
+		ft_run_one_buildin(data);
 	else
 	{
 		data->forked = TRUE;
-		i = 0;
 		signal(SIGINT, sig_handler_parent);
 		while (i <= data->pipe_num)
 		{
-			//usleep(10000000);
-			data->child_pid[i] = fork();
-			signal(SIGINT, sig_handler_parent);
-			if (data->child_pid[i] == 0)
-			{
-				signal(SIGINT, sig_handler_child);
-				if (data->error_flags[i] == TRUE)
-					exit (errno);
-				if (ft_is_builtin(data->tokens[i][0]) == TRUE)
-				{
-					ft_run_builtin(data, i);
-					exit (0);
-				}
-				dup2(data->pipes[i][1], STDOUT_FILENO); //cmd write to it's write end pipe (not stdout)
-				if (i == 0)
-					dup2(data->pipes[data->pipe_num][0], STDIN_FILENO); //using the pipe[pipe_num][0] for input in first child
-				else
-					dup2(data->pipes[i - 1][0], STDIN_FILENO); // cmd reads from last cmd read pipe (not stdin)
-				close_fd(data);
-				//execve(data->tokens[i][0], data->tokens[i], data->env);
-				if (execve(data->tokens[i][0], data->tokens[i], data->env) == -1)
-				{
-					perror("execve failed"); 
-					term_processes(data); //could also be removed to prevent exiting
-					free_wflags(data, i, FINISHED);
-					return (-1);
-				}
-			}
+			if (ft_child_configur(data, i) == -1)
+				return (-1);
 			i++;
 		}
 		close_fd(data);
-		wait_children(data); //return the last child process exit status
+		wait_children(data);
 	}
 	if (g_last_exit == 130)
 		term_processes(data);
 	return (0);
 }
-
-//test : ls | echo hello | cat foo | grep l
