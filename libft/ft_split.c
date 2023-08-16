@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 17:38:37 by ycardona          #+#    #+#             */
-/*   Updated: 2022/12/20 13:35:13 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/16 15:07:26 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ char	**ft_split(char const *s, char c)
 	while (s[i])
 	{
 		if (s[i] != c)
-		{			
+		{
 			split[k] = ft_substr(s, i, ft_subend(s, c, i));
 			if (split[k] == NULL)
-			{	
+			{
 				ft_free(split, k);
 				return (NULL);
 			}

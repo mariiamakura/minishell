@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 17:49:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 18:27:00 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/16 15:06:43 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ static int	ft_isspace(int c)
 
 long long	ft_atoi(const char *str)
 {
-	int	i;
+	int			i;
 	long long	r;
-	int	sign;
+	int			sign;
 
 	sign = 1;
 	i = 0;

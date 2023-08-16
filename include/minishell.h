@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/16 14:18:56 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/16 15:01:15 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,9 @@ char	*ft_substr_pipe(char *str, unsigned long *start);
 //pipes.c
 int start_pipes(t_data *data);
 int	init_pipes(t_data * data);
+void	ft_run_one_buildin(t_data *data);
+int	ft_run_child(t_data *data, int i);
+int	ft_child_configur(t_data *data, int i);
 
 //pipes_utils.c
 void free_wflags(t_data *data, int i, int flag);
