@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 14:35:32 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/16 15:17:59 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/16 16:06:34 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ int	ft_check_cmd(char **path_env, char *funct_name, t_data *data, int block)
 		i++;
 	}
 	ft_free_path(path_env);
+	free(funct_name);
 	funct_name = ft_strjoin(data->tokens[block][0], ": command not found\n");
 	ft_putstr_fd(funct_name, 2);
 	free(funct_name);
