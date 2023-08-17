@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 14:35:32 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/16 17:19:17 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/17 08:00:31 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*ft_getenv(char *envp[], char *var_name)
 			return (&envp[i][var_len + 1]);
 		i++;
 	}
-	return (" ");
+	return ("");
 }
 
 static void	ft_free_path(char **path_env)

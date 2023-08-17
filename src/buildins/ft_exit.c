@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 17:22:24 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/11 17:14:26 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/16 22:21:40 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ft_exit(char *av[], t_data *data)
 		exit (2);
 	}
 	write(1, "exit\n", 5);
-	rl_clear_history();
+	//rl_clear_history();
 	ft_free_tokens(data);
 	free(data->error_flags);
 	free_wflags(data, data->pipe_num, FINISHED); 

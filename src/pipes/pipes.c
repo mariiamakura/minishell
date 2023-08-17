@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/16 16:46:11 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/17 09:20:54 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ int	ft_run_child(t_data *data, int i)
 	signal(SIGINT, sig_handler_child);
 	if (data->error_flags[i] == TRUE)
 		exit (errno);
+	if (ft_strlen(data->tokens[i][0]) == 0)
+		exit (0);
 	if (ft_is_builtin(data->tokens[i][0]) == TRUE)
 	{
 		ft_run_builtin(data, i);

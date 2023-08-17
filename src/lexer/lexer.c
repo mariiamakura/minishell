@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:17:17 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/16 14:21:23 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/17 09:43:11 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ft_lexer(t_data *data) //return open error
 	while (i <= data->pipe_num)
 	{
 		j = 0;
-		while (data->tokens[i][j])
+		while (data->tokens[i][j] && data->error_flags[i] != TRUE)
 		{
 			//ft_parse_var(i, j, data);
 			if (data->tokens[i][j][0] == '<' && data->tokens[i][j][1] == '<')
@@ -47,7 +47,8 @@ int	ft_lexer(t_data *data) //return open error
 			else 
 				j++;
 		}
-		ft_add_path(i, data);
+		if (ft_strlen(data->tokens[i][0]) != 0 && data->error_flags[i] != TRUE)
+			ft_add_path(i, data);
 		i++;
 	}
 	return (0);

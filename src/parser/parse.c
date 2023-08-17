@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 17:27:39 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/16 14:21:23 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/16 22:21:04 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ int	ft_parse(t_data *data)
 	char	*sub_str;
 	int		argc;
 
-	rl_getc_function = rl_getc;
+	//rl_getc_function = rl_getc;
 	input = readline(" ~ minishell$ ");
 	if (input == NULL) //handles ctrl+d
 	{
 		write(1, "exit\n", 5);
-		rl_clear_history();
+		//rl_clear_history();
 		ft_free_2d(data->env);
 		free(data);
 		exit(-1);
