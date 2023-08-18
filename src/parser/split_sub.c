@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 15:24:09 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/15 16:20:34 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/18 16:36:07 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,14 @@ int	ft_split_sub(char *sub_str, int block, t_data *data)
 		if (sub_str[i] != ' ' && sub_str[i] != '\t')
 		{
 			j = 0;
-			while (sub_str[i + j] != ' ' && sub_str[i + j] != '\t' && sub_str[i + j])
+			while (sub_str[i + j] && sub_str[i + j] != ' ' && sub_str[i + j] != '\t')
 			{
 				j += ft_red_count(&sub_str[i + j], '<');
 				j += ft_red_count(&sub_str[i + j], '>');
 				j += ft_quotations_count(&sub_str[i + j], 34);
 				j += ft_quotations_count(&sub_str[i + j], 39);
+				if (sub_str[i + j] == '\0')
+					break;
 				j++;
 				if (sub_str[i + j] == '<' || sub_str[i + j] == '>')
 					break ;

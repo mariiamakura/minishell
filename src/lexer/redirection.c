@@ -6,13 +6,13 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:05:44 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/17 09:48:11 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/18 14:07:36 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	ft_red_err(t_data *data, int block)
+int	ft_red_err(t_data *data, int block, char c)
 {
 	int	i;
 
@@ -22,11 +22,18 @@ int	ft_red_err(t_data *data, int block)
 		data->error_flags[i] = TRUE;
 		i++;
 	}
-	if (block == data->pipe_num)
-		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
-	else 
-		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
-	errno = 258;
+	if (c == '\0')
+	{
+		if (block == data->pipe_num)
+			ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
+		else 
+			ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
+	}
+	if (c == '>')
+		ft_putstr_fd("minishell: syntax error near unexpected token `>'\n", 2);
+	if (c == '<')
+		ft_putstr_fd("minishell: syntax error near unexpected token `<'\n", 2);
+	errno = 2;
 	return (-1);
 }
 
@@ -39,8 +46,8 @@ int	ft_redir_out(char *str, int block, int arg, t_data *data) // maybe close the
 	i = 1;
 	while (str[i] == ' ' || str[i] == '\t')
 		i++;
-	if (str[i] == '\0')
-		return (ft_red_err(data, block));
+	if (str[i] == '\0' || str[i] == '>' || str[i] == '<')
+		return (ft_red_err(data, block, str[i]));
 	fd = open(str + i, O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 	data->pipes[block][1] = fd;
 	if (fd == -1)
@@ -65,8 +72,8 @@ int	ft_redir_app(char *str, int block, int arg, t_data *data)
 	i = 2;
 	while (str[i] == ' ' || str[i] == '\t')
 		i++;
-	if (str[i] == '\0')
-		return (ft_red_err(data, block));
+	if (str[i] == '\0' || str[i] == '>' || str[i] == '<')
+		return (ft_red_err(data, block, str[i]));
 	fd = open(str + i, O_RDWR | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
 	data->pipes[block][1] = fd;
 	if (fd == -1)
@@ -91,8 +98,8 @@ int	ft_redir_in(char *str, int block, int arg, t_data *data) //add test if fd op
 	i = 1;
 	while (str[i] == ' ' || str[i] == '\t')
 		i++;
-	if (str[i] == '\0')
-		return (ft_red_err(data, block));
+	if (str[i] == '\0' || str[i] == '>' || str[i] == '<')
+		return (ft_red_err(data, block, str[i]));
 	fd = open(str + i, O_RDONLY, S_IRUSR | S_IWUSR);
 	if (block == 0)
 		data->pipes[data->pipe_num][0] = fd; // pipe[pipe_num][0] stores input for first child (its not initialized with pipe())
@@ -137,8 +144,8 @@ int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close 
 		i = 2;
 		while (str[i] == ' ' || str[i] == '\t')
 			i++;
-		if (str[i] == '\0')
-			return (ft_red_err(data, block));
+		if (str[i] == '\0' || str[i] == '>' || str[i] == '<')
+			return (ft_red_err(data, block, str[i]));
 		delimiter = str + i;
 		buffer = ft_calloc(1, sizeof(char));
 		g_last_exit = 0;

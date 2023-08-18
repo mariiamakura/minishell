@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variables_quotations.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:08:45 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/16 15:31:36 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/18 16:06:33 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	ft_expand_token(t_data *data, int block, int arg, int *start, char *
 	new_block[i] = ft_calloc(*start + ft_strlen(split[0]) + 1, sizeof(char));
 	ft_memmove(new_block[i], data->tokens[block][arg], *start);
 	ft_memmove(new_block[i] + *start, split[0], ft_strlen(split[0]));
-	new_block[i][*start + ft_strlen(split[0]) + 1] = '\0';
+	new_block[i][*start + ft_strlen(split[0])] = '\0';
 	free(split[0]);
 	i++;
 	//assign the middle parts
@@ -66,7 +66,7 @@ static void	ft_expand_token(t_data *data, int block, int arg, int *start, char *
 		j++;
 	}
 	//merge the last part of the argument with the last argument of the var_cont-split
-	new_block[i] = ft_calloc(ft_strlen(split[j]) + ft_strlen(data->tokens[block][arg] + *start + end + 1), sizeof(char));
+	new_block[i] = ft_calloc(ft_strlen(split[j]) + ft_strlen(data->tokens[block][arg] + *start + end + 1) + 1, sizeof(char));
 	ft_memmove(new_block[i], split[j], ft_strlen(split[j]));
 	ft_memmove(new_block[i] + ft_strlen(split[j]), data->tokens[block][arg] + *start + end + 1, ft_strlen(data->tokens[block][arg] + *start + end + 1));
 	new_block[i][ft_strlen(split[j]) + ft_strlen(data->tokens[block][arg] + *start + end + 1)] = '\0';
