@@ -6,18 +6,18 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 15:24:09 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/18 16:36:07 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/21 09:44:19 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	ft_quotations_count(char *str, int quot)
+static int	ft_quotations_count(char *str, int quot)
 {
-	int j;
-	
+	int	j;
+
 	j = 0;
-	if (str[j] == quot) //handling " "
+	if (str[j] == quot)
 	{
 		j++;
 		while (str[j])
@@ -25,14 +25,14 @@ int	ft_quotations_count(char *str, int quot)
 			if (str[j] == quot)
 				return (j);
 			j++;
-			if(str[j] == '\0')
+			if (str[j] == '\0')
 				return (0);
 		}
 	}
 	return (0);
 }
 
-int	ft_red_count(char *str, int red)
+static int	ft_red_count(char *str, int red)
 {
 	int	j;
 
@@ -48,31 +48,39 @@ int	ft_red_count(char *str, int red)
 	return (j);
 }
 
+static int	ft_arg_len(char *sub_str, int i)
+{
+	int	j;
+
+	j = 0;
+	while (sub_str[i + j] && sub_str[i + j] != ' ' && sub_str[i + j] != '\t')
+	{
+		j += ft_red_count(&sub_str[i + j], '<');
+		j += ft_red_count(&sub_str[i + j], '>');
+		j += ft_quotations_count(&sub_str[i + j], 34);
+		j += ft_quotations_count(&sub_str[i + j], 39);
+		if (sub_str[i + j] == '\0')
+			break ;
+		j++;
+		if (sub_str[i + j] == '<' || sub_str[i + j] == '>')
+			break ;
+	}
+	return (j);
+}
+
 int	ft_split_sub(char *sub_str, int block, t_data *data)
 {
-	int i;
+	int	i;
 	int	j;
 	int	arg;
 
 	i = 0;
 	arg = 0;
-	while(sub_str[i])
+	while (sub_str[i])
 	{
 		if (sub_str[i] != ' ' && sub_str[i] != '\t')
 		{
-			j = 0;
-			while (sub_str[i + j] && sub_str[i + j] != ' ' && sub_str[i + j] != '\t')
-			{
-				j += ft_red_count(&sub_str[i + j], '<');
-				j += ft_red_count(&sub_str[i + j], '>');
-				j += ft_quotations_count(&sub_str[i + j], 34);
-				j += ft_quotations_count(&sub_str[i + j], 39);
-				if (sub_str[i + j] == '\0')
-					break;
-				j++;
-				if (sub_str[i + j] == '<' || sub_str[i + j] == '>')
-					break ;
-			}
+			j = ft_arg_len(sub_str, i);
 			data->tokens[block][arg] = ft_calloc(sizeof(char), j + 1);
 			if (data->tokens[block][arg] == NULL)
 				exit (1);

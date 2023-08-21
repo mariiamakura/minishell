@@ -6,13 +6,13 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:17:17 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/17 09:43:11 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/21 10:44:01 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	ft_lexer(t_data *data) //return open error
+static void	ft_parse_var_loop(t_data *data)
 {
 	int	i;
 	int	j;
@@ -27,18 +27,26 @@ int	ft_lexer(t_data *data) //return open error
 			j++;
 		}
 		i++;
-		g_last_exit = 0; // reset the variable after parsing 
+		g_last_exit = 0;
 	}
-	i = 0;
-	while (i <= data->pipe_num)
+}
+
+void	ft_lexer(t_data *data)
+{
+	int	i;
+	int	j;
+
+	ft_parse_var_loop(data);
+	i = -1;
+	while (++i <= data->pipe_num)
 	{
 		j = 0;
 		while (data->tokens[i][j] && data->error_flags[i] != TRUE)
 		{
-			//ft_parse_var(i, j, data);
 			if (data->tokens[i][j][0] == '<' && data->tokens[i][j][1] == '<')
 				ft_here_doc(data->tokens[i][j], i, j, data);
-			else if (data->tokens[i][j][0] == '>' && data->tokens[i][j][1] == '>')
+			else if (data->tokens[i][j][0] == '>'
+				&& data->tokens[i][j][1] == '>')
 				ft_redir_app(data->tokens[i][j], i, j, data);
 			else if (data->tokens[i][j][0] == '>')
 				ft_redir_out(data->tokens[i][j], i, j, data);
@@ -49,7 +57,5 @@ int	ft_lexer(t_data *data) //return open error
 		}
 		if (ft_strlen(data->tokens[i][0]) != 0 && data->error_flags[i] != TRUE)
 			ft_add_path(i, data);
-		i++;
 	}
-	return (0);
 }

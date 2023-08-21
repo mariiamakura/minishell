@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 15:30:14 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/09 16:06:54 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/21 10:14:10 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_count_pipes(char *input)
 	count = 0;
 	i = 0;
 	if (input[0] == '|')
-		exit (-1); //add the correct error message
+		exit (-1);
 	while (input[i])
 	{
 		ft_quotation(input, &i, 34);

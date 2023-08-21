@@ -6,42 +6,17 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:05:44 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/18 14:07:36 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/21 11:33:03 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	ft_red_err(t_data *data, int block, char c)
+int	ft_redir_out(char *str, int block, int arg, t_data *data)
 {
-	int	i;
-
-	i = 0;
-	while (i <= data->pipe_num)
-	{
-		data->error_flags[i] = TRUE;
-		i++;
-	}
-	if (c == '\0')
-	{
-		if (block == data->pipe_num)
-			ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
-		else 
-			ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
-	}
-	if (c == '>')
-		ft_putstr_fd("minishell: syntax error near unexpected token `>'\n", 2);
-	if (c == '<')
-		ft_putstr_fd("minishell: syntax error near unexpected token `<'\n", 2);
-	errno = 2;
-	return (-1);
-}
-
-int	ft_redir_out(char *str, int block, int arg, t_data *data) // maybe close the fd that is redirected??
-{
-	int	i;
-	int	fd;
-	char *file_name;
+	int		i;
+	int		fd;
+	char	*file_name;
 
 	i = 1;
 	while (str[i] == ' ' || str[i] == '\t')
@@ -60,14 +35,14 @@ int	ft_redir_out(char *str, int block, int arg, t_data *data) // maybe close the
 		return (1);
 	}
 	ft_remove_arg(data, block, arg);
-	return(0);
+	return (0);
 }
 
 int	ft_redir_app(char *str, int block, int arg, t_data *data)
 {
-	int	i;
-	int	fd;
-	char *file_name;
+	int		i;
+	int		fd;
+	char	*file_name;
 
 	i = 2;
 	while (str[i] == ' ' || str[i] == '\t')
@@ -89,11 +64,11 @@ int	ft_redir_app(char *str, int block, int arg, t_data *data)
 	return (0);
 }
 
-int	ft_redir_in(char *str, int block, int arg, t_data *data) //add test if fd opens fails
+int	ft_redir_in(char *str, int block, int arg, t_data *data)
 {
-	int	i;
-	int	fd;
-	char *file_name;
+	int		i;
+	int		fd;
+	char	*file_name;
 
 	i = 1;
 	while (str[i] == ' ' || str[i] == '\t')
@@ -102,7 +77,7 @@ int	ft_redir_in(char *str, int block, int arg, t_data *data) //add test if fd op
 		return (ft_red_err(data, block, str[i]));
 	fd = open(str + i, O_RDONLY, S_IRUSR | S_IWUSR);
 	if (block == 0)
-		data->pipes[data->pipe_num][0] = fd; // pipe[pipe_num][0] stores input for first child (its not initialized with pipe())
+		data->pipes[data->pipe_num][0] = fd;
 	else
 		data->pipes[block - 1][0] = fd;
 	if (fd == -1)
@@ -116,91 +91,4 @@ int	ft_redir_in(char *str, int block, int arg, t_data *data) //add test if fd op
 	}
 	ft_remove_arg(data, block, arg);
 	return (0);
-}
-
-int	ft_getc(FILE *stream)
-{
-    char buffer[1]; // Buffer to read a single character
-    ssize_t bytesRead;
-    bytesRead = read(0, buffer, 1);
-    if (bytesRead <= 0) {
-		
-		return (EOF);
-    }
-	stream++;
-    return (buffer[0]);
-}
-
-int	ft_here_doc(char *str, int block, int arg, t_data *data) //maybe also close pipes here
-{
-		int		i;
-		char	*delimiter;
-		char	*input;
-		char	*buffer;
-		char	*temp;
-		int		pipe_doc[2];
-		
-		signal(SIGINT, sig_handler_heredoc);
-		i = 2;
-		while (str[i] == ' ' || str[i] == '\t')
-			i++;
-		if (str[i] == '\0' || str[i] == '>' || str[i] == '<')
-			return (ft_red_err(data, block, str[i]));
-		delimiter = str + i;
-		buffer = ft_calloc(1, sizeof(char));
-		g_last_exit = 0;
-		rl_getc_function = ft_getc;
-		while (ft_strncmp(delimiter, input = readline("> "), ft_strlen(delimiter) + 1) != 0)
-		{
-			temp = buffer;
-			if (input == NULL)
-			{
-				free (input);
-				if (g_last_exit == 130)
-				{
-					i = 0;
-					while (i <= data->pipe_num)
-					{
-						data->error_flags[i] = TRUE;
-						i++;
-					}
-				}
-				break ;
-			}
-			buffer = ft_strjoin(buffer, input);
-			free(temp);
-			temp = buffer;
-			buffer = ft_strjoin(buffer, "\n");
-			free(input);
-			free(temp);
-		}
-		if (g_last_exit == 130)
-			data->error_flags[block] = TRUE;
-		if (block == 0)
-		{
-			if (pipe(pipe_doc) != 0) //for the first block need to set a pipe 
-				return (-1);
-			data->pipes[data->pipe_num][0] = pipe_doc[0]; //set the read-end in pipes
-			write(pipe_doc[1], buffer, ft_strlen(buffer)); //write to pipe this process reads from
-			close(pipe_doc[1]);
-		}
-		else
-			write(data->pipes[block - 1][1], buffer, ft_strlen(buffer)); //write to pipe this process reads from
-		free(buffer);
-		ft_remove_arg(data, block, arg);
-		return (0);
- }
-
-void	ft_remove_arg(t_data *data, int block, int arg)
-{
-	char *temp;
-
-	temp = data->tokens[block][arg];
-	while (data->tokens[block][arg + 1])
-	{
-		data->tokens[block][arg] = data->tokens[block][arg + 1];
-		arg++;
-	}
-	data->tokens[block][arg] = NULL;
-	free(temp);
 }
