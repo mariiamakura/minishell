@@ -3,36 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:47:20 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/22 09:43:34 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/22 14:44:53 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 int	g_last_exit;
-
-void	ft_free_tokens(t_data *data)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < data->pipe_num + 1)
-	{
-		j = 0;
-		while (data->tokens[i][j])
-		{
-			free(data->tokens[i][j]);
-			j++;
-		}
-		free(data->tokens[i]);
-		i++;
-	}
-	free(data->tokens);
-}
 
 void	ft_shlvl_update(t_data *data)
 {

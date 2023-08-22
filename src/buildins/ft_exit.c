@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 17:22:24 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/18 12:59:20 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/22 15:11:19 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,24 @@ int	exit_error(char *av[])
 			return (FALSE);
 	}
 	return (TRUE);
+}
+
+void	ft_free_tokens(t_data *data)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < data->pipe_num + 1)
+	{
+		j = 0;
+		while (data->tokens[i][j])
+		{
+			free(data->tokens[i][j]);
+			j++;
+		}
+		free(data->tokens[i]);
+		i++;
+	}
+	free(data->tokens);
 }
