@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:29:31 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/16 15:28:42 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/22 14:26:58 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ int	ft_run_child(t_data *data, int i)
 	signal(SIGINT, sig_handler_child);
 	if (data->error_flags[i] == TRUE)
 		exit (errno);
+	if (ft_strlen(data->tokens[i][0]) == 0)
+		exit (0);
 	if (ft_is_builtin(data->tokens[i][0]) == TRUE)
 	{
 		ft_run_builtin(data, i);
@@ -81,10 +83,8 @@ int	ft_run_child(t_data *data, int i)
 	close_fd(data);
 	if (execve(data->tokens[i][0], data->tokens[i], data->env) == -1)
 	{
-		perror("execve failed"); 
-		term_processes(data);
-		free_wflags(data, i, FINISHED);
-		return (-1);
+		perror("execve failed");
+		return (errno);
 	}
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/16 15:01:15 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/21 16:43:36 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,16 +86,28 @@ void	init_signals(void);
 void	sig_handler_heredoc(int signum);
 
 //lexer
-int		ft_lexer(t_data *data);
+void		ft_lexer(t_data *data);
 void	ft_remove_arg(t_data *data, int block, int arg);
 int		ft_add_path(int i, t_data *data);
 void	ft_parse_var(int block, int arg, t_data *data);
 char	*ft_getenv(char *envp[], char *var_name);
 void	ft_remove_quot(char *str, int first, int last);
+void	ft_remove_arg(t_data *data, int block, int arg);
 int		ft_here_doc(char *str, int block, int arg, t_data *data);
 int		ft_redir_in(char *str, int block, int arg, t_data *data);
 int		ft_redir_app(char *str, int block, int arg, t_data *data);
 int		ft_redir_out(char *str, int block, int arg, t_data *data);
+void	ft_free_path(char **path_env);
+int		ft_is_path(char *str);
+int		ft_is_slash(char *str);
+int		ft_red_err(t_data *data, int block, char c);
+int		ft_has_spaces(char *str);
+char	*ft_merge_first(char *old_arg, int start, char *sub_split);
+char	*ft_merge_last(char *old_arg, int end_start, char *sub_split);
+int		ft_split_count(char	**split);
+char	*ft_get_var_cont(char *token, int *var_name_len, int *start, t_data *data);
+int		ft_quot_closed(char *str, int quot);
+void	ft_remove_quot(char *str, int first, int last);
 
 //builtins
 int		ft_is_builtin(char *str);
