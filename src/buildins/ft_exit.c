@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 17:22:24 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/22 15:11:19 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/22 15:41:32 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,17 @@ int	ft_exit(char *av[], t_data *data)
 		ft_exit_error("numeric argument required: ", av[1]);
 		exit (2);
 	}
+	else if (ft_count_arg(av) == 2 && is_number == TRUE)
+	{
+		write(1, "exit\n", 5);
+		exit (ft_atoi(av[1]));
+	}
+	ft_standard_exit(data);
+	exit(0);
+}
+
+void	ft_standard_exit(t_data *data)
+{
 	write(1, "exit\n", 5);
 	rl_clear_history();
 	ft_free_tokens(data);
@@ -37,7 +48,6 @@ int	ft_exit(char *av[], t_data *data)
 	free_wflags(data, data->pipe_num, FINISHED); 
 	ft_free_2d(data->env);
 	free(data);
-	exit(0);
 }
 
 void	ft_exit_error(char *s1, char *s2)

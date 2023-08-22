@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/22 15:26:57 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/22 15:41:07 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,5 +204,6 @@ int			ft_exit(char *av[], t_data *data);
 int			exit_error(char *av[]);
 void		ft_exit_error(char *s1, char *s2);
 void		ft_free_tokens(t_data *data);
+void		ft_standard_exit(t_data *data);
 
 #endif
