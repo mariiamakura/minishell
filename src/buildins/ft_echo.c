@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 18:40:47 by mparasku          #+#    #+#             */
-/*   Updated: 2023/08/15 14:41:44 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/23 16:57:01 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,30 @@ int	ft_echo(char *av[], t_data *data, int index)
 {
 	if (av[1] == NULL)
 		ft_putstr_fd("\n", data->pipes[index][1]);
-	else if (ft_strncmp(av[1], "-n", ft_strlen(av[1])) == 0 
-		&& ft_strlen(av[1]) == ft_strlen("-n"))
+	else if (ft_all_n(av[1]) == TRUE)
 	{
 		ft_print(av, TRUE, index, data);
 	}
 	else 
 		ft_print(av, FALSE, index, data);
 	return (0);
+}
+
+int	ft_all_n(char *option)
+{
+	int i;
+
+	i = 0;
+	if (option[i] != '-')
+		return (FALSE);
+	i++;
+	while (option[i])
+	{
+		if (option[i] != 'n')
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
 }
 
 void	ft_print(char *av[], int flag, int index, t_data *data)
