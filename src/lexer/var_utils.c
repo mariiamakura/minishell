@@ -6,7 +6,7 @@
 /*   By: ycardona <ycardona@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 16:19:25 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/22 09:55:44 by ycardona         ###   ########.fr       */
+/*   Updated: 2023/08/28 14:07:20 by ycardona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,11 @@ char	*ft_get_var_cont(char *token, int *len, int *start, t_data *data)
 
 	if (token[*start + 1 + *len] == '?')
 		return (var_cont = ft_itoa(g_last_exit), *len += 1, var_cont);
+	if (token[*start + 1 + *len] == '0')
+	{
+		var_cont = ft_calloc(10, sizeof(char));
+		return (ft_memmove(var_cont, "minishell", 10), *len += 1, var_cont);
+	}
 	if (ft_isalpha(token[*start + 1 + *len]) != 1 
 		&& token[*start + 1 + *len] != '_')
 		return (var_cont = ft_calloc(1, sizeof(char)), *len += 1, var_cont);
