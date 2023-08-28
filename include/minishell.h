@@ -6,7 +6,7 @@
 /*   By: mparasku <mparasku@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:39:47 by ycardona          #+#    #+#             */
-/*   Updated: 2023/08/23 16:50:31 by mparasku         ###   ########.fr       */
+/*   Updated: 2023/08/22 15:41:07 by mparasku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,6 @@ int			ft_print_error_buildins(char *s1, char *s2);
 //echo.c 
 int			ft_echo(char *av[], t_data *data, int index);
 void		ft_print(char *av[], int flag, int index, t_data *data);
-int			ft_all_n(char *option);
 
 //cd.c
 int			ft_cd(char *av[], t_data *data, int index);
